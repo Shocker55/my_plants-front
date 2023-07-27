@@ -2,14 +2,21 @@ import { auth } from "@/lib/initFirebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 const Login = () => {
   const router = useRouter();
-  const handleSubmit = (e) => {
+  const [error, setError] = useState("");
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = e.target.elements;
-    signInWithEmailAndPassword(auth, email.value, password.value);
-    router.push("/");
+
+    try {
+      await signInWithEmailAndPassword(auth, email.value, password.value);
+      router.push("/");
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (
@@ -31,6 +38,7 @@ const Login = () => {
               className="border"
             />
           </div>
+
           <div>
             <button className="rounded border bg-blue-300 px-3 hover:bg-blue-400">ログイン</button>
           </div>
