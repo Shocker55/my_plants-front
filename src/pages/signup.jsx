@@ -1,11 +1,24 @@
 import { auth } from "@/lib/initFirebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 const SignUp = () => {
-  const handleSubmit = (e) => {
+  const router = useRouter();
+  const [error, setError] = useState("");
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const { email, password } = e.target.elements;
-    createUserWithEmailAndPassword(auth, email.value, password.value);
+    const { email, password, password_confirmation } = e.target.elements;
+    if (password.value !== password_confirmation.value) {
+      setError("パスワードが一致していません");
+      return console.log(error);
+    }
+    try {
+      await createUserWithEmailAndPassword(auth, email.value, password.value);
+      router.push("/");
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (
@@ -22,6 +35,16 @@ const SignUp = () => {
             <input
               id="password"
               name="password"
+              type="password"
+              placeholder="*******"
+              className="border"
+            />
+          </div>
+          <div>
+            <label htmlFor="password_confirmation">パスワードを再入力</label>
+            <input
+              id="password_confirmation"
+              name="password_confirmation"
               type="password"
               placeholder="*******"
               className="border"
