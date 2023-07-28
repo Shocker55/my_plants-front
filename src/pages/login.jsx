@@ -1,5 +1,5 @@
-import { auth } from "@/lib/initFirebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth, provider } from "@/lib/initFirebase";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -12,10 +12,20 @@ const Login = () => {
     const { email, password } = e.target.elements;
 
     try {
-      await signInWithEmailAndPassword(auth, email.value, password.value);
-      router.push("/");
+      await signInWithEmailAndPassword(auth, email.value, password.value).then(() => {
+        router.push("/");
+      });
     } catch (error) {
       setError(error.message);
+    }
+  };
+  const loginWithGoogle = async () => {
+    try {
+      await signInWithPopup(auth, provider).then(() => {
+        router.push("/");
+      });
+    } catch (error) {
+      alert(error.message);
     }
   };
 
@@ -50,6 +60,12 @@ const Login = () => {
             から
           </div>
         </form>
+        <div>
+          <p>ログインして始める</p>
+          <button onClick={loginWithGoogle} className="m-4 rounded-md border bg-green-300">
+            Googleでログイン
+          </button>
+        </div>
       </div>
     </div>
   );
