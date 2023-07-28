@@ -10,12 +10,12 @@ const SignUp = () => {
     e.preventDefault();
     const { email, password, password_confirmation } = e.target.elements;
     if (password.value !== password_confirmation.value) {
-      setError("パスワードが一致していません");
-      return console.log(error);
+      return setError("パスワードが一致していません");
     }
     try {
-      await createUserWithEmailAndPassword(auth, email.value, password.value);
-      router.push("/");
+      await createUserWithEmailAndPassword(auth, email.value, password.value).then(() => {
+        router.push("/");
+      });
     } catch (error) {
       setError(error.message);
     }
@@ -24,6 +24,7 @@ const SignUp = () => {
   return (
     <div className="flex h-[800px] w-full items-center justify-center">
       <div>
+        <div className="text-red-300">{error}</div>
         <h1>ユーザー登録</h1>
         <form onSubmit={handleSubmit}>
           <div>
