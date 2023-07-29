@@ -50,6 +50,11 @@ export default function Home() {
               記事一覧画面
             </Link>
           </div>
+          <div>
+            <Link href="/users" className="font-medium text-blue-600 hover:underline">
+              ユーザ一覧画面
+            </Link>
+          </div>
         </div>
       ) : (
         <div>Loading ...</div>

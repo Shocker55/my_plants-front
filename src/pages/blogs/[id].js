@@ -1,9 +1,15 @@
 import Link from "next/link";
 
-export async function getServerSideProps({params}) {
+export async function getServerSideProps({ params }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/blogs/${params.id}`);
   // const res = await fetch("http://localhost:3010/blogs");
   const blog = await res.json();
+
+  if (blog.status) {
+    return {
+      notFound: true,
+    };
+  }
 
   return { props: { blog } };
 }
@@ -32,4 +38,3 @@ const Blog = ({ blog }) => {
 };
 
 export default Blog;
-
