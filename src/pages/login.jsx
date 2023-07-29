@@ -25,13 +25,14 @@ const Login = () => {
         router.push("/");
       });
     } catch (error) {
-      alert(error.message);
+      setError(error.message);
     }
   };
 
   return (
     <div className="flex h-[800px] w-full items-center justify-center">
       <div>
+        <div>{error}</div>
         <h1>ログイン</h1>
         <form onSubmit={handleSubmit}>
           <div>
