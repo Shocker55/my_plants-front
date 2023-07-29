@@ -10,21 +10,21 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const router = useRouter();
-  const { user } = useAuthContext();
+  const { currentUser } = useAuthContext();
   const handleLogout = () => {
     signOut(auth);
     router.push("/");
   };
 
   useEffect(() => {
-    if (!user) {
+    if (!currentUser) {
       router.push("/login");
     }
   });
 
   return (
     <>
-      {user ? (
+      {currentUser ? (
         <div className="m-auto w-[1000px]">
           <h1>ブログアプリ</h1>
           <div className="m-3 flex">

@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const CreateProfile = () => {
   const router = useRouter();
-  const { user } = useAuthContext();
+  const { currentUser } = useAuthContext();
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
   const [bio, setBio] = useState("");
@@ -13,7 +13,7 @@ const CreateProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const uid = user.uid;
+    const uid = currentUser.uid;
     try {
       await axiosInstance.post("/users", { name, avatar, bio, uid }).then(() => {
         router.push("/");
