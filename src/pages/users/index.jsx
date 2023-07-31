@@ -20,11 +20,12 @@ const Users = ({ users }) => {
       <div>
         <ul>
           {users?.map((user) => (
-            <Link href={`/users/${user.uid}`} key={user.uid}>
-              <li className="m-1 border p-3 font-medium text-blue-600 hover:underline">
-                <div>{user.name}</div>
-                <div>{user.bio}</div>
-              </li>
+            <Link href={`/users/${user.id}`} key={user.id}>
+              <div className="m-1 border p-3 font-medium hover:bg-slate-300">
+                <div>avatar: {user.avatar}</div>
+                <div>name: {user.name}</div>
+                <div>bio: {user.bio}</div>
+              </div>
             </Link>
           ))}
         </ul>

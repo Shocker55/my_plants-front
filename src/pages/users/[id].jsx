@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export async function getServerSideProps({ params }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${params.uid}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${params.id}`);
   const user = await res.json();
 
   if (!user) {
