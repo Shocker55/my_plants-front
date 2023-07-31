@@ -1,7 +1,7 @@
 import { useAuthContext } from "@/context/AuthContext";
 import { axiosInstance } from "@/utils/axios";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const CreateProfile = () => {
   const router = useRouter();
@@ -11,15 +11,33 @@ const CreateProfile = () => {
   const [bio, setBio] = useState("");
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    if (currentUser) {
+      const fetchProfile = () => {
+        axiosInstance
+          .get(`/profiles/${currentUser.uid}`)
+          .then((res) => {
+            console.log(res);
+            if (res.data.profile === "exist") {
+              router.push("/");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      };
+      fetchProfile();
+    }
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const uid = currentUser.uid;
     const config = {
       headers: { authorization: `Bearer ${currentUser.stsTokenManager.accessToken}` },
     };
 
     try {
-      await axiosInstance.post("/users", { name, avatar, bio, uid }, config).then(() => {
+      await axiosInstance.post(`/profiles`, { name, avatar, bio }, config).then(() => {
         router.push("/");
       });
     } catch (error) {
@@ -30,6 +48,7 @@ const CreateProfile = () => {
   return (
     <div className="flex h-[800px] w-full items-center justify-center">
       <div className="w-[500px]">
+        <div>{error}</div>
         <h1>プロフィール作成</h1>
         <form onSubmit={handleSubmit}>
           <div>

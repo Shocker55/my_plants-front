@@ -28,9 +28,13 @@ export default function Home() {
     if (currentUser) {
       const fetchProfile = () => {
         axiosInstance
-          .get(`/users/${currentUser.uid}`)
+          .get(`/profiles/${currentUser.uid}`)
           .then((res) => {
-            res.data ? setProfile(true) : router.push("/create-profile");
+            if (res.data.profile === "exist") {
+              setProfile(true);
+            } else {
+              router.push("/create-profile");
+            }
           })
           .catch((error) => {
             console.log(error);
