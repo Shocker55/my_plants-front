@@ -1,4 +1,5 @@
 import { auth } from "@/lib/initFirebase";
+import { axiosInstance } from "@/utils/axios";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -13,7 +14,11 @@ const SignUp = () => {
       return setError("パスワードが一致していません");
     }
     try {
-      await createUserWithEmailAndPassword(auth, email.value, password.value).then(() => {
+      createUserWithEmailAndPassword(auth, email.value, password.value).then(async (result) => {
+        const user = result.user;
+        const token = await user.getIdToken(true);
+        const config = { headers: { authorization: `Bearer ${token}` } };
+        await axiosInstance.post("/auth", null, config);
         router.push("/create-profile");
       });
     } catch (error) {
