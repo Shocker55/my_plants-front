@@ -1,3 +1,4 @@
+import { useAuthContext } from "@/context/AuthContext";
 import { axiosInstance } from "@/utils/axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,9 +9,14 @@ const CreateBlog = () => {
   const [contents, setContents] = useState("");
   const router = useRouter();
 
+  const { currentUser } = useAuthContext();
+
   const onClick = async () => {
+    const config = {
+      headers: { authorization: `Bearer ${currentUser.stsTokenManager.accessToken}` },
+    };
     try {
-      await axiosInstance.post("/blogs", { title, contents });
+      await axiosInstance.post("/blogs", { title, contents }, config);
       router.push("/blogs");
     } catch (err) {
       alert("投稿に失敗しました");

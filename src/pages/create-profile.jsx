@@ -14,8 +14,12 @@ const CreateProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const uid = currentUser.uid;
+    const config = {
+      headers: { authorization: `Bearer ${currentUser.stsTokenManager.accessToken}` },
+    };
+
     try {
-      await axiosInstance.post("/users", { name, avatar, bio, uid }).then(() => {
+      await axiosInstance.post("/users", { name, avatar, bio, uid }, config).then(() => {
         router.push("/");
       });
     } catch (error) {

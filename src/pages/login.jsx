@@ -1,4 +1,5 @@
 import { auth, provider } from "@/lib/initFirebase";
+import { axiosInstance } from "@/utils/axios";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -7,21 +8,33 @@ import { useState } from "react";
 const Login = () => {
   const router = useRouter();
   const [error, setError] = useState("");
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const { email, password } = e.target.elements;
 
     try {
-      await signInWithEmailAndPassword(auth, email.value, password.value).then(() => {
+      signInWithEmailAndPassword(auth, email.value, password.value).then(async (result) => {
+        const user = result.user;
+        const token = await user.getIdToken(true);
+        const config = { headers: { authorization: `Bearer ${token}` } };
+        await axiosInstance.post("/auth", null, config);
+
         router.push("/");
       });
     } catch (error) {
       setError(error.message);
     }
   };
+
   const loginWithGoogle = async () => {
     try {
-      await signInWithPopup(auth, provider).then(() => {
+      await signInWithPopup(auth, provider).then(async (result) => {
+        const user = result.user;
+        const token = await user.getIdToken(true);
+        const config = { headers: { authorization: `Bearer ${token}` } };
+
+        await axiosInstance.post("/auth", null, config);
+
         router.push("/");
       });
     } catch (error) {
