@@ -26,8 +26,8 @@ export default function Home() {
 
   useEffect(() => {
     if (currentUser) {
-      const fetchProfile = () => {
-        axiosInstance
+      const fetchProfile = async () => {
+        await axiosInstance
           .get(`/profiles/${currentUser.uid}`)
           .then((res) => {
             if (res.data.profile === "exist") {
@@ -66,13 +66,13 @@ export default function Home() {
             </button>
           </div>
           <div>
-            <Link href="/create-blog" className="font-medium text-blue-600 hover:underline">
-              記事作成画面
+            <Link href="/create-record" className="font-medium text-blue-600 hover:underline">
+              記録作成画面
             </Link>
           </div>
           <div>
-            <Link href="/blogs" className="font-medium text-blue-600 hover:underline">
-              記事一覧画面
+            <Link href="/records" className="font-medium text-blue-600 hover:underline">
+              記録一覧画面
             </Link>
           </div>
           <div>
