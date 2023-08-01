@@ -1,16 +1,18 @@
 import { useAuthContext } from "@/context/AuthContext";
 import { auth } from "@/lib/initFirebase";
+import { axiosInstance } from "@/utils/axios";
 import { signOut } from "firebase/auth";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const router = useRouter();
   const { currentUser } = useAuthContext();
+  const [profile, setProfile] = useState(false);
   const handleLogout = () => {
     signOut(auth);
     router.push("/");
@@ -22,9 +24,32 @@ export default function Home() {
     }
   });
 
+  useEffect(() => {
+    if (currentUser) {
+      const fetchProfile = async () => {
+        await axiosInstance
+          .get(`/profiles/${currentUser.uid}`)
+          .then((res) => {
+            if (res.data.profile === "exist") {
+              setProfile(true);
+            } else {
+              router.push("/create-profile");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      };
+      fetchProfile();
+    }
+    return () => {
+      setProfile(false);
+    };
+  }, [currentUser]);
+
   return (
     <>
-      {currentUser ? (
+      {currentUser && profile ? (
         <div className="m-auto w-[1000px]">
           <h1>ブログアプリ</h1>
           <div className="m-3 flex">
@@ -41,13 +66,13 @@ export default function Home() {
             </button>
           </div>
           <div>
-            <Link href="/create-blog" className="font-medium text-blue-600 hover:underline">
-              記事作成画面
+            <Link href="/create-record" className="font-medium text-blue-600 hover:underline">
+              記録作成画面
             </Link>
           </div>
           <div>
-            <Link href="/blogs" className="font-medium text-blue-600 hover:underline">
-              記事一覧画面
+            <Link href="/records" className="font-medium text-blue-600 hover:underline">
+              記録一覧画面
             </Link>
           </div>
           <div>

@@ -1,33 +1,32 @@
 import Link from "next/link";
 
 export async function getServerSideProps() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/blogs`);
-  // const res = await fetch("http://localhost:3010/blogs");
-  const blogs = await res.json();
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records`);
+  const records = await res.json();
 
-  return { props: { blogs } };
+  return { props: { records } };
 }
 
-const Blogs = ({ blogs }) => {
+const Records = ({ records }) => {
   return (
     <div className="mx-auto w-[1000px]">
-      <h1>ブログ一覧画面</h1>
+      <h1>記録一覧画面</h1>
       <div>
         <Link href="/" className="font-medium text-blue-600 hover:underline">
           TOP
         </Link>
       </div>
       <div>
-        <Link href="/create-blog" className="font-medium text-blue-600 hover:underline">
+        <Link href="/create-record" className="font-medium text-blue-600 hover:underline">
           記事作成画面
         </Link>
       </div>
       <div>
         <ul>
-          {blogs?.map((blog) => (
-            <Link href={`/blogs/${blog.id}`} key={blog.id}>
+          {records?.map((record) => (
+            <Link href={`/records/${record.id}`} key={record.id}>
               <li className="m-1 border p-3 font-medium text-blue-600 hover:underline">
-                {blog.title}
+                {record.title}
               </li>
             </Link>
           ))}
@@ -37,4 +36,4 @@ const Blogs = ({ blogs }) => {
   );
 };
 
-export default Blogs;
+export default Records;
