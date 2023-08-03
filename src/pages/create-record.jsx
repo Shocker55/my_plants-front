@@ -13,6 +13,7 @@ const CreateRecord = () => {
   const [base, setBase] = useState(true);
   const [baseRecords, setBaseRecords] = useState([]);
   const [selectedBaseRecord, setSelectedBaseRecord] = useState("");
+  const [baseId, setBaseId] = useState(0);
 
   useEffect(() => {
     const fetchBaseRecord = async () => {
@@ -28,9 +29,8 @@ const CreateRecord = () => {
     const config = {
       headers: { authorization: `Bearer ${currentUser.stsTokenManager.accessToken}` },
     };
-    console.log(base);
     try {
-      await axiosInstance.post("/records", { title, body, image, base }, config);
+      await axiosInstance.post("/records", { title, body, image, base, baseId }, config);
       router.push("/records");
     } catch (err) {
       alert("投稿に失敗しました");
@@ -41,8 +41,10 @@ const CreateRecord = () => {
     setSelectedBaseRecord(e.target.value);
     if (!!e.target.value) {
       setBase(false);
+      setBaseId(e.target.value);
     } else {
       setBase(true);
+      setBaseId(0);
     }
   };
 
