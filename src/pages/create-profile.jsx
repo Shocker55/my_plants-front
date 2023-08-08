@@ -17,7 +17,6 @@ const CreateProfile = () => {
         axiosInstance
           .get(`/profiles/${currentUser.uid}`)
           .then((res) => {
-            console.log(res);
             if (res.data.profile === "exist") {
               router.push("/");
             }
@@ -37,9 +36,8 @@ const CreateProfile = () => {
     };
 
     try {
-      await axiosInstance.post(`/profiles`, { name, avatar, bio }, config).then(() => {
-        router.push("/");
-      });
+      await axiosInstance.post(`/profiles`, { name, avatar, bio }, config);
+      router.push("/");
     } catch (error) {
       setError(error.message);
     }
