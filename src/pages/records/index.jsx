@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { AiOutlinePicture } from "react-icons/ai";
 
@@ -28,7 +29,13 @@ const Records = ({ records }) => {
             <Link href={`/records/${record.id}`} key={record.id}>
               <li className="m-1 flex border p-3 font-medium text-blue-600 hover:underline ">
                 {record.image.url ? (
-                  <img src={record.image.url} alt="" className="mr-3 w-[50px] rounded" />
+                  <Image
+                    src={record.image.url}
+                    alt=""
+                    width={50}
+                    height={50}
+                    className="mr-3 h-auto w-auto rounded"
+                  />
                 ) : (
                   <AiOutlinePicture className="mr-3 w-[50px] text-4xl" />
                 )}

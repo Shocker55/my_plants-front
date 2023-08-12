@@ -1,5 +1,6 @@
 import { useAuthContext } from "@/context/AuthContext";
 import { axiosInstance } from "@/utils/axios";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
@@ -153,7 +154,7 @@ const CreateRecord = () => {
                   <AiOutlineClose className="rounded-xl bg-slate-200 p-[1.5px]" />
                 </div>
               </button>
-              <img className="h-[380px] w-[500px] rounded-xl" src={preview} alt="" />
+              <Image width={500} height={380} className="rounded-xl" src={preview} alt="" />
             </div>
           ) : null}
         </div>
