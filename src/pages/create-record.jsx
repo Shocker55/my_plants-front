@@ -170,6 +170,10 @@ const CreateRecord = () => {
               ref={inputEl}
               type="file"
               accept="image/jpg,image/jpeg, image/png, image/gif"
+              // 画像のプレビューを削除後、再度同じ選択するとonChangeイベントが発火しないためonClickイベントを追加
+              onClick={(e) => {
+                e.target.value = "";
+              }}
               onChange={(e) => {
                 handleFileChange(e);
               }}
