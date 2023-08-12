@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AiOutlineUser } from "react-icons/ai";
 
 export async function getServerSideProps({ params }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${params.id}`);
@@ -23,12 +24,16 @@ const User = ({ user }) => {
       </div>
       <div>
         <div>
-          <h2 className="font-bold">name</h2>
-          <h2>{user.name}</h2>
+          <h2 className="font-bold">avatar</h2>
+          {user.avatar.url ? (
+            <img src={user.avatar.url} alt="" className="mr-3 w-[96px] rounded-full" />
+          ) : (
+            <AiOutlineUser className="mr-3 w-[96px] rounded-full bg-slate-300 text-8xl" />
+          )}
         </div>
         <div>
-          <h2 className="font-bold">avatar</h2>
-          <p>{user.avatar}</p>
+          <h2 className="font-bold">name</h2>
+          <h2>{user.name}</h2>
         </div>
       </div>
       <div>

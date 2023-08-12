@@ -28,9 +28,12 @@ const Record = ({ record }) => {
         </Link>
       </div>
       <div>
-        <h2>{record.title}</h2>
+        <h2 className="pb-2 text-lg font-semibold">{record.title}</h2>
+        {record.image.url ? (
+          <img src={record.image.url} alt="" className="h-[380px] w-[500px] rounded-xl" />
+        ) : null}
         <h3>本文</h3>
-        <p>{record.contents}</p>
+        <p>{record.body}</p>
       </div>
     </div>
   );
