@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AiOutlinePicture } from "react-icons/ai";
 
 export async function getServerSideProps() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records`);
@@ -25,7 +26,12 @@ const Records = ({ records }) => {
         <ul>
           {records?.map((record) => (
             <Link href={`/records/${record.id}`} key={record.id}>
-              <li className="m-1 border p-3 font-medium text-blue-600 hover:underline">
+              <li className="m-1 flex border p-3 font-medium text-blue-600 hover:underline ">
+                {record.image.url ? (
+                  <img src={record.image.url} alt="" className="mr-3 w-[50px] rounded" />
+                ) : (
+                  <AiOutlinePicture className="mr-3 w-[50px] text-4xl" />
+                )}
                 {record.title}
               </li>
             </Link>
