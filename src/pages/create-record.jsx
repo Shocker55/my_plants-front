@@ -3,6 +3,7 @@ import { axiosInstance } from "@/utils/axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
+import { AiOutlineClose } from "react-icons/ai";
 
 const CreateRecord = () => {
   const router = useRouter();
@@ -140,10 +141,21 @@ const CreateRecord = () => {
         </label>
         <div>
           {preview ? (
-            <img className="h-[380px] w-[500px] rounded-xl" src={preview} alt="" />
-          ) : (
-            <></>
-          )}
+            <div>
+              <button
+                type="button"
+                onClick={() => {
+                  setImage(null);
+                  setPreview(null);
+                }}
+              >
+                <div>
+                  <AiOutlineClose className="rounded-xl bg-slate-200 p-[1.5px]" />
+                </div>
+              </button>
+              <img className="h-[380px] w-[500px] rounded-xl" src={preview} alt="" />
+            </div>
+          ) : null}
         </div>
         <div className="my-5 flex">
           <div>
@@ -158,6 +170,10 @@ const CreateRecord = () => {
               ref={inputEl}
               type="file"
               accept="image/jpg,image/jpeg, image/png, image/gif"
+              // 画像のプレビューを削除後、再度同じ選択するとonChangeイベントが発火しないためonClickイベントを追加
+              onClick={(e) => {
+                e.target.value = "";
+              }}
               onChange={(e) => {
                 handleFileChange(e);
               }}
