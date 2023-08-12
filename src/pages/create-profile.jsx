@@ -1,5 +1,6 @@
 import { useAuthContext } from "@/context/AuthContext";
 import { axiosInstance } from "@/utils/axios";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineUser, AiOutlineClose } from "react-icons/ai";
@@ -104,10 +105,12 @@ const CreateProfile = () => {
               <button type="button" onClick={() => inputEl.current.click()}>
                 {avatarPreview ? (
                   <div>
-                    <img
+                    <Image
                       src={avatarPreview}
+                      width={96}
+                      height={96}
                       alt=""
-                      className="mr-3 w-[96px] rounded-full font-mono"
+                      className="mr-3 rounded-full font-mono"
                     />
                   </div>
                 ) : (

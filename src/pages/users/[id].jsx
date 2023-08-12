@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { AiOutlineUser } from "react-icons/ai";
 
@@ -26,7 +27,13 @@ const User = ({ user }) => {
         <div>
           <h2 className="font-bold">avatar</h2>
           {user.avatar.url ? (
-            <img src={user.avatar.url} alt="" className="mr-3 w-[96px] rounded-full" />
+            <Image
+              src={user.avatar.url}
+              alt=""
+              width={96}
+              height={96}
+              className="mr-3 rounded-full"
+            />
           ) : (
             <AiOutlineUser className="mr-3 w-[96px] rounded-full bg-slate-300 text-8xl" />
           )}

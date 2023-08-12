@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export async function getServerSideProps({ params }) {
@@ -30,7 +31,7 @@ const Record = ({ record }) => {
       <div>
         <h2 className="pb-2 text-lg font-semibold">{record.title}</h2>
         {record.image.url ? (
-          <img src={record.image.url} alt="" className="h-[380px] w-[500px] rounded-xl" />
+          <Image src={record.image.url} alt="" width={500} height={380} className="rounded-xl" />
         ) : null}
         <h3>本文</h3>
         <p>{record.body}</p>
