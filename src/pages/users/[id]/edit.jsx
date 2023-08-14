@@ -5,28 +5,36 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineUser, AiOutlineClose } from "react-icons/ai";
 
-const CreateProfile = () => {
+export const getServerSideProps = async (context) => {
+  const id = context.params.id;
+  const res = await axiosInstance.get(`/users/${id}`);
+  const user = await res.data;
+
+  return { props: { user } };
+};
+
+const EditProfile = ({ user }) => {
   const router = useRouter();
   const { currentUser } = useAuthContext();
-  const [name, setName] = useState("");
+  const [name, setName] = useState(user.name);
   const [avatar, setAvatar] = useState("");
   const [avatarPreview, setAvatarPreview] = useState("");
-  const [bio, setBio] = useState("");
+  const [bio, setBio] = useState(user.bio);
   const [error, setError] = useState(null);
   const inputEl = useRef(null);
 
   useEffect(() => {
     if (currentUser) {
       const fetchProfile = () => {
-        axiosInstance
-          .get(`/profiles/${currentUser.uid}`)
-          .then((res) => {
-            if (res.data.profile === "exist") {
-              router.push("/");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
+        axiosInstance.get(`/profiles/${currentUser.uid}`).catch((error) => {
+          console.log(error);
+        });
+        fetch(user.avatar.url)
+          .then((res) => res.blob())
+          .then((blob) => new File([blob], `${user.avatar.url.match(".+/(.+?)([?#;].*)?$")[1]}`))
+          .then((file) => {
+            setAvatar(file);
+            setAvatarPreview(window.URL.createObjectURL(file));
           });
       };
       fetchProfile();
@@ -67,7 +75,6 @@ const CreateProfile = () => {
     e.preventDefault();
 
     const data = createFormData();
-    // console.log(...data.entries());
     const config = {
       headers: {
         authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
@@ -76,7 +83,7 @@ const CreateProfile = () => {
     };
 
     try {
-      await axiosInstance.post(`/profiles`, data, config);
+      await axiosInstance.put(`/profiles/${user.id}`, data, config);
       router.push("/");
     } catch (error) {
       setError(error.response.data.message);
@@ -153,6 +160,7 @@ const CreateProfile = () => {
                 <input
                   id="name"
                   name="name"
+                  value={name}
                   placeholder="ユーザー名を入力"
                   onChange={(e) => setName(e.target.value)}
                   className="border"
@@ -166,6 +174,7 @@ const CreateProfile = () => {
                   id="bio"
                   name="bio"
                   type="text"
+                  value={bio}
                   placeholder="Bio"
                   onChange={(e) => setBio(e.target.value)}
                   className="border"
@@ -182,4 +191,4 @@ const CreateProfile = () => {
   );
 };
 
-export default CreateProfile;
+export default EditProfile;
