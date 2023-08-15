@@ -1,3 +1,6 @@
+import Feed from "@/components/Feed";
+import Sidebar from "@/components/Sidebar";
+import Widgets from "@/components/Widgets";
 import { useAuthContext } from "@/context/AuthContext";
 import { auth } from "@/lib/initFirebase";
 import { axiosInstance } from "@/utils/axios";
@@ -48,8 +51,11 @@ export default function Home() {
   }, [currentUser]);
 
   return (
-    <>
-      {currentUser && profile ? (
+    <div className="flex h-screen justify-center">
+      <Sidebar />
+      <Feed />
+      <Widgets />
+      {/* {currentUser && profile ? (
         <div className="m-auto w-[1000px]">
           <h1>ブログアプリ</h1>
           <div className="m-3 flex">
@@ -81,9 +87,10 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      ) : (
+      ) 
+      : (
         <div>Loading ...</div>
-      )}
-    </>
+      )} */}
+    </div>
   );
 }
