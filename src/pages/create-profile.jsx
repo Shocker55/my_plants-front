@@ -19,9 +19,9 @@ const CreateProfile = () => {
     if (currentUser) {
       const fetchProfile = () => {
         axiosInstance
-          .get(`/profiles/${currentUser.uid}`)
+          .get(`/users/${currentUser.uid}`)
           .then((res) => {
-            if (res.data.profile === "exist") {
+            if (res.data.profile) {
               router.push("/");
             }
           })

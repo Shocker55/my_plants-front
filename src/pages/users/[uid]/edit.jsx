@@ -7,7 +7,7 @@ import { AiOutlineUser, AiOutlineClose } from "react-icons/ai";
 
 export const getServerSideProps = async (context) => {
   const uid = context.params.uid;
-  const res = await axiosInstance.get(`/profiles/${uid}`);
+  const res = await axiosInstance.get(`/users/${uid}`);
   const user = await res.data;
 
   return { props: { user } };
@@ -16,10 +16,10 @@ export const getServerSideProps = async (context) => {
 const EditProfile = ({ user }) => {
   const router = useRouter();
   const { currentUser } = useAuthContext();
-  const [name, setName] = useState(user.name);
+  const [name, setName] = useState(user.profile.name);
   const [avatar, setAvatar] = useState("");
   const [avatarPreview, setAvatarPreview] = useState("");
-  const [bio, setBio] = useState(user.bio);
+  const [bio, setBio] = useState(user.profile.bio);
   const [error, setError] = useState(null);
   const inputEl = useRef(null);
 
@@ -30,14 +30,16 @@ const EditProfile = ({ user }) => {
   }, []);
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser && user.profile.avatar.url) {
       const fetchProfile = () => {
-        axiosInstance.get(`/profiles/${currentUser.uid}`).catch((error) => {
+        axiosInstance.get(`/users/${currentUser.uid}`).catch((error) => {
           console.log(error);
         });
-        fetch(user.avatar.url)
+        fetch(user.profile.avatar.url)
           .then((res) => res.blob())
-          .then((blob) => new File([blob], `${user.avatar.url.match(".+/(.+?)([?#;].*)?$")[1]}`))
+          .then(
+            (blob) => new File([blob], `${user.profile.avatar.url.match(".+/(.+?)([?#;].*)?$")[1]}`)
+          )
           .then((file) => {
             setAvatar(file);
             setAvatarPreview(window.URL.createObjectURL(file));

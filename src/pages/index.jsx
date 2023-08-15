@@ -19,9 +19,9 @@ export default function Home() {
     if (currentUser) {
       const fetchProfile = async () => {
         await axiosInstance
-          .get(`/profiles/${currentUser.uid}`)
+          .get(`/users/${currentUser.uid}`)
           .then((res) => {
-            if (res.data) {
+            if (res.data.profile) {
               setProfile(true);
             } else {
               router.push("/create-profile");
