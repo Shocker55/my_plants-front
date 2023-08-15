@@ -6,8 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { AiOutlineUser, AiOutlineClose } from "react-icons/ai";
 
 export const getServerSideProps = async (context) => {
-  const id = context.params.id;
-  const res = await axiosInstance.get(`/users/${id}`);
+  const uid = context.params.uid;
+  const res = await axiosInstance.get(`/profiles/${uid}`);
   const user = await res.data;
 
   return { props: { user } };
@@ -22,6 +22,12 @@ const EditProfile = ({ user }) => {
   const [bio, setBio] = useState(user.bio);
   const [error, setError] = useState(null);
   const inputEl = useRef(null);
+
+  useEffect(() => {
+    if (!currentUser) {
+      router.push("/login");
+    }
+  }, []);
 
   useEffect(() => {
     if (currentUser) {

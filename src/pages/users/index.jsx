@@ -22,22 +22,22 @@ const Users = ({ users }) => {
       <div>
         <ul>
           {users?.map((user) => (
-            <Link href={`/users/${user.id}`} key={user.id}>
+            <Link href={`/users/${user.uid}`} key={user.uid}>
               <div className="m-1 flex border p-3 font-medium hover:bg-slate-300">
-                {user.avatar.url ? (
+                {user.profile.avatar.url ? (
                   <Image
-                    src={user.avatar.url}
+                    src={user.profile.avatar.url}
                     width={70}
                     height={70}
                     alt=""
-                    className="mr-3 h-auto w-auto rounded-full"
+                    className="mr-3 rounded-full"
                   />
                 ) : (
                   <AiOutlineUser className="mr-3 w-[70px] rounded-full bg-slate-300 text-6xl" />
                 )}
                 <div>
-                  <div>ユーザー名: {user.name}</div>
-                  <div>ひとこと: {user.bio}</div>
+                  <div>ユーザー名: {user.profile.name}</div>
+                  <div>ひとこと: {user.profile.bio}</div>
                 </div>
               </div>
             </Link>

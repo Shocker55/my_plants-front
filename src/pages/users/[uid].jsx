@@ -3,7 +3,7 @@ import Link from "next/link";
 import { AiOutlineUser } from "react-icons/ai";
 
 export async function getServerSideProps({ params }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${params.id}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${params.uid}`);
   const user = await res.json();
 
   if (!user) {
@@ -26,9 +26,9 @@ const User = ({ user }) => {
       <div>
         <div>
           <h2 className="font-bold">avatar</h2>
-          {user.avatar.url ? (
+          {user.profile.avatar.url ? (
             <Image
-              src={user.avatar.url}
+              src={user.profile.avatar.url}
               alt=""
               width={96}
               height={96}
@@ -40,12 +40,12 @@ const User = ({ user }) => {
         </div>
         <div>
           <h2 className="font-bold">name</h2>
-          <h2>{user.name}</h2>
+          <h2>{user.profile.name}</h2>
         </div>
       </div>
       <div>
         <h2 className="font-bold">Bio</h2>
-        <p>{user.bio}</p>
+        <p>{user.profile.bio}</p>
       </div>
     </div>
   );

@@ -20,13 +20,21 @@ const CreateRecord = () => {
   const inputEl = useRef(null);
 
   useEffect(() => {
+    if (!currentUser) {
+      router.push("/login");
+    }
+  }, []);
+
+  useEffect(() => {
     const fetchBaseRecord = async () => {
       const result = await axiosInstance
         .get("/records", { params: { uid: `${currentUser.uid}`, base: "true" } })
         .then((res) => res.data);
       setBaseRecords(result);
     };
-    fetchBaseRecord();
+    if (currentUser) {
+      fetchBaseRecord();
+    }
   }, []);
 
   const handleSelectedRecord = (e) => {

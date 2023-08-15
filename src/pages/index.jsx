@@ -2,9 +2,7 @@ import Feed from "@/components/Feed";
 import Sidebar from "@/components/Sidebar";
 import Widgets from "@/components/Widgets";
 import { useAuthContext } from "@/context/AuthContext";
-import { auth } from "@/lib/initFirebase";
 import { axiosInstance } from "@/utils/axios";
-import { signOut } from "firebase/auth";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -16,16 +14,6 @@ export default function Home() {
   const router = useRouter();
   const { currentUser } = useAuthContext();
   const [profile, setProfile] = useState(false);
-  const handleLogout = () => {
-    signOut(auth);
-    router.push("/");
-  };
-
-  useEffect(() => {
-    if (!currentUser) {
-      router.push("/login");
-    }
-  });
 
   useEffect(() => {
     if (currentUser) {
@@ -33,7 +21,7 @@ export default function Home() {
         await axiosInstance
           .get(`/profiles/${currentUser.uid}`)
           .then((res) => {
-            if (res.data.profile === "exist") {
+            if (res.data) {
               setProfile(true);
             } else {
               router.push("/create-profile");
@@ -72,18 +60,8 @@ export default function Home() {
             </button>
           </div>
           <div>
-            <Link href="/create-record" className="font-medium text-blue-600 hover:underline">
-              記録作成画面
-            </Link>
-          </div>
-          <div>
             <Link href="/records" className="font-medium text-blue-600 hover:underline">
               記録一覧画面
-            </Link>
-          </div>
-          <div>
-            <Link href="/users" className="font-medium text-blue-600 hover:underline">
-              ユーザ一覧画面
             </Link>
           </div>
         </div>
