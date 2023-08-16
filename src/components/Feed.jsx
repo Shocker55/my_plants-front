@@ -1,6 +1,6 @@
 import RecordCard from "./RecordCard";
 
-export default function Feed() {
+export default function Feed({ records }) {
   return (
     <div className="hidden-scrollbar max-w-xl flex-grow overflow-y-scroll border-l border-r border-gray-200 bg-slate-200 sm:ml-[10px] lg:min-w-[900px]">
       {/* Header */}
@@ -10,15 +10,9 @@ export default function Feed() {
 
       {/* Post */}
       <div className="flex flex-wrap sm:w-[450px] lg:w-[900px]">
-        <RecordCard />
-        <RecordCard />
-        <RecordCard />
-        <RecordCard />
-        <RecordCard />
-        <RecordCard />
-        <RecordCard />
-        <RecordCard />
-        <RecordCard />
+        {records?.map((record) => {
+          return <RecordCard key={record.id} record={record} />;
+        })}
       </div>
     </div>
   );
