@@ -1,7 +1,9 @@
+import Feed from "@/components/Feed";
+import RecordList from "@/components/RecordList";
+import Sidebar from "@/components/Sidebar";
+import Widgets from "@/components/Widgets";
 import { useAuthContext } from "@/context/AuthContext";
-import { auth } from "@/lib/initFirebase";
 import { axiosInstance } from "@/utils/axios";
-import { signOut } from "firebase/auth";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -9,28 +11,25 @@ import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+export async function getServerSideProps() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records`);
+  const records = await res.json();
+
+  return { props: { records } };
+}
+
+export default function Home({ records }) {
   const router = useRouter();
   const { currentUser } = useAuthContext();
   const [profile, setProfile] = useState(false);
-  const handleLogout = () => {
-    signOut(auth);
-    router.push("/");
-  };
-
-  useEffect(() => {
-    if (!currentUser) {
-      router.push("/login");
-    }
-  });
 
   useEffect(() => {
     if (currentUser) {
       const fetchProfile = async () => {
         await axiosInstance
-          .get(`/profiles/${currentUser.uid}`)
+          .get(`/users/${currentUser.uid}`)
           .then((res) => {
-            if (res.data.profile === "exist") {
+            if (res.data.profile) {
               setProfile(true);
             } else {
               router.push("/create-profile");
@@ -48,42 +47,10 @@ export default function Home() {
   }, [currentUser]);
 
   return (
-    <>
-      {currentUser && profile ? (
-        <div className="m-auto w-[1000px]">
-          <h1>ブログアプリ</h1>
-          <div className="m-3 flex">
-            <Link href="/signup" className="mr-3 border bg-slate-300">
-              ユーザー登録
-            </Link>
-            <Link href="/login" className="border bg-blue-300">
-              ログイン
-            </Link>
-          </div>
-          <div>
-            <button onClick={handleLogout} className="border bg-red-300">
-              ログアウト
-            </button>
-          </div>
-          <div>
-            <Link href="/create-record" className="font-medium text-blue-600 hover:underline">
-              記録作成画面
-            </Link>
-          </div>
-          <div>
-            <Link href="/records" className="font-medium text-blue-600 hover:underline">
-              記録一覧画面
-            </Link>
-          </div>
-          <div>
-            <Link href="/users" className="font-medium text-blue-600 hover:underline">
-              ユーザ一覧画面
-            </Link>
-          </div>
-        </div>
-      ) : (
-        <div>Loading ...</div>
-      )}
-    </>
+    <div className="flex h-screen justify-center">
+      <Sidebar />
+      <Feed pageTitle="Home" list={RecordList(records)} />
+      <Widgets />
+    </div>
   );
 }
