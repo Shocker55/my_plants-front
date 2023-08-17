@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaArrowUpFromBracket, FaCircleUser, FaRegHeart } from "react-icons/fa6";
 
-export default function RecordCard({ record }) {
+export default function RecordCard({ record, userPage }) {
   return (
     <Link
       href={`/records/${record.id}`}
@@ -15,30 +15,34 @@ export default function RecordCard({ record }) {
             <p className="mb-2 line-clamp-2 h-14 overflow-hidden py-2">{record.body}</p>
           </div>
         </div>
-        <div className="flex items-center justify-between px-2 py-1">
-          <Link href={`/users/${record.user.uid}`}>
-            <div className="flex items-center">
-              {record.user.profile.avatar.url ? (
-                <Image
-                  src={record.user.profile.avatar.url}
-                  width={70}
-                  height={70}
-                  alt=""
-                  className="mr-3 rounded-full"
-                />
-              ) : (
-                <FaCircleUser className="text-5xl text-gray-400" />
-              )}
-              <div className="px-2 text-sm font-semibold text-gray-500">
-                {record.user.profile.name}
+        {!userPage ? (
+          <div className="flex items-center justify-between px-2 py-1">
+            <Link href={`/users/${record.user.uid}`}>
+              <div className="flex items-center">
+                {record.user.profile.avatar.url ? (
+                  <Image
+                    src={record.user.profile.avatar.url}
+                    width={70}
+                    height={70}
+                    alt=""
+                    className="mr-3 rounded-full"
+                  />
+                ) : (
+                  <FaCircleUser className="text-5xl text-gray-400" />
+                )}
+                <div className="px-2 text-sm font-semibold text-gray-500">
+                  {record.user.profile.name}
+                </div>
               </div>
+            </Link>
+            <div className="flex">
+              <FaRegHeart className="mr-3" />
+              <FaArrowUpFromBracket />
             </div>
-          </Link>
-          <div className="flex">
-            <FaRegHeart className="mr-3" />
-            <FaArrowUpFromBracket />
           </div>
-        </div>
+        ) : (
+          <div className="h-[56px]"></div>
+        )}
       </div>
       <div className="flex items-center justify-center pr-2">
         {record.image.url ? (

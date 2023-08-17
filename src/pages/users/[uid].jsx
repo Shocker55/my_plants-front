@@ -1,6 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
-import { AiOutlineUser } from "react-icons/ai";
+import Feed from "@/components/Feed";
+import MyRecordList from "@/components/MyRecordList";
+import Sidebar from "@/components/Sidebar";
+import Widgets from "@/components/Widgets";
 
 export async function getServerSideProps({ params }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${params.uid}`);
@@ -11,42 +12,20 @@ export async function getServerSideProps({ params }) {
       notFound: true,
     };
   }
-  return { props: { user } };
+
+  const anotherRes = await fetch(
+    `${process.env.NEXT_PUBLIC_API_DOMEIN}/records?q=own&uid=${params.uid}`
+  );
+  const userRecords = await anotherRes.json();
+  return { props: { user, userRecords } };
 }
 
-const User = ({ user }) => {
+const User = ({ userRecords, user }) => {
   return (
-    <div className="mx-auto w-[1000px]">
-      <h1>ユーザー詳細画面</h1>
-      <div>
-        <Link href="/" className="font-medium text-blue-600 hover:underline">
-          TOP
-        </Link>
-      </div>
-      <div>
-        <div>
-          <h2 className="font-bold">avatar</h2>
-          {user.profile.avatar.url ? (
-            <Image
-              src={user.profile.avatar.url}
-              alt=""
-              width={96}
-              height={96}
-              className="mr-3 rounded-full"
-            />
-          ) : (
-            <AiOutlineUser className="mr-3 w-[96px] rounded-full bg-slate-300 text-8xl" />
-          )}
-        </div>
-        <div>
-          <h2 className="font-bold">name</h2>
-          <h2>{user.profile.name}</h2>
-        </div>
-      </div>
-      <div>
-        <h2 className="font-bold">Bio</h2>
-        <p>{user.profile.bio}</p>
-      </div>
+    <div className="flex h-screen justify-center">
+      <Sidebar />
+      <Feed pageTitle="ユーザー" list={MyRecordList({ userRecords, user })} user={user.profile} />
+      <Widgets />
     </div>
   );
 };

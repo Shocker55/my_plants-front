@@ -77,7 +77,7 @@ const CreateProfile = () => {
 
     try {
       await axiosInstance.post(`/profiles`, data, config);
-      router.push("/");
+      router.push(`/users/${currentUser.uid}`);
     } catch (error) {
       setError(error.response.data.message);
     }
