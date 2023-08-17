@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { AiOutlinePicture } from "react-icons/ai";
 import { FaArrowUpFromBracket, FaCircleUser, FaRegHeart } from "react-icons/fa6";
 
 export default function RecordCard({ record }) {

@@ -1,6 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
-import { AiOutlineUser } from "react-icons/ai";
+import Feed from "@/components/Feed";
+import Sidebar from "@/components/Sidebar";
+import UserList from "@/components/UserList";
+import Widgets from "@/components/Widgets";
 
 export async function getServerSideProps() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/users`);
@@ -12,38 +13,10 @@ export async function getServerSideProps() {
 
 const Users = ({ users }) => {
   return (
-    <div className="mx-auto w-[1000px]">
-      <h1>ユーザ一覧画面</h1>
-      <div>
-        <Link href="/" className="font-medium text-blue-600 hover:underline">
-          TOP
-        </Link>
-      </div>
-      <div>
-        <ul>
-          {users?.map((user) => (
-            <Link href={`/users/${user.uid}`} key={user.uid}>
-              <div className="m-1 flex border p-3 font-medium hover:bg-slate-300">
-                {user.profile.avatar.url ? (
-                  <Image
-                    src={user.profile.avatar.url}
-                    width={70}
-                    height={70}
-                    alt=""
-                    className="mr-3 rounded-full"
-                  />
-                ) : (
-                  <AiOutlineUser className="mr-3 w-[70px] rounded-full bg-slate-300 text-6xl" />
-                )}
-                <div>
-                  <div>ユーザー名: {user.profile.name}</div>
-                  <div>ひとこと: {user.profile.bio}</div>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </ul>
-      </div>
+    <div className="flex h-screen justify-center">
+      <Sidebar />
+      <Feed pageTitle="ユーザーリスト" list={UserList(users)} />
+      <Widgets />
     </div>
   );
 };

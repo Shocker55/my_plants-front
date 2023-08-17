@@ -1,4 +1,5 @@
 import Feed from "@/components/Feed";
+import RecordList from "@/components/RecordList";
 import Sidebar from "@/components/Sidebar";
 import Widgets from "@/components/Widgets";
 import { useAuthContext } from "@/context/AuthContext";
@@ -48,7 +49,7 @@ export default function Home({ records }) {
   return (
     <div className="flex h-screen justify-center">
       <Sidebar />
-      <Feed records={records} />
+      <Feed pageTitle="Home" list={RecordList(records)} />
       <Widgets />
     </div>
   );
