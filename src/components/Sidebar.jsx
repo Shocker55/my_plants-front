@@ -42,7 +42,7 @@ export default function Sidebar() {
       </Link>
       {currentUser ? (
         <>
-          <Link href={`/uses/${currentUser.uid}`}>
+          <Link href={`/users/${currentUser.uid}`}>
             <SidebarMenuItem text="マイページ" Icon={FaSeedling} />
           </Link>
           <Link href={`/users/${currentUser.uid}/edit`}>
