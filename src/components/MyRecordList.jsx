@@ -1,8 +1,10 @@
+import { useState } from "react";
 import RecordCard from "./RecordCard";
 import { useAuthContext } from "@/context/AuthContext";
 
 export default function MyRecordList({ userRecords, user }) {
   const { currentUser } = useAuthContext();
+  const [recordsItems, setRecordsItems] = useState(userRecords);
 
   return (
     <>
@@ -25,8 +27,16 @@ export default function MyRecordList({ userRecords, user }) {
         )}
       </div>
       <div className="flex flex-wrap sm:w-[450px] lg:w-[900px]">
-        {userRecords?.map((record) => {
-          return <RecordCard key={record.id} record={record} userPage="userPage" />;
+        {recordsItems?.map((record) => {
+          return (
+            <RecordCard
+              key={record.id}
+              record={record}
+              userPage="userPage"
+              recordsItems={recordsItems}
+              setRecordsItems={setRecordsItems}
+            />
+          );
         })}
       </div>
     </>

@@ -1,11 +1,9 @@
-import { useAuthContext } from "@/context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
 import { FaCircleUser } from "react-icons/fa6";
 import { RecordCardButtons } from "./RecordCardButtons";
 
-export default function RecordCard({ record, userPage }) {
-  const { currentUser } = useAuthContext();
+export default function RecordCard({ record, userPage, recordsItems, setRecordsItems }) {
   const date = new Date(record.created_at);
 
   return (
@@ -40,11 +38,19 @@ export default function RecordCard({ record, userPage }) {
                 </div>
               </div>
             </Link>
-            <RecordCardButtons record={record} />
+            <RecordCardButtons
+              record={record}
+              recordsItems={recordsItems}
+              setRecordsItems={setRecordsItems}
+            />
           </div>
         ) : (
           <div className="h-[50px] px-2">
-            <RecordCardButtons record={record} />
+            <RecordCardButtons
+              record={record}
+              recordsItems={recordsItems}
+              setRecordsItems={setRecordsItems}
+            />
           </div>
         )}
       </div>

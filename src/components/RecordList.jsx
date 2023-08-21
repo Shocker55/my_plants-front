@@ -1,6 +1,9 @@
+import { useState } from "react";
 import RecordCard from "./RecordCard";
 
 export default function RecordList(records) {
+  const [recordsItems, setRecordsItems] = useState(records);
+
   return (
     <>
       <div className="mb-3 ml-1 font-bold">Records</div>
@@ -9,8 +12,15 @@ export default function RecordList(records) {
         <div className="text-slate-500">Popular</div>
       </div>
       <div className="flex flex-wrap sm:w-[450px] lg:w-[900px]">
-        {records?.map((record) => {
-          return <RecordCard key={record.id} record={record} />;
+        {recordsItems?.map((record) => {
+          return (
+            <RecordCard
+              key={record.id}
+              record={record}
+              recordsItems={recordsItems}
+              setRecordsItems={setRecordsItems}
+            />
+          );
         })}
       </div>
     </>

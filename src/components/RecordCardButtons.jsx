@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { FaRegBookmark, FaRegHeart, FaRegTrashCan, FaHeart } from "react-icons/fa6";
 
-export const RecordCardButtons = ({ record }) => {
+export const RecordCardButtons = ({ record, recordsItems, setRecordsItems }) => {
   const { currentUser } = useAuthContext();
   const [likeCount, setLikeCount] = useState(record.record_likes.length);
   const router = useRouter();
@@ -59,6 +59,23 @@ export const RecordCardButtons = ({ record }) => {
     }
   };
 
+  const clickDeleteButton = async () => {
+    const config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+
+    try {
+      await axiosInstance.delete(`/records/${record.id}`, config);
+      const filterRecords = recordsItems.filter((item) => item.id !== record.id);
+      setRecordsItems((prev) => filterRecords);
+      // router.reload()
+    } catch (err) {
+      alert("記録の削除に失敗しました");
+    }
+  };
+
   return (
     <>
       {currentUser && record.user.uid === currentUser.uid ? (
@@ -81,7 +98,11 @@ export const RecordCardButtons = ({ record }) => {
             </button>
           )}
           <p className="pr-2">{likeCount}</p>
-          <button>
+          <button
+            onClick={() => {
+              clickDeleteButton();
+            }}
+          >
             <FaRegTrashCan className="sm:mr-3" />
           </button>
         </div>
