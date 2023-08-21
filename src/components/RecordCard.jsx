@@ -1,7 +1,8 @@
 import { useAuthContext } from "@/context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
-import { FaCircleUser, FaRegBookmark, FaRegHeart, FaRegTrashCan } from "react-icons/fa6";
+import { FaCircleUser } from "react-icons/fa6";
+import { RecordCardButtons } from "./RecordCardButtons";
 
 export default function RecordCard({ record, userPage }) {
   const { currentUser } = useAuthContext();
@@ -39,31 +40,11 @@ export default function RecordCard({ record, userPage }) {
                 </div>
               </div>
             </Link>
-            {currentUser && record.user.uid === currentUser.uid ? (
-              <div className="flex">
-                <FaRegHeart className="mr-3" />
-                <FaRegTrashCan className="sm:mr-3" />
-              </div>
-            ) : (
-              <div className="flex">
-                <FaRegHeart className="mr-3" />
-                <FaRegBookmark className="sm:mr-3" />
-              </div>
-            )}
+            <RecordCardButtons record={record} />
           </div>
         ) : (
           <div className="h-[50px] px-2">
-            {currentUser && record.user.uid === currentUser.uid ? (
-              <div className="flex h-full items-center justify-end">
-                <FaRegHeart className="mr-3" />
-                <FaRegTrashCan className="sm:mr-3" />
-              </div>
-            ) : (
-              <div className="flex h-full items-center justify-end">
-                <FaRegHeart className="mr-3" />
-                <FaRegBookmark className="sm:mr-3" />
-              </div>
-            )}
+            <RecordCardButtons record={record} />
           </div>
         )}
       </div>
