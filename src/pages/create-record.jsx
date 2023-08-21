@@ -94,7 +94,7 @@ const CreateRecord = () => {
 
     try {
       await axiosInstance.post("/records", data, config);
-      router.push("/records");
+      router.push(`/users/${currentUser.uid}`);
     } catch (err) {
       alert("投稿に失敗しました");
     }

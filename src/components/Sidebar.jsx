@@ -5,6 +5,7 @@ import {
   FaRegRectangleList,
   FaRegUser,
   FaEllipsis,
+  FaSeedling,
 } from "react-icons/fa6";
 
 import SidebarMenuItem from "./SidebarMenuItem";
@@ -41,7 +42,9 @@ export default function Sidebar() {
       </Link>
       {currentUser ? (
         <>
-          <div>マイレコード</div>
+          <Link href={`/users/${currentUser.uid}`}>
+            <SidebarMenuItem text="マイページ" Icon={FaSeedling} />
+          </Link>
           <Link href={`/users/${currentUser.uid}/edit`}>
             <SidebarMenuItem text="プロフィールの編集" Icon={FaEllipsis} />
           </Link>
