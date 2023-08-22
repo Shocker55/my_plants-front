@@ -17,14 +17,24 @@ export async function getServerSideProps({ params }) {
     `${process.env.NEXT_PUBLIC_API_DOMEIN}/records?q=own&uid=${params.uid}`
   );
   const userRecords = await anotherRes.json();
-  return { props: { user, userRecords } };
+
+  const theOtherRes = await fetch(
+    `${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${params.uid}/likes`
+  );
+
+  const likeRecords = await theOtherRes.json();
+  return { props: { user, userRecords, likeRecords } };
 }
 
-const User = ({ userRecords, user }) => {
+const User = ({ userRecords, likeRecords, user }) => {
   return (
     <div className="flex h-screen justify-center">
       <Sidebar />
-      <Feed pageTitle="ユーザー" list={MyRecordList({ userRecords, user })} user={user.profile} />
+      <Feed
+        pageTitle="ユーザー"
+        list={MyRecordList({ userRecords, likeRecords, user })}
+        user={user.profile}
+      />
       <Widgets />
     </div>
   );
