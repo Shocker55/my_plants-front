@@ -10,7 +10,7 @@ export default function Feed({ pageTitle, list, user }) {
 
       {/* Slider */}
       {pageTitle === "Home" ? (
-        <div className="mx-5 my-2 flex h-[200px] w-[418px] space-x-4 overflow-x-scroll rounded-lg border bg-blue-200 lg:w-[844px]">
+        <div className="mx-5 my-2 flex h-[200px] space-x-4 overflow-x-scroll rounded-lg border bg-blue-200 sm:w-[418px] lg:w-[844px]">
           <div className="h-full min-w-[300px] rounded-lg bg-blue-100">image</div>
           <div className="h-full min-w-[300px] rounded-lg bg-blue-100">image</div>
           <div className="h-full min-w-[300px] rounded-lg bg-blue-100">image</div>
