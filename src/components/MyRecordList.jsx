@@ -2,9 +2,22 @@ import { useState } from "react";
 import RecordCard from "./RecordCard";
 import { useAuthContext } from "@/context/AuthContext";
 
-export default function MyRecordList({ userRecords, user }) {
+export default function MyRecordList({ userRecords, likeRecords, user }) {
   const { currentUser } = useAuthContext();
   const [recordsItems, setRecordsItems] = useState(userRecords);
+  const [active, setActive] = useState("1");
+
+  const handleClick = (e) => {
+    setActive(e.target.id);
+    setRecordsItems(userRecords);
+  };
+
+  const handleClickLikes = (e) => {
+    setActive(e.target.id);
+    setRecordsItems(likeRecords);
+  };
+
+  console.log(active);
 
   return (
     <>
@@ -12,15 +25,47 @@ export default function MyRecordList({ userRecords, user }) {
       <div className="mb-1 ml-4 flex max-w-[450px] space-x-10">
         {currentUser?.uid === user.uid ? (
           <>
-            <div className="underline">Own Records</div>
-            <div className="text-slate-500">Likes</div>
+            <div
+              id="1"
+              className={
+                active === "1" ? "cursor-pinter underline" : "cursor-pointer text-slate-500"
+              }
+              onClick={(e) => handleClick(e)}
+            >
+              Own Records
+            </div>
+            <div
+              id="2"
+              className={
+                active == "2" ? "cursor-pointer underline" : "cursor-pointer text-slate-500"
+              }
+              onClick={(e) => handleClickLikes(e)}
+            >
+              Likes
+            </div>
             <div className="text-slate-500">Bookmarks</div>
             <div className="text-slate-500">Events</div>
           </>
         ) : (
           <>
-            <div className="underline">Recent</div>
-            <div className="text-slate-500">Likes</div>
+            <div
+              id="1"
+              className={
+                active == "1" ? "cursor-pinter underline" : "cursor-pointer text-slate-500"
+              }
+              onClick={(e) => handleClick(e)}
+            >
+              Recent
+            </div>
+            <div
+              id="2"
+              className={
+                active == "2" ? "cursor-pointer underline" : "cursor-pointer text-slate-500"
+              }
+              onClick={(e) => handleClickLikes(e)}
+            >
+              Likes
+            </div>
             <div className="text-slate-500">Bookmarks</div>
             <div className="text-slate-500">Events</div>
           </>
