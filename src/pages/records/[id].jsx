@@ -1,8 +1,10 @@
+import CommentForm from "@/components/CommentForm";
 import Feed from "@/components/Feed";
 import Sidebar from "@/components/Sidebar";
 import Widgets from "@/components/Widgets";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 export async function getServerSideProps({ params }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records/${params.id}`);
@@ -18,6 +20,8 @@ export async function getServerSideProps({ params }) {
 }
 
 const Record = ({ record }) => {
+  const [commentItems, setCommentItems] = useState(record.record_comments);
+
   return (
     <div className="flex h-screen justify-center">
       <Sidebar />
@@ -75,9 +79,21 @@ const Record = ({ record }) => {
                 <div className="p-1">{record.body}</div>
               </div>
             </div>
-            <h3>コメント</h3>
-            <div className="border bg-white">
-              <div className="p-1">Comments List</div>
+            <div className="border border-red-500">
+              <h3>コメント</h3>
+              <div className="border bg-white">
+                <div className="p-1">Comments List</div>
+                {console.log(commentItems)}
+                {commentItems.map((comment) => (
+                  <div key={comment.id}>
+                    {console.log(comment)}
+                    <div>{comment.comment}</div>
+                    <div>{comment.user.profile.name}</div>
+                    <div>{comment.user.profile.avatar.url}</div>
+                  </div>
+                ))}
+              </div>
+              <CommentForm data={record} setCommentItems={setCommentItems} />
             </div>
           </div>
         </div>
