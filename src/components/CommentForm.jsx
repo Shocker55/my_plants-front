@@ -35,18 +35,20 @@ export default function CommentForm({ data, setCommentItems }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mt-5">
-      <div>
+    <form onSubmit={handleSubmit}>
+      <div className="mt-4 border-b border-slate-200 px-3">
         <textarea
           name="comment"
           placeholder="コメントを入力"
           rows="3"
           maxLength="100"
-          className="w-full"
+          className="w-full resize-none outline-none"
         ></textarea>
       </div>
-      <div>
-        <button className="border bg-blue-300">投稿する</button>
+      <div className="pr-2 pt-1 text-right">
+        <button className="rounded-lg border bg-blue-300 p-1 text-sm font-bold text-white hover:bg-blue-400">
+          投稿する
+        </button>
       </div>
     </form>
   );
