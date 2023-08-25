@@ -35,7 +35,7 @@ const User = ({ userRecords, likeRecords, user }) => {
         list={MyRecordList({ userRecords, likeRecords, user })}
         user={user.profile}
       />
-      <Widgets />
+      <Widgets data={userRecords} />
     </div>
   );
 };

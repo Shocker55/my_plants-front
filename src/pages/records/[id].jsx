@@ -1,8 +1,11 @@
+import { CommentCard } from "@/components/CommentCard";
+import CommentForm from "@/components/CommentForm";
 import Feed from "@/components/Feed";
 import Sidebar from "@/components/Sidebar";
 import Widgets from "@/components/Widgets";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 export async function getServerSideProps({ params }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records/${params.id}`);
@@ -18,6 +21,8 @@ export async function getServerSideProps({ params }) {
 }
 
 const Record = ({ record }) => {
+  const [commentItems, setCommentItems] = useState(record.record_comments);
+
   return (
     <div className="flex h-screen justify-center">
       <Sidebar />
@@ -59,25 +64,37 @@ const Record = ({ record }) => {
 
         <div className="flex justify-center px-1 sm:w-[450px] lg:w-[900px]">
           <div className="flex w-[500px] flex-col">
-            <h2 className="pb-2 text-lg font-semibold">{record.title}</h2>
-            {record.image.url ? (
-              <Image
-                src={record.image.url}
-                alt=""
-                width={500}
-                height={380}
-                className="rounded-xl px-3"
-              />
-            ) : null}
-            <div className="pb-3 pt-1">
-              <h3>本文</h3>
-              <div className="min-h-[80px] border border-gray-400">
-                <div className="p-1">{record.body}</div>
+            <div className="mb-3 rounded-2xl bg-white p-3">
+              <h2 className="pb-2 text-lg font-semibold">{record.title}</h2>
+              {record.image.url ? (
+                <Image
+                  src={record.image.url}
+                  alt=""
+                  width={450}
+                  height={380}
+                  className="mx-auto rounded-xl px-3"
+                />
+              ) : null}
+              <div className="pb-3 pt-1">
+                <div className="min-h-[80px]">
+                  <div className="whitespace-pre-wrap p-1">{record.body}</div>
+                </div>
               </div>
             </div>
-            <h3>コメント</h3>
-            <div className="border bg-white">
-              <div className="p-1">Comments List</div>
+            <div className="rounded-2xl bg-white p-3">
+              <h3 className="border-b border-slate-400 text-lg">コメント</h3>
+              <div>
+                {commentItems.map((comment) => (
+                  <div key={comment.id}>
+                    <CommentCard
+                      comment={comment}
+                      commentItems={commentItems}
+                      setCommentItems={setCommentItems}
+                    />
+                  </div>
+                ))}
+              </div>
+              <CommentForm data={record} setCommentItems={setCommentItems} />
             </div>
           </div>
         </div>
