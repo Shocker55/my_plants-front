@@ -1,7 +1,8 @@
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import EventCard from "./EventCard";
+import WidgetsRecordList from "./WidgetsRecordList";
 
-export default function Widgets() {
+export default function Widgets({ data }) {
   return (
     <div className="hidden space-y-5 overflow-y-auto bg-slate-200 px-3 lg:inline xl:w-[350px]">
       <div className="sticky top-0 z-50 w-[90%] py-1.5 xl:w-[90%]">
@@ -33,15 +34,21 @@ export default function Widgets() {
         </div>
       </div>
       <div className="bg-second-color sticky top-16 w-[90%] space-y-3 rounded-xl pt-2 text-gray-700">
-        <h4 className="px-4 text-xl font-bold">Events</h4>
-        <div className="space-y-3 px-4 pb-3">
-          <EventCard />
-          <EventCard />
-          <EventCard />
-          <EventCard />
-          <EventCard />
-          <EventCard />
-        </div>
+        {data ? (
+          <WidgetsRecordList userRecords={data} />
+        ) : (
+          <>
+            <h4 className="px-4 text-xl font-bold">Events</h4>
+            <div className="space-y-3 px-4 pb-3">
+              <EventCard />
+              <EventCard />
+              <EventCard />
+              <EventCard />
+              <EventCard />
+              <EventCard />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

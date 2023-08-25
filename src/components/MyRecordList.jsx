@@ -17,8 +17,6 @@ export default function MyRecordList({ userRecords, likeRecords, user }) {
     setRecordsItems(likeRecords);
   };
 
-  console.log(active);
-
   return (
     <>
       <div className="mb-3 ml-1 font-bold">Records</div>
