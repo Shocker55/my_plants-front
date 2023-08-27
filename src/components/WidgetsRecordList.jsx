@@ -8,18 +8,22 @@ export default function WidgetsRecordList({ userRecords }) {
         ?.filter((record) => record.base === true)
         .map((baseRecord) => {
           return (
-            <li key={baseRecord.id} className="pl-5 pt-2">
-              <Link href={`/records/${baseRecord.id}`}>{baseRecord.title}</Link>
-              {userRecords
-                ?.filter((record) => record.related_records[0]?.related_record_id === baseRecord.id)
-                .map((relatedRecord) => {
-                  return (
-                    <li key={relatedRecord.id} className="pl-6">
-                      <Link href={`/records/${relatedRecord.id}`}>{relatedRecord.title}</Link>
-                    </li>
-                  );
-                })}
-            </li>
+            <ul key={baseRecord.id} className="pl-5 pt-2">
+              <li className="ml-5 list-disc">
+                <Link href={`/records/${baseRecord.id}`}>{baseRecord.title}</Link>
+                {userRecords
+                  ?.filter(
+                    (record) => record.related_records[0]?.related_record_id === baseRecord.id
+                  )
+                  .map((relatedRecord) => {
+                    return (
+                      <li key={relatedRecord.id} className="ml-5 list-disc">
+                        <Link href={`/records/${relatedRecord.id}`}>{relatedRecord.title}</Link>
+                      </li>
+                    );
+                  })}
+              </li>
+            </ul>
           );
         })}
     </div>
