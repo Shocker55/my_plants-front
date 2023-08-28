@@ -1,20 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RecordCard from "./RecordCard";
 import { useAuthContext } from "@/context/AuthContext";
 
-export default function MyRecordList({ userRecords, likeRecords, user }) {
+export default function MyRecordList({ recordsItems, setRecordsItems, user }) {
   const { currentUser } = useAuthContext();
-  const [recordsItems, setRecordsItems] = useState(userRecords);
+  const [currentRecordsItems, setCurrentRecordsItems] = useState(recordsItems);
   const [active, setActive] = useState("1");
 
-  const handleClick = (e) => {
+  useEffect(() => {
+    setCurrentRecordsItems(recordsItems);
+  }, [recordsItems]);
+
+  const handleClick = async (e) => {
     setActive(e.target.id);
-    setRecordsItems(userRecords);
+    setCurrentRecordsItems(recordsItems);
   };
 
-  const handleClickLikes = (e) => {
+  const handleClickLikes = async (e) => {
     setActive(e.target.id);
-    setRecordsItems(likeRecords);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${user.uid}/likes`);
+    const currentLikeRecords = await res.json();
+    setCurrentRecordsItems(currentLikeRecords);
   };
 
   return (
@@ -70,7 +76,7 @@ export default function MyRecordList({ userRecords, likeRecords, user }) {
         )}
       </div>
       <div className="flex flex-wrap sm:w-[450px] lg:w-[900px]">
-        {recordsItems?.map((record) => {
+        {currentRecordsItems?.map((record) => {
           return (
             <RecordCard
               key={record.id}
