@@ -33,7 +33,7 @@ const User = ({ userRecords, user }) => {
         list={MyRecordList({ recordsItems, setRecordsItems, user })}
         user={user.profile}
       />
-      <Widgets data={recordsItems} />
+      <Widgets data={recordsItems} type="index"/>
     </div>
   );
 };

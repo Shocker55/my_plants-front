@@ -17,10 +17,15 @@ export async function getServerSideProps({ params }) {
     };
   }
 
-  return { props: { record } };
+  const anotherRes = await fetch(
+    `${process.env.NEXT_PUBLIC_API_DOMEIN}/records/${params.id}/related_records`
+  );
+  const related_records = await anotherRes.json();
+
+  return { props: { record, related_records } };
 }
 
-const Record = ({ record }) => {
+const Record = ({ record, related_records }) => {
   const [commentItems, setCommentItems] = useState(record.record_comments);
 
   return (
@@ -99,7 +104,7 @@ const Record = ({ record }) => {
           </div>
         </div>
       </div>
-      <Widgets />
+      <Widgets data={related_records} type="show" />
     </div>
   );
 };
