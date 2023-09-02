@@ -2,7 +2,7 @@ import Feed from "@/components/Feed";
 import MyRecordList from "@/components/MyRecordList";
 import Sidebar from "@/components/Sidebar";
 import Widgets from "@/components/Widgets";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export async function getServerSideProps({ params }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${params.uid}`);
@@ -25,6 +25,10 @@ export async function getServerSideProps({ params }) {
 const User = ({ userRecords, user }) => {
   const [recordsItems, setRecordsItems] = useState(userRecords);
 
+  useEffect(() => {
+    setRecordsItems(userRecords);
+  }, [userRecords]);
+
   return (
     <div className="flex h-screen justify-center">
       <Sidebar />
@@ -33,7 +37,7 @@ const User = ({ userRecords, user }) => {
         list={MyRecordList({ recordsItems, setRecordsItems, user })}
         user={user.profile}
       />
-      <Widgets data={recordsItems} type="index"/>
+      <Widgets data={recordsItems} type="index" />
     </div>
   );
 };
