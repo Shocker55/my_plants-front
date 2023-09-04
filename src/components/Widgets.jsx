@@ -40,12 +40,12 @@ export default function Widgets({ data, type }) {
           <>
             <h4 className="px-4 text-xl font-bold">Events</h4>
             <div className="space-y-3 px-4 pb-3">
+              {/* <EventCard />
               <EventCard />
               <EventCard />
               <EventCard />
               <EventCard />
-              <EventCard />
-              <EventCard />
+              <EventCard /> */}
             </div>
           </>
         )}

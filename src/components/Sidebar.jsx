@@ -36,7 +36,9 @@ export default function Sidebar() {
       </Link>
       <SidebarMenuItem text="検索する" Icon={FaMagnifyingGlass} />
       <SidebarMenuItem text="ブックマーク" Icon={FaRegBookmark} />
-      <SidebarMenuItem text="イベント情報" Icon={FaRegRectangleList} />
+      <Link href="/events">
+        <SidebarMenuItem text="イベント情報" Icon={FaRegRectangleList} />
+      </Link>
       <Link href="/users">
         <SidebarMenuItem text="ユーザー" Icon={FaRegUser} />
       </Link>
