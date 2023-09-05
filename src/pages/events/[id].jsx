@@ -11,6 +11,7 @@ import { axiosInstance } from "@/utils/axios";
 import { useAuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { FaRegBookmark, FaRegCalendarCheck } from "react-icons/fa6";
 
 export async function getServerSideProps({ params }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/events/${params.id}`);
@@ -83,7 +84,10 @@ const Event = ({ event }) => {
           <div className="flex w-[500px] flex-col">
             <div className="mb-3 mt-3 rounded-2xl bg-white p-3">
               <div className="flex justify-between">
-                <h2 className="pb-2 text-lg font-semibold">{event.title}</h2>
+                <div className="flex w-full justify-between">
+                  <h2 className="text-lg font-semibold">{event.title}</h2>
+                  <FaRegBookmark className="my-auto mr-3 text-lg" />
+                </div>
                 {currentUser && event.user.uid === currentUser.uid ? (
                   <Dropdown>
                     <Link
@@ -121,9 +125,15 @@ const Event = ({ event }) => {
                 <div className="min-h-[80px]">
                   <div className="whitespace-pre-wrap p-1">{event.body}</div>
                 </div>
-                <p className="pr-1 text-right text-sm text-slate-500">
+              </div>
+              <div className="flex items-end justify-end p-1">
+                <div className="mr-4 flex">
+                  <FaRegCalendarCheck className="my-auto mr-1 text-lg" />
+                  参加予定: 10 名
+                </div>
+                <div className="pr-1 text-sm text-slate-500">
                   {updatedDate.toLocaleDateString()}
-                </p>
+                </div>
               </div>
             </div>
             {/* <div className="rounded-2xl bg-white p-3">
