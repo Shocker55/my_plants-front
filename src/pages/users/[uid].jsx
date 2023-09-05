@@ -35,7 +35,7 @@ const User = ({ userRecords, user }) => {
       <Feed
         pageTitle="ユーザー"
         list={MyRecordList({ recordsItems, setRecordsItems, user })}
-        user={user.profile}
+        user={user}
       />
       <Widgets data={recordsItems} type="index" />
     </div>

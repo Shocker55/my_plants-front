@@ -4,7 +4,6 @@ import {
   FaRegBookmark,
   FaRegRectangleList,
   FaRegUser,
-  FaEllipsis,
   FaSeedling,
 } from "react-icons/fa6";
 
@@ -46,9 +45,6 @@ export default function Sidebar() {
         <>
           <Link href={`/users/${currentUser.uid}`}>
             <SidebarMenuItem text="マイページ" Icon={FaSeedling} />
-          </Link>
-          <Link href={`/users/${currentUser.uid}/edit`}>
-            <SidebarMenuItem text="プロフィールの編集" Icon={FaEllipsis} />
           </Link>
           <Link href="/create-record">
             <button className="mt-5 rounded-3xl bg-slate-400 px-4 py-2 font-black text-white hover:bg-slate-500 hover:text-white">

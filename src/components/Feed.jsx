@@ -1,6 +1,11 @@
 import Image from "next/image";
+import Dropdown from "./Dropdown";
+import { useAuthContext } from "@/context/AuthContext";
+import Link from "next/link";
 
 export default function Feed({ pageTitle, list, user }) {
+  const { currentUser } = useAuthContext();
+
   return (
     <div className="hidden-scrollbar max-w-xl flex-grow overflow-y-scroll border-l border-r border-gray-200 bg-slate-200 sm:ml-[10px] lg:min-w-[900px]">
       {/* Header */}
@@ -23,9 +28,9 @@ export default function Feed({ pageTitle, list, user }) {
           <div className="mx-1 h-[180px] w-[450px] lg:w-[844px] ">
             <div className="my-2 flex rounded-lg border bg-blue-200 py-3 lg:w-[844px]">
               <div>
-                {user.avatar.url ? (
+                {user.profile.avatar.url ? (
                   <Image
-                    src={user.avatar.url}
+                    src={user.profile.avatar.url}
                     alt=""
                     width={130}
                     height={130}
@@ -41,9 +46,23 @@ export default function Feed({ pageTitle, list, user }) {
                   />
                 )}
               </div>
-              <div className="pl-3">
-                <div className="font-bold">{user.name}</div>
-                <div>{user.bio}</div>
+              <div className="w-[90%] px-3">
+                <div className="flex justify-between">
+                  <div className="font-bold">{user.profile.name}</div>
+                  {console.log(currentUser)}
+                  {console.log(user.profile)}
+                  {currentUser && user.uid === currentUser.uid ? (
+                    <Dropdown>
+                      <Link
+                        href={`/users/${currentUser.uid}/edit`}
+                        className="block px-4 py-2 text-sm text-gray-700"
+                      >
+                        編集
+                      </Link>
+                    </Dropdown>
+                  ) : null}
+                </div>
+                <div>{user.profile.bio}</div>
               </div>
             </div>
           </div>

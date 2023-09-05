@@ -7,6 +7,10 @@ import Widgets from "@/components/Widgets";
 import Image from "next/image";
 // import Link from "next/link";
 // import { useState } from "react";
+import { axiosInstance } from "@/utils/axios";
+import { useAuthContext } from "@/context/AuthContext";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 export async function getServerSideProps({ params }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/events/${params.id}`);
@@ -22,6 +26,8 @@ export async function getServerSideProps({ params }) {
 }
 
 const Event = ({ event }) => {
+  const { currentUser } = useAuthContext();
+  const router = useRouter();
   // const [commentItems, setCommentItems] = useState(record.record_comments);
   const updatedDate = new Date(event.updated_at);
   const startDate = new Date(event.start_date);
@@ -47,6 +53,23 @@ const Event = ({ event }) => {
     return `${hours}:${minutes}`;
   };
 
+  const clickDeleteButton = async () => {
+    const config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+
+    try {
+      await axiosInstance.delete(`/events/${event.id}`, config);
+      // const filterRecords = recordsItems.filter((item) => item.id !== record.id);
+      // setRecordsItems((prev) => filterRecords);
+      router.push("/events");
+    } catch (err) {
+      alert("イベントの削除に失敗しました");
+    }
+  };
+
   return (
     <div className="flex h-screen justify-center">
       <Sidebar />
@@ -61,7 +84,26 @@ const Event = ({ event }) => {
             <div className="mb-3 mt-3 rounded-2xl bg-white p-3">
               <div className="flex justify-between">
                 <h2 className="pb-2 text-lg font-semibold">{event.title}</h2>
-                <Dropdown event={event} />
+                {currentUser && event.user.uid === currentUser.uid ? (
+                  <Dropdown>
+                    <Link
+                      href={`/events/${event.id}/edit`}
+                      className="block px-4 py-2 text-sm text-gray-700"
+                      role="menuitem"
+                    >
+                      編集
+                    </Link>
+                    <button
+                      onClick={() => {
+                        clickDeleteButton();
+                      }}
+                      className="block w-full px-4 py-2 text-left text-sm text-red-700"
+                      role="menuitem"
+                    >
+                      削除
+                    </button>
+                  </Dropdown>
+                ) : null}
               </div>
               <div className="pt-1">開始日時: {formatDate(startDate, event.date_type)}</div>
               <div className="pb-3 pt-1">終了日時: {formatDate(endDate, event.date_type)}</div>

@@ -18,7 +18,6 @@ export async function getServerSideProps({ params }) {
 }
 
 const EditEvent = ({ event }) => {
-  console.log(event);
   const router = useRouter();
   const { currentUser } = useAuthContext();
   const [title, setTitle] = useState(event.title);

@@ -1,10 +1,14 @@
 import { CommentCard } from "@/components/CommentCard";
 import CommentForm from "@/components/CommentForm";
+import Dropdown from "@/components/Dropdown";
 import Feed from "@/components/Feed";
 import Sidebar from "@/components/Sidebar";
 import Widgets from "@/components/Widgets";
+import { useAuthContext } from "@/context/AuthContext";
+import { axiosInstance } from "@/utils/axios";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export async function getServerSideProps({ params }) {
@@ -26,7 +30,24 @@ export async function getServerSideProps({ params }) {
 }
 
 const Record = ({ record, related_records }) => {
+  const { currentUser } = useAuthContext();
+  const router = useRouter();
   const [commentItems, setCommentItems] = useState(record.record_comments);
+
+  const clickDeleteButton = async () => {
+    const config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+
+    try {
+      await axiosInstance.delete(`/records/${record.id}`, config);
+      router.back();
+    } catch (err) {
+      alert("記録の削除に失敗しました");
+    }
+  };
 
   return (
     <div className="flex h-screen justify-center">
@@ -70,7 +91,29 @@ const Record = ({ record, related_records }) => {
         <div className="flex justify-center px-1 sm:w-[450px] lg:w-[900px]">
           <div className="flex w-[500px] flex-col">
             <div className="mb-3 rounded-2xl bg-white p-3">
-              <h2 className="pb-2 text-lg font-semibold">{record.title}</h2>
+              <div className="flex justify-between">
+                <h2 className="pb-2 text-lg font-semibold">{record.title}</h2>
+                {currentUser && record.user.uid === currentUser.uid ? (
+                  <Dropdown>
+                    {/* <Link
+                      href={`/records/${record.id}/edit`}
+                      className="block px-4 py-2 text-sm text-gray-700"
+                      role="menuitem"
+                    >
+                      編集
+                    </Link> */}
+                    <button
+                      onClick={() => {
+                        clickDeleteButton();
+                      }}
+                      className="block w-full px-4 py-2 text-left text-sm text-red-700"
+                      role="menuitem"
+                    >
+                      削除
+                    </button>
+                  </Dropdown>
+                ) : null}
+              </div>
               {record.image.url ? (
                 <Image
                   src={record.image.url}
