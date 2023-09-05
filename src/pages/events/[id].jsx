@@ -1,5 +1,6 @@
 // import { CommentCard } from "@/components/CommentCard";
 // import CommentForm from "@/components/CommentForm";
+import Dropdown from "@/components/Dropdown";
 import Feed from "@/components/Feed";
 import Sidebar from "@/components/Sidebar";
 import Widgets from "@/components/Widgets";
@@ -20,7 +21,7 @@ export async function getServerSideProps({ params }) {
   return { props: { event } };
 }
 
-const Record = ({ event }) => {
+const Event = ({ event }) => {
   // const [commentItems, setCommentItems] = useState(record.record_comments);
   const updatedDate = new Date(event.updated_at);
   const startDate = new Date(event.start_date);
@@ -57,8 +58,11 @@ const Record = ({ event }) => {
 
         <div className="flex justify-center px-1 sm:w-[450px] lg:w-[900px]">
           <div className="flex w-[500px] flex-col">
-            <div className="mb-3 rounded-2xl bg-white p-3">
-              <h2 className="pb-2 text-lg font-semibold">{event.title}</h2>
+            <div className="mb-3 mt-3 rounded-2xl bg-white p-3">
+              <div className="flex justify-between">
+                <h2 className="pb-2 text-lg font-semibold">{event.title}</h2>
+                <Dropdown event={event} />
+              </div>
               <div className="pt-1">開始日時: {formatDate(startDate, event.date_type)}</div>
               <div className="pb-3 pt-1">終了日時: {formatDate(endDate, event.date_type)}</div>
               {event.start_time ? (
@@ -75,6 +79,9 @@ const Record = ({ event }) => {
                 <div className="min-h-[80px]">
                   <div className="whitespace-pre-wrap p-1">{event.body}</div>
                 </div>
+                <p className="pr-1 text-right text-sm text-slate-500">
+                  {updatedDate.toLocaleDateString()}
+                </p>
               </div>
             </div>
             {/* <div className="rounded-2xl bg-white p-3">
@@ -101,4 +108,4 @@ const Record = ({ event }) => {
   );
 };
 
-export default Record;
+export default Event;
