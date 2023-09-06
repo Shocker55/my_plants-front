@@ -15,10 +15,13 @@ export async function getServerSideProps() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records`);
   const records = await res.json();
 
-  return { props: { records } };
+  const anotherRes = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/events`);
+  const events = await anotherRes.json();
+
+  return { props: { records, events } };
 }
 
-export default function Home({ records }) {
+export default function Home({ records, events }) {
   const router = useRouter();
   const { currentUser } = useAuthContext();
   const [profile, setProfile] = useState(false);
@@ -50,7 +53,7 @@ export default function Home({ records }) {
     <div className="flex h-screen justify-center">
       <Sidebar />
       <Feed pageTitle="Home" list={RecordList(records)} />
-      <Widgets />
+      <Widgets data={events} type="events" />
     </div>
   );
 }

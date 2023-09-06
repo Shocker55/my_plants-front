@@ -1,11 +1,12 @@
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import EventCard from "./EventCard";
 import WidgetsRecordList from "./WidgetsRecordList";
+import Link from "next/link";
+import WidgetEventCard from "./WidgetsEventCard";
 
 export default function Widgets({ data, type }) {
   return (
     <div className="hidden space-y-5 overflow-y-auto bg-slate-200 px-3 lg:inline xl:w-[350px]">
-      <div className="sticky top-0 z-50 w-[90%] py-1.5 xl:w-[90%]">
+      <div className="sticky top-0 z-50 mx-3 py-1.5 ">
         <div className="relative flex items-center rounded-full  p-3">
           <FaMagnifyingGlass className="z-50 h-5 text-gray-500" />
           <input
@@ -16,7 +17,7 @@ export default function Widgets({ data, type }) {
         </div>
       </div>
 
-      <div className="bg-second-color w-[90%] space-y-3 rounded-xl py-2 text-gray-700">
+      <div className="bg-second-color mx-3 space-y-3 rounded-xl py-2 text-gray-700">
         <h3 className="px-4 font-bold">History of My Records</h3>
         <div className="flex justify-between px-4">
           <div>
@@ -33,23 +34,30 @@ export default function Widgets({ data, type }) {
           <p className="text-center text-sm">参加予定のイベントはありません</p>
         </div>
       </div>
-      <div className="bg-second-color sticky top-16 w-[90%] space-y-3 rounded-xl pt-2 text-gray-700">
-        {data ? (
+      {data && (type === "show" || type === "index") ? (
+        <div className="bg-second-color sticky top-16 mx-3 min-h-[300px] space-y-3 rounded-xl pt-2 text-gray-700">
           <WidgetsRecordList userRecords={data} type={type} />
-        ) : (
-          <>
-            <h4 className="px-4 text-xl font-bold">Events</h4>
-            <div className="space-y-3 px-4 pb-3">
-              {/* <EventCard />
-              <EventCard />
-              <EventCard />
-              <EventCard />
-              <EventCard />
-              <EventCard /> */}
-            </div>
-          </>
-        )}
-      </div>
+        </div>
+      ) : null}
+
+      {data && type === "events" ? (
+        <div className="bg-second-color h-custom sticky top-16 mx-3 space-y-3 overflow-y-scroll rounded-xl pt-2 text-gray-700">
+          <h4 className="px-4 text-xl font-bold">Events</h4>
+          {data?.map((event) => {
+            return <WidgetEventCard key={event.id} event={event} className="w-full" />;
+          })}
+        </div>
+      ) : null}
+      {type === "eventCreate" ? (
+        <div className="pt-10 text-center">
+          <Link
+            href="/events/create"
+            className="rounded-md bg-slate-500 px-4 py-2 text-white hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-opacity-50"
+          >
+            イベントを作成する
+          </Link>
+        </div>
+      ) : null}
     </div>
   );
 }
