@@ -5,7 +5,7 @@ import WidgetEventCard from "./WidgetsEventCard";
 
 export default function Widgets({ data, type }) {
   return (
-    <div className="hidden space-y-5 overflow-y-auto bg-slate-200 px-3 lg:inline xl:w-[350px]">
+    <div className="hidden space-y-5 overflow-y-auto bg-slate-200 px-3 xl:inline xl:w-[350px]">
       <div className="sticky top-0 z-50 mx-3 py-1.5 ">
         <div className="relative flex items-center rounded-full  p-3">
           <FaMagnifyingGlass className="z-50 h-5 text-gray-500" />

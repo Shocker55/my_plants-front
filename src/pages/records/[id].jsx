@@ -138,11 +138,12 @@ const Record = ({ record, related_records }) => {
                       comment={comment}
                       commentItems={commentItems}
                       setCommentItems={setCommentItems}
+                      type="record"
                     />
                   </div>
                 ))}
               </div>
-              <CommentForm data={record} setCommentItems={setCommentItems} />
+              <CommentForm data={record} setCommentItems={setCommentItems} type="record"/>
             </div>
           </div>
         </div>

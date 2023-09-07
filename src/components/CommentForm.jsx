@@ -2,7 +2,7 @@ import { useAuthContext } from "@/context/AuthContext";
 import { axiosInstance } from "@/utils/axios";
 import { useRouter } from "next/router";
 
-export default function CommentForm({ data, setCommentItems }) {
+export default function CommentForm({ data, setCommentItems, type }) {
   const router = useRouter();
   const { currentUser } = useAuthContext();
 
@@ -20,17 +20,32 @@ export default function CommentForm({ data, setCommentItems }) {
       },
     };
 
-    try {
-      await axiosInstance.post(
-        `/records/${data.id}/record_comments`,
-        { comment: comment.value },
-        config
-      );
-      const res = await axiosInstance.get(`/records/${data.id}`);
-      setCommentItems(res.data.record_comments);
-      comment.value = "";
-    } catch (err) {
-      alert("コメントの投稿に失敗しました");
+    if (type === "record") {
+      try {
+        await axiosInstance.post(
+          `/records/${data.id}/record_comments`,
+          { comment: comment.value },
+          config
+        );
+        const res = await axiosInstance.get(`/records/${data.id}`);
+        setCommentItems(res.data.record_comments);
+        comment.value = "";
+      } catch (err) {
+        alert("コメントの投稿に失敗しました");
+      }
+    } else if (type === "event") {
+      try {
+        await axiosInstance.post(
+          `/events/${data.id}/event_comments`,
+          { comment: comment.value },
+          config
+        );
+        const res = await axiosInstance.get(`/events/${data.id}`);
+        setCommentItems(res.data.event_comments);
+        comment.value = "";
+      } catch (err) {
+        alert("コメントの投稿に失敗しました");
+      }
     }
   };
 

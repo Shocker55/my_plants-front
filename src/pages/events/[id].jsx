@@ -1,17 +1,17 @@
-// import { CommentCard } from "@/components/CommentCard";
-// import CommentForm from "@/components/CommentForm";
 import Dropdown from "@/components/Dropdown";
 import Feed from "@/components/Feed";
 import Sidebar from "@/components/Sidebar";
 import Widgets from "@/components/Widgets";
 import Image from "next/image";
 // import Link from "next/link";
-// import { useState } from "react";
+import { useState } from "react";
 import { axiosInstance } from "@/utils/axios";
 import { useAuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { FaRegBookmark, FaRegCalendarCheck } from "react-icons/fa6";
+import { CommentCard } from "@/components/CommentCard";
+import CommentForm from "@/components/CommentForm";
 
 export async function getServerSideProps({ params }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/events/${params.id}`);
@@ -29,7 +29,7 @@ export async function getServerSideProps({ params }) {
 const Event = ({ event }) => {
   const { currentUser } = useAuthContext();
   const router = useRouter();
-  // const [commentItems, setCommentItems] = useState(record.record_comments);
+  const [commentItems, setCommentItems] = useState(event.event_comments);
   const updatedDate = new Date(event.updated_at);
   const startDate = new Date(event.start_date);
   const endDate = new Date(event.end_date);
@@ -136,7 +136,7 @@ const Event = ({ event }) => {
                 </div>
               </div>
             </div>
-            {/* <div className="rounded-2xl bg-white p-3">
+            <div className="rounded-2xl bg-white p-3">
               <h3 className="border-b border-slate-400 text-lg">コメント</h3>
               <div>
                 {commentItems.map((comment) => (
@@ -145,12 +145,13 @@ const Event = ({ event }) => {
                       comment={comment}
                       commentItems={commentItems}
                       setCommentItems={setCommentItems}
+                      type="event"
                     />
                   </div>
                 ))}
               </div>
-              <CommentForm data={record} setCommentItems={setCommentItems} />
-            </div> */}
+              <CommentForm data={event} setCommentItems={setCommentItems} type="event" />
+            </div>
           </div>
         </div>
       </div>
