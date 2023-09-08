@@ -4,12 +4,12 @@ import Sidebar from "@/components/Sidebar";
 import Widgets from "@/components/Widgets";
 import Image from "next/image";
 // import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { axiosInstance } from "@/utils/axios";
 import { useAuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { FaRegBookmark, FaRegCalendarCheck } from "react-icons/fa6";
+import { FaBookmark, FaRegBookmark, FaRegCalendarCheck } from "react-icons/fa6";
 import { CommentCard } from "@/components/CommentCard";
 import CommentForm from "@/components/CommentForm";
 
@@ -30,6 +30,8 @@ const Event = ({ event }) => {
   const { currentUser } = useAuthContext();
   const router = useRouter();
   const [commentItems, setCommentItems] = useState(event.event_comments);
+  const [isCurrentUserBookmarked, setIsCurrentUserBookmarked] = useState(false);
+
   const updatedDate = new Date(event.updated_at);
   const startDate = new Date(event.start_date);
   const endDate = new Date(event.end_date);
@@ -71,6 +73,53 @@ const Event = ({ event }) => {
     }
   };
 
+  useEffect(() => {
+    const currentUserBookmarkedEvents = event.event_bookmarks.filter((event) => {
+      return event.user.uid === currentUser?.uid;
+    });
+    if (currentUserBookmarkedEvents.length) {
+      setIsCurrentUserBookmarked(true);
+    }
+  }, []);
+
+  const clickBookmarkButton = async () => {
+    if (!currentUser) {
+      return router.push("/login");
+    }
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+
+    try {
+      await axiosInstance.post("/event_bookmarks", { event_id: event.id }, config);
+      setIsCurrentUserBookmarked(true);
+    } catch (err) {
+      alert("ブックマークに失敗しました");
+    }
+  };
+
+  const clickUnBookmarkButton = async () => {
+    if (!currentUser) {
+      return router.push("/login");
+    }
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+
+    try {
+      await axiosInstance.delete(`/event_bookmarks/${event.id}`, config);
+      setIsCurrentUserBookmarked(false);
+    } catch (err) {
+      alert("ブックマークの取り消しに失敗しました");
+    }
+  };
+
   return (
     <div className="flex h-screen justify-center">
       <Sidebar />
@@ -86,7 +135,16 @@ const Event = ({ event }) => {
               <div className="flex justify-between">
                 <div className="flex w-full justify-between">
                   <h2 className="text-lg font-semibold">{event.title}</h2>
-                  <FaRegBookmark className="my-auto mr-3 text-lg" />
+                  {/* <FaRegBookmark className="my-auto mr-3 text-lg" /> */}
+                  {isCurrentUserBookmarked === true ? (
+                    <button onClick={() => clickUnBookmarkButton()}>
+                      <FaBookmark className="my-auto mr-3 text-lg" />
+                    </button>
+                  ) : (
+                    <button onClick={() => clickBookmarkButton()}>
+                      <FaRegBookmark className="my-auto mr-3 text-lg" />
+                    </button>
+                  )}
                 </div>
                 {currentUser && event.user.uid === currentUser.uid ? (
                   <Dropdown>

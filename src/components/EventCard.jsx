@@ -1,7 +1,15 @@
+import { useAuthContext } from "@/context/AuthContext";
+import { axiosInstance } from "@/utils/axios";
 import Link from "next/link";
-import { FaRegBookmark } from "react-icons/fa6";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
 
 export default function EventCard({ event }) {
+  const { currentUser } = useAuthContext();
+  const router = useRouter();
+  const [isCurrentUserBookmarked, setIsCurrentUserBookmarked] = useState(false);
+
   const updatedDate = new Date(event.updated_at);
   const date = new Date(event.start_date);
   const startTime = new Date(event.start_time);
@@ -30,6 +38,53 @@ export default function EventCard({ event }) {
     return `${hours}:${minutes}`;
   };
 
+  useEffect(() => {
+    const currentUserBookmarkedEvents = event.event_bookmarks.filter((event) => {
+      return event.user.uid === currentUser?.uid;
+    });
+    if (currentUserBookmarkedEvents.length) {
+      setIsCurrentUserBookmarked(true);
+    }
+  }, []);
+
+  const clickBookmarkButton = async () => {
+    if (!currentUser) {
+      return router.push("/login");
+    }
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+
+    try {
+      await axiosInstance.post("/event_bookmarks", { event_id: event.id }, config);
+      setIsCurrentUserBookmarked(true);
+    } catch (err) {
+      alert("ブックマークに失敗しました");
+    }
+  };
+
+  const clickUnBookmarkButton = async () => {
+    if (!currentUser) {
+      return router.push("/login");
+    }
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+
+    try {
+      await axiosInstance.delete(`/event_bookmarks/${event.id}`, config);
+      setIsCurrentUserBookmarked(false);
+    } catch (err) {
+      alert("ブックマークの取り消しに失敗しました");
+    }
+  };
+
   return (
     <div className="record-card-color mx-1 my-3 flex w-[440px] justify-between rounded-lg border border-slate-300">
       <div className="w-full">
@@ -40,7 +95,33 @@ export default function EventCard({ event }) {
                 <h3 className="truncate font-bold">{event.title}</h3>
               </Link>
               <div className="pt-1 text-lg">
-                <FaRegBookmark />
+                {isCurrentUserBookmarked === true ? (
+                  <button onClick={() => clickUnBookmarkButton()}>
+                    <FaBookmark />
+                  </button>
+                ) : (
+                  <button onClick={() => clickBookmarkButton()}>
+                    <FaRegBookmark />
+                  </button>
+                )}
+
+                {/* {currentUser ? (
+                  <>
+                    {isCurrentUserBookmarked === true ? (
+                      <button onClick={() => clickUnBookmarkButton()}>
+                        <FaBookmark />
+                      </button>
+                    ) : (
+                      <button onClick={() => clickBookmarkButton()}>
+                        <FaRegBookmark />
+                      </button>
+                    )}
+                  </>
+                ) : (
+                  <button onClick={() => clickBookmarkButton()}>
+                    <FaRegBookmark />
+                  </button>
+                )} */}
               </div>
             </div>
             <Link href={`/events/${event.id}`} className="w-full">
