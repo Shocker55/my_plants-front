@@ -5,11 +5,10 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
 
-export default function EventCard({ event }) {
+export default function WidgetEventCard({ event }) {
   const { currentUser } = useAuthContext();
   const router = useRouter();
   const [isCurrentUserBookmarked, setIsCurrentUserBookmarked] = useState(false);
-
   const updatedDate = new Date(event.updated_at);
   const date = new Date(event.start_date);
   const startTime = new Date(event.start_time);
@@ -86,12 +85,12 @@ export default function EventCard({ event }) {
   };
 
   return (
-    <div className="record-card-color mx-1 my-3 flex w-[440px] justify-between rounded-lg border border-slate-300">
+    <div className="record-card-color mx-1 my-3 flex justify-between rounded-lg border border-slate-300">
       <div className="w-full">
         <div className="flex pt-2">
           <div className="mr-3 w-full pl-3">
             <div className="flex justify-between">
-              <Link href={`/events/${event.id}`} className="w-[390px]">
+              <Link href={`/events/${event.id}`} className="w-[240px]">
                 <h3 className="truncate font-bold">{event.title}</h3>
               </Link>
               <div className="pt-1 text-lg">
@@ -104,24 +103,6 @@ export default function EventCard({ event }) {
                     <FaRegBookmark />
                   </button>
                 )}
-
-                {/* {currentUser ? (
-                  <>
-                    {isCurrentUserBookmarked === true ? (
-                      <button onClick={() => clickUnBookmarkButton()}>
-                        <FaBookmark />
-                      </button>
-                    ) : (
-                      <button onClick={() => clickBookmarkButton()}>
-                        <FaRegBookmark />
-                      </button>
-                    )}
-                  </>
-                ) : (
-                  <button onClick={() => clickBookmarkButton()}>
-                    <FaRegBookmark />
-                  </button>
-                )} */}
               </div>
             </div>
             <Link href={`/events/${event.id}`} className="w-full">

@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaCircleUser, FaRegTrashCan } from "react-icons/fa6";
 
-export const CommentCard = ({ comment, commentItems, setCommentItems }) => {
+export const CommentCard = ({ comment, commentItems, setCommentItems, type }) => {
   const { currentUser } = useAuthContext();
   const date = new Date(comment.updated_at);
 
@@ -15,12 +15,22 @@ export const CommentCard = ({ comment, commentItems, setCommentItems }) => {
       },
     };
 
-    try {
-      await axiosInstance.delete(`/record_comments/${comment.id}`, config);
-      const filterComments = commentItems.filter((item) => item.id !== comment.id);
-      setCommentItems((prev) => filterComments);
-    } catch (err) {
-      alert("いいねの取り消しに失敗しました");
+    if (type === "record") {
+      try {
+        await axiosInstance.delete(`/record_comments/${comment.id}`, config);
+        const filterComments = commentItems.filter((item) => item.id !== comment.id);
+        setCommentItems((prev) => filterComments);
+      } catch (err) {
+        alert("コメントの削除に失敗しました");
+      }
+    } else if (type === "event") {
+      try {
+        await axiosInstance.delete(`/event_comments/${comment.id}`, config);
+        const filterComments = commentItems.filter((item) => item.id !== comment.id);
+        setCommentItems((prev) => filterComments);
+      } catch (err) {
+        alert("コメントの削除に失敗しました");
+      }
     }
   };
 

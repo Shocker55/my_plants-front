@@ -13,3 +13,7 @@
 .logo-text-color {
   color: rgb(107, 185, 126)
 }
+
+.h-custom {
+  height: calc(100% - 270px);
+}

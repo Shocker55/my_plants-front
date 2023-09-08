@@ -1,0 +1,222 @@
+import Dropdown from "@/components/Dropdown";
+import Feed from "@/components/Feed";
+import Sidebar from "@/components/Sidebar";
+import Widgets from "@/components/Widgets";
+import Image from "next/image";
+// import Link from "next/link";
+import { useEffect, useState } from "react";
+import { axiosInstance } from "@/utils/axios";
+import { useAuthContext } from "@/context/AuthContext";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { FaBookmark, FaRegBookmark, FaRegCalendarCheck } from "react-icons/fa6";
+import { CommentCard } from "@/components/CommentCard";
+import CommentForm from "@/components/CommentForm";
+
+export async function getServerSideProps({ params }) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/events/${params.id}`);
+  const event = await res.json();
+
+  if (event.status) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return { props: { event } };
+}
+
+const Event = ({ event }) => {
+  const { currentUser } = useAuthContext();
+  const router = useRouter();
+  const [commentItems, setCommentItems] = useState(event.event_comments);
+  const [isCurrentUserBookmarked, setIsCurrentUserBookmarked] = useState(false);
+
+  const updatedDate = new Date(event.updated_at);
+  const startDate = new Date(event.start_date);
+  const endDate = new Date(event.end_date);
+  const startTime = new Date(event.start_time);
+  const endTime = new Date(event.end_time);
+
+  const formatDate = (date, dateType) => {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; // 月は0から始まるため、+1する
+    const day = date.getDate();
+    if (dateType === "date_only") {
+      return `${year}年${month.toString().padStart(2, "0")}月${day.toString().padStart(2, "0")}日`;
+    } else {
+      return `${year}年${month.toString().padStart(2, "0")}月`;
+    }
+  };
+
+  const formatTime = (time) => {
+    const hours = time.getHours().toString().padStart(2, "0");
+    const minutes = time.getMinutes().toString().padStart(2, "0");
+
+    return `${hours}:${minutes}`;
+  };
+
+  const clickDeleteButton = async () => {
+    const config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+
+    try {
+      await axiosInstance.delete(`/events/${event.id}`, config);
+      // const filterRecords = recordsItems.filter((item) => item.id !== record.id);
+      // setRecordsItems((prev) => filterRecords);
+      router.push("/events");
+    } catch (err) {
+      alert("イベントの削除に失敗しました");
+    }
+  };
+
+  useEffect(() => {
+    const currentUserBookmarkedEvents = event.event_bookmarks.filter((event) => {
+      return event.user.uid === currentUser?.uid;
+    });
+    if (currentUserBookmarkedEvents.length) {
+      setIsCurrentUserBookmarked(true);
+    }
+  }, []);
+
+  const clickBookmarkButton = async () => {
+    if (!currentUser) {
+      return router.push("/login");
+    }
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+
+    try {
+      await axiosInstance.post("/event_bookmarks", { event_id: event.id }, config);
+      setIsCurrentUserBookmarked(true);
+    } catch (err) {
+      alert("ブックマークに失敗しました");
+    }
+  };
+
+  const clickUnBookmarkButton = async () => {
+    if (!currentUser) {
+      return router.push("/login");
+    }
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+
+    try {
+      await axiosInstance.delete(`/event_bookmarks/${event.id}`, config);
+      setIsCurrentUserBookmarked(false);
+    } catch (err) {
+      alert("ブックマークの取り消しに失敗しました");
+    }
+  };
+
+  return (
+    <div className="flex h-screen justify-center">
+      <Sidebar />
+      <div className="hidden-scrollbar max-w-xl flex-grow overflow-y-scroll border-l border-r border-gray-200 bg-slate-200 sm:ml-[10px] lg:min-w-[900px] ">
+        {/* Header */}
+        <div className="sticky top-0 z-50 flex rounded border-b border-gray-200 bg-slate-50 px-3 py-5">
+          <h2 className="text-xl font-bold">イベント詳細</h2>
+        </div>
+
+        <div className="flex justify-center px-1 sm:w-[450px] lg:w-[900px]">
+          <div className="flex w-[500px] flex-col">
+            <div className="mb-3 mt-3 rounded-2xl bg-white p-3">
+              <div className="flex justify-between">
+                <div className="flex w-full justify-between">
+                  <h2 className="text-lg font-semibold">{event.title}</h2>
+                  {/* <FaRegBookmark className="my-auto mr-3 text-lg" /> */}
+                  {isCurrentUserBookmarked === true ? (
+                    <button onClick={() => clickUnBookmarkButton()}>
+                      <FaBookmark className="my-auto mr-3 text-lg" />
+                    </button>
+                  ) : (
+                    <button onClick={() => clickBookmarkButton()}>
+                      <FaRegBookmark className="my-auto mr-3 text-lg" />
+                    </button>
+                  )}
+                </div>
+                {currentUser && event.user.uid === currentUser.uid ? (
+                  <Dropdown>
+                    <Link
+                      href={`/events/${event.id}/edit`}
+                      className="block px-4 py-2 text-sm text-gray-700"
+                      role="menuitem"
+                    >
+                      編集
+                    </Link>
+                    <button
+                      onClick={() => {
+                        clickDeleteButton();
+                      }}
+                      className="block w-full px-4 py-2 text-left text-sm text-red-700"
+                      role="menuitem"
+                    >
+                      削除
+                    </button>
+                  </Dropdown>
+                ) : null}
+              </div>
+              <div className="pt-1">開始日時: {formatDate(startDate, event.date_type)}</div>
+              <div className="pb-3 pt-1">終了日時: {formatDate(endDate, event.date_type)}</div>
+              {event.start_time ? (
+                <div className="pb-3 pt-1">
+                  時間: {formatTime(startTime)} ~ {formatTime(endTime)}
+                </div>
+              ) : null}
+              {event.official_url ? (
+                <div>
+                  公式URL: <div>{event.official_url}</div>
+                </div>
+              ) : null}
+              <div className="pb-3 pt-1">
+                <div className="min-h-[80px]">
+                  <div className="whitespace-pre-wrap p-1">{event.body}</div>
+                </div>
+              </div>
+              <div className="flex items-end justify-end p-1">
+                <div className="mr-4 flex">
+                  <FaRegCalendarCheck className="my-auto mr-1 text-lg" />
+                  参加予定: 10 名
+                </div>
+                <div className="pr-1 text-sm text-slate-500">
+                  {updatedDate.toLocaleDateString()}
+                </div>
+              </div>
+            </div>
+            <div className="rounded-2xl bg-white p-3">
+              <h3 className="border-b border-slate-400 text-lg">コメント</h3>
+              <div>
+                {commentItems.map((comment) => (
+                  <div key={comment.id}>
+                    <CommentCard
+                      comment={comment}
+                      commentItems={commentItems}
+                      setCommentItems={setCommentItems}
+                      type="event"
+                    />
+                  </div>
+                ))}
+              </div>
+              <CommentForm data={event} setCommentItems={setCommentItems} type="event" />
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* <Widgets data={related_records} type="show" /> */}
+      <Widgets />
+    </div>
+  );
+};
+
+export default Event;

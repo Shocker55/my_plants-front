@@ -8,14 +8,14 @@ export const RecordCardButtons = ({ record, recordsItems, setRecordsItems }) => 
   const { currentUser } = useAuthContext();
   const [likeCount, setLikeCount] = useState(record.record_likes.length);
   const router = useRouter();
-  const [likeStatus, setLikeStatus] = useState(false);
+  const [isCurrentUserLiked, setIsCurrentUserLiked] = useState(false);
 
   useEffect(() => {
-    const liked = record.record_likes.filter((record) => {
+    const currentUserLikedRecords = record.record_likes.filter((record) => {
       return record.user.uid === currentUser?.uid;
     });
-    if (liked.length) {
-      setLikeStatus(true);
+    if (currentUserLikedRecords.length) {
+      setIsCurrentUserLiked(true);
     }
   }, []);
 
@@ -33,7 +33,7 @@ export const RecordCardButtons = ({ record, recordsItems, setRecordsItems }) => 
     try {
       await axiosInstance.post("/record_likes", { record_id: record.id }, config);
       setLikeCount((prev) => prev + 1);
-      setLikeStatus(true);
+      setIsCurrentUserLiked(true);
     } catch (err) {
       alert("いいねに失敗しました");
     }
@@ -53,7 +53,7 @@ export const RecordCardButtons = ({ record, recordsItems, setRecordsItems }) => 
     try {
       await axiosInstance.delete(`/record_likes/${record.id}`, config);
       setLikeCount((prev) => prev - 1);
-      setLikeStatus(false);
+      setIsCurrentUserLiked(false);
     } catch (err) {
       alert("いいねの取り消しに失敗しました");
     }
@@ -80,7 +80,7 @@ export const RecordCardButtons = ({ record, recordsItems, setRecordsItems }) => 
     <>
       {currentUser && record.user.uid === currentUser.uid ? (
         <div className="flex h-full items-center justify-end">
-          {likeStatus === true ? (
+          {isCurrentUserLiked === true ? (
             <button
               onClick={() => {
                 clickUnLikeButton();
@@ -108,7 +108,7 @@ export const RecordCardButtons = ({ record, recordsItems, setRecordsItems }) => 
         </div>
       ) : (
         <div className="flex h-full items-center justify-end">
-          {likeStatus === true ? (
+          {isCurrentUserLiked === true ? (
             <button
               onClick={() => {
                 clickUnLikeButton();
