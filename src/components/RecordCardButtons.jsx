@@ -134,7 +134,7 @@ export const RecordCardButtons = ({ record, recordsItems, setRecordsItems }) => 
                 clickUnLikeButton();
               }}
             >
-              <FaHeart className="mr-1" />
+              <FaHeart className="mr-1 text-pink-300" />
             </button>
           ) : (
             <button
@@ -142,16 +142,16 @@ export const RecordCardButtons = ({ record, recordsItems, setRecordsItems }) => 
                 clickLikeButton();
               }}
             >
-              <FaRegHeart className="mr-1" />
+              <FaRegHeart className="mr-1 text-slate-500" />
             </button>
           )}
-          <p className="pr-2">{likeCount}</p>
+          <p className="pr-2 text-slate-500">{likeCount}</p>
           <button
             onClick={() => {
               clickDeleteButton();
             }}
           >
-            <FaRegTrashCan className="sm:mr-3" />
+            <FaRegTrashCan className="text-slate-500 sm:mr-3" />
           </button>
         </div>
       ) : (
@@ -162,7 +162,7 @@ export const RecordCardButtons = ({ record, recordsItems, setRecordsItems }) => 
                 clickUnLikeButton();
               }}
             >
-              <FaHeart className="mr-1" />
+              <FaHeart className="mr-1 text-pink-300" />
             </button>
           ) : (
             <button
@@ -170,17 +170,17 @@ export const RecordCardButtons = ({ record, recordsItems, setRecordsItems }) => 
                 clickLikeButton();
               }}
             >
-              <FaRegHeart className="mr-1" />
+              <FaRegHeart className="mr-1 text-slate-500" />
             </button>
           )}
-          <p className="pr-2">{likeCount}</p>
+          <p className="pr-2 text-slate-500">{likeCount}</p>
           {isCurrentUserBookmarked === true ? (
             <button onClick={() => clickUnBookmarkButton()}>
-              <FaBookmark className="my-auto mr-3 text-lg" />
+              <FaBookmark className="my-auto mr-3 text-lg text-blue-400" />
             </button>
           ) : (
             <button onClick={() => clickBookmarkButton()}>
-              <FaRegBookmark className="my-auto mr-3 text-lg" />
+              <FaRegBookmark className="my-auto mr-3 text-lg text-blue-400" />
             </button>
           )}
         </div>

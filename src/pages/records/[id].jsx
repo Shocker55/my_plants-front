@@ -52,6 +52,9 @@ const Record = ({ record, related_records }) => {
   };
 
   useEffect(() => {
+    if (!currentUser) {
+      return;
+    }
     const currentUserBookmarkedRecords = record.record_bookmarks.filter((record) => {
       return record.user.uid === currentUser.uid;
     });
@@ -145,11 +148,11 @@ const Record = ({ record, related_records }) => {
                   <h2 className="pb-2 text-lg font-semibold">{record.title}</h2>
                   {isCurrentUserBookmarked === true ? (
                     <button onClick={() => clickUnBookmarkButton()}>
-                      <FaBookmark className="my-auto mr-3 text-lg" />
+                      <FaBookmark className="my-auto mr-3 text-lg text-blue-400" />
                     </button>
                   ) : (
                     <button onClick={() => clickBookmarkButton()}>
-                      <FaRegBookmark className="my-auto mr-3 text-lg" />
+                      <FaRegBookmark className="my-auto mr-3 text-lg text-blue-400" />
                     </button>
                   )}
                 </div>

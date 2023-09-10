@@ -41,7 +41,7 @@ export default function Widgets({ data, type }) {
       ) : null}
 
       {data && type === "events" ? (
-        <div className="bg-second-color h-custom sticky top-16 mx-3 space-y-3 overflow-y-scroll rounded-xl pt-2 text-gray-700">
+        <div className="hidden-scrollbar bg-second-color h-custom sticky top-16 mx-3 space-y-3 overflow-y-scroll rounded-xl pt-2 text-gray-700">
           <h4 className="px-4 text-xl font-bold">Events</h4>
           {data?.map((event) => {
             return <WidgetEventCard key={event.id} event={event} className="w-full" />;

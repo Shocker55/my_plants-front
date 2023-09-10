@@ -49,8 +49,6 @@ export default function Feed({ pageTitle, list, user }) {
               <div className="w-[90%] px-3">
                 <div className="flex justify-between">
                   <div className="font-bold">{user.profile.name}</div>
-                  {console.log(currentUser)}
-                  {console.log(user.profile)}
                   {currentUser && user.uid === currentUser.uid ? (
                     <Dropdown>
                       <Link

@@ -96,11 +96,11 @@ export default function WidgetEventCard({ event }) {
               <div className="pt-1 text-lg">
                 {isCurrentUserBookmarked === true ? (
                   <button onClick={() => clickUnBookmarkButton()}>
-                    <FaBookmark />
+                    <FaBookmark className="text-blue-400" />
                   </button>
                 ) : (
                   <button onClick={() => clickBookmarkButton()}>
-                    <FaRegBookmark />
+                    <FaRegBookmark className="text-blue-400" />
                   </button>
                 )}
               </div>

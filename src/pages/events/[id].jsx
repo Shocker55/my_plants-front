@@ -135,11 +135,11 @@ const Event = ({ event }) => {
                   <h2 className="text-lg font-semibold">{event.title}</h2>
                   {isCurrentUserBookmarked === true ? (
                     <button onClick={() => clickUnBookmarkButton()}>
-                      <FaBookmark className="my-auto mr-3 text-lg" />
+                      <FaBookmark className="my-auto mr-3 text-lg text-blue-400" />
                     </button>
                   ) : (
                     <button onClick={() => clickBookmarkButton()}>
-                      <FaRegBookmark className="my-auto mr-3 text-lg" />
+                      <FaRegBookmark className="my-auto mr-3 text-lg text-blue-400" />
                     </button>
                   )}
                 </div>
