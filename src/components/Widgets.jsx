@@ -2,8 +2,21 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import WidgetsRecordList from "./WidgetsRecordList";
 import Link from "next/link";
 import WidgetEventCard from "./WidgetsEventCard";
+import { useAuthContext } from "@/context/AuthContext";
+import { useRouter } from "next/router";
 
 export default function Widgets({ data, type }) {
+  const { currentUser } = useAuthContext();
+  const router = useRouter();
+
+  const handleClickEventCreate = () => {
+    if (currentUser) {
+      router.push("/event/create");
+    } else {
+      router.push("/login");
+    }
+  };
+
   return (
     <div className="hidden space-y-5 overflow-y-auto bg-slate-200 px-3 xl:inline xl:w-[350px]">
       <div className="sticky top-0 z-50 mx-3 py-1.5 ">
@@ -25,7 +38,7 @@ export default function Widgets({ data, type }) {
             <p className="rounded bg-slate-200 text-center">2023/1/1</p>
           </div>
           <div>
-            <p className="pb-1">Record Conuts</p>
+            <p className="pb-1">Record Counts</p>
             <p className="rounded bg-slate-200 text-center">10</p>
           </div>
         </div>
@@ -50,12 +63,12 @@ export default function Widgets({ data, type }) {
       ) : null}
       {type === "eventCreate" ? (
         <div className="pt-10 text-center">
-          <Link
-            href="/events/create"
+          <button
+            onClick={handleClickEventCreate}
             className="rounded-md bg-slate-500 px-4 py-2 text-white hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-opacity-50"
           >
             イベントを作成する
-          </Link>
+          </button>
         </div>
       ) : null}
     </div>
