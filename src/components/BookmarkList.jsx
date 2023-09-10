@@ -2,10 +2,12 @@ import { useAuthContext } from "@/context/AuthContext";
 import { axiosInstance } from "@/utils/axios";
 import React, { useEffect, useState } from "react";
 import EventCard from "./EventCard";
+import RecordCard from "./RecordCard";
 
 export default function BookmarkList() {
   const { currentUser } = useAuthContext();
-  const [currentBookmarksItems, setCurrentBookmarkItems] = useState([]);
+  const [currentBookmarksRecords, setCurrentBookmarkRecords] = useState([]);
+  const [currentBookmarksEvents, setCurrentBookmarkEvents] = useState([]);
   const [active, setActive] = useState("1");
 
   const config = {
@@ -14,17 +16,26 @@ export default function BookmarkList() {
     },
   };
 
-  // useEffect(() => {
-  //   const fetchBookmarkRecords = async () => {
-  //     const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/bookmarks`)
-  //     const bookmarkRecords = await res.json();
-  //     setCurrentBookmarkItems(bookmarkRecords);
-  //   };
-  //   fetchBookmarkRecords();
-  // }, []);
+  useEffect(() => {
+    const fetchBookmarkRecords = async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_DOMEIN}/users/record_bookmarks`,
+        config
+      );
+      const currentBookmarkRecords = await res.json();
+      setCurrentBookmarkRecords(currentBookmarkRecords);
+    };
+    fetchBookmarkRecords();
+  }, []);
 
   const handleClickRecords = async (e) => {
     setActive(e.target.id);
+    const res = await axiosInstance.get(
+      `${process.env.NEXT_PUBLIC_API_DOMEIN}/users/record_bookmarks`,
+      config
+    );
+    const currentBookmarkRecords = await res.data;
+    setCurrentBookmarkRecords(currentBookmarkRecords);
   };
 
   const handleClickEvents = async (e) => {
@@ -34,7 +45,7 @@ export default function BookmarkList() {
       config
     );
     const currentBookmarkEvents = await res.data;
-    setCurrentBookmarkItems(currentBookmarkEvents);
+    setCurrentBookmarkEvents(currentBookmarkEvents);
   };
 
   return (
@@ -56,8 +67,11 @@ export default function BookmarkList() {
         </div>
       </div>
       <div className="flex flex-wrap sm:w-[450px] lg:w-[900px]">
+        {active === "1"
+          ? currentBookmarksRecords?.map((item) => <RecordCard key={item.id} record={item} />)
+          : null}
         {active === "2"
-          ? currentBookmarksItems?.map((item) => <EventCard key={item.id} event={item} />)
+          ? currentBookmarksEvents?.map((item) => <EventCard key={item.id} event={item} />)
           : null}
       </div>
     </div>

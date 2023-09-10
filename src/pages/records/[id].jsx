@@ -9,7 +9,8 @@ import { axiosInstance } from "@/utils/axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
 
 export async function getServerSideProps({ params }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records/${params.id}`);
@@ -33,6 +34,7 @@ const Record = ({ record, related_records }) => {
   const { currentUser } = useAuthContext();
   const router = useRouter();
   const [commentItems, setCommentItems] = useState(record.record_comments);
+  const [isCurrentUserBookmarked, setIsCurrentUserBookmarked] = useState(false);
 
   const clickDeleteButton = async () => {
     const config = {
@@ -46,6 +48,53 @@ const Record = ({ record, related_records }) => {
       router.back();
     } catch (err) {
       alert("記録の削除に失敗しました");
+    }
+  };
+
+  useEffect(() => {
+    const currentUserBookmarkedRecords = record.record_bookmarks.filter((record) => {
+      return record.user.uid === currentUser.uid;
+    });
+    if (currentUserBookmarkedRecords?.length) {
+      setIsCurrentUserBookmarked(true);
+    }
+  }, []);
+
+  const clickBookmarkButton = async () => {
+    if (!currentUser) {
+      return router.push("/login");
+    }
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+
+    try {
+      await axiosInstance.post("/record_bookmarks", { record_id: record.id }, config);
+      setIsCurrentUserBookmarked(true);
+    } catch (err) {
+      alert("ブックマークに失敗しました");
+    }
+  };
+
+  const clickUnBookmarkButton = async () => {
+    if (!currentUser) {
+      return router.push("/login");
+    }
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+
+    try {
+      await axiosInstance.delete(`/record_bookmarks/${record.id}`, config);
+      setIsCurrentUserBookmarked(false);
+    } catch (err) {
+      alert("ブックマークの取り消しに失敗しました");
     }
   };
 
@@ -92,7 +141,18 @@ const Record = ({ record, related_records }) => {
           <div className="flex w-[500px] flex-col">
             <div className="mb-3 rounded-2xl bg-white p-3">
               <div className="flex justify-between">
-                <h2 className="pb-2 text-lg font-semibold">{record.title}</h2>
+                <div className="flex w-full justify-between">
+                  <h2 className="pb-2 text-lg font-semibold">{record.title}</h2>
+                  {isCurrentUserBookmarked === true ? (
+                    <button onClick={() => clickUnBookmarkButton()}>
+                      <FaBookmark className="my-auto mr-3 text-lg" />
+                    </button>
+                  ) : (
+                    <button onClick={() => clickBookmarkButton()}>
+                      <FaRegBookmark className="my-auto mr-3 text-lg" />
+                    </button>
+                  )}
+                </div>
                 {currentUser && record.user.uid === currentUser.uid ? (
                   <Dropdown>
                     {/* <Link
@@ -143,7 +203,7 @@ const Record = ({ record, related_records }) => {
                   </div>
                 ))}
               </div>
-              <CommentForm data={record} setCommentItems={setCommentItems} type="record"/>
+              <CommentForm data={record} setCommentItems={setCommentItems} type="record" />
             </div>
           </div>
         </div>

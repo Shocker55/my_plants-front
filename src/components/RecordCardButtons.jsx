@@ -2,13 +2,14 @@ import { useAuthContext } from "@/context/AuthContext";
 import { axiosInstance } from "@/utils/axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { FaRegBookmark, FaRegHeart, FaRegTrashCan, FaHeart } from "react-icons/fa6";
+import { FaRegBookmark, FaRegHeart, FaRegTrashCan, FaHeart, FaBookmark } from "react-icons/fa6";
 
 export const RecordCardButtons = ({ record, recordsItems, setRecordsItems }) => {
   const { currentUser } = useAuthContext();
   const [likeCount, setLikeCount] = useState(record.record_likes.length);
   const router = useRouter();
   const [isCurrentUserLiked, setIsCurrentUserLiked] = useState(false);
+  const [isCurrentUserBookmarked, setIsCurrentUserBookmarked] = useState(false);
 
   useEffect(() => {
     const currentUserLikedRecords = record.record_likes.filter((record) => {
@@ -16,6 +17,15 @@ export const RecordCardButtons = ({ record, recordsItems, setRecordsItems }) => 
     });
     if (currentUserLikedRecords.length) {
       setIsCurrentUserLiked(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const currentUserBookmarkedRecords = record.record_bookmarks?.filter((record) => {
+      return record.user.uid === currentUser?.uid;
+    });
+    if (currentUserBookmarkedRecords?.length) {
+      setIsCurrentUserBookmarked(true);
     }
   }, []);
 
@@ -76,6 +86,44 @@ export const RecordCardButtons = ({ record, recordsItems, setRecordsItems }) => 
     }
   };
 
+  const clickBookmarkButton = async () => {
+    if (!currentUser) {
+      return router.push("/login");
+    }
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+
+    try {
+      await axiosInstance.post("/record_bookmarks", { record_id: record.id }, config);
+      setIsCurrentUserBookmarked(true);
+    } catch (err) {
+      alert("ブックマークに失敗しました");
+    }
+  };
+
+  const clickUnBookmarkButton = async () => {
+    if (!currentUser) {
+      return router.push("/login");
+    }
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+
+    try {
+      await axiosInstance.delete(`/record_bookmarks/${record.id}`, config);
+      setIsCurrentUserBookmarked(false);
+    } catch (err) {
+      alert("ブックマークの取り消しに失敗しました");
+    }
+  };
+
   return (
     <>
       {currentUser && record.user.uid === currentUser.uid ? (
@@ -126,7 +174,15 @@ export const RecordCardButtons = ({ record, recordsItems, setRecordsItems }) => 
             </button>
           )}
           <p className="pr-2">{likeCount}</p>
-          <FaRegBookmark className="sm:mr-3" />
+          {isCurrentUserBookmarked === true ? (
+            <button onClick={() => clickUnBookmarkButton()}>
+              <FaBookmark className="my-auto mr-3 text-lg" />
+            </button>
+          ) : (
+            <button onClick={() => clickBookmarkButton()}>
+              <FaRegBookmark className="my-auto mr-3 text-lg" />
+            </button>
+          )}
         </div>
       )}
     </>
