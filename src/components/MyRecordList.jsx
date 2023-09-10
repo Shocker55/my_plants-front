@@ -47,7 +47,6 @@ export default function MyRecordList({ recordsItems, setRecordsItems, user }) {
             >
               Likes
             </div>
-            <div className="text-slate-500">Bookmarks</div>
             <div className="text-slate-500">Events</div>
           </>
         ) : (
@@ -70,7 +69,6 @@ export default function MyRecordList({ recordsItems, setRecordsItems, user }) {
             >
               Likes
             </div>
-            <div className="text-slate-500">Bookmarks</div>
             <div className="text-slate-500">Events</div>
           </>
         )}
