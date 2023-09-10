@@ -34,7 +34,6 @@ export default function Sidebar() {
         <SidebarMenuItem text="ホーム" Icon={FaHouse} />
       </Link>
       <SidebarMenuItem text="検索する" Icon={FaMagnifyingGlass} />
-      <SidebarMenuItem text="ブックマーク" Icon={FaRegBookmark} />
       <Link href="/events">
         <SidebarMenuItem text="イベント情報" Icon={FaRegRectangleList} />
       </Link>
@@ -43,6 +42,9 @@ export default function Sidebar() {
       </Link>
       {currentUser ? (
         <>
+          <Link href="/bookmarks">
+            <SidebarMenuItem text="ブックマーク" Icon={FaRegBookmark} />
+          </Link>
           <Link href={`/users/${currentUser.uid}`}>
             <SidebarMenuItem text="マイページ" Icon={FaSeedling} />
           </Link>

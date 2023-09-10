@@ -65,8 +65,6 @@ const Event = ({ event }) => {
 
     try {
       await axiosInstance.delete(`/events/${event.id}`, config);
-      // const filterRecords = recordsItems.filter((item) => item.id !== record.id);
-      // setRecordsItems((prev) => filterRecords);
       router.push("/events");
     } catch (err) {
       alert("イベントの削除に失敗しました");
@@ -135,14 +133,13 @@ const Event = ({ event }) => {
               <div className="flex justify-between">
                 <div className="flex w-full justify-between">
                   <h2 className="text-lg font-semibold">{event.title}</h2>
-                  {/* <FaRegBookmark className="my-auto mr-3 text-lg" /> */}
                   {isCurrentUserBookmarked === true ? (
                     <button onClick={() => clickUnBookmarkButton()}>
-                      <FaBookmark className="my-auto mr-3 text-lg" />
+                      <FaBookmark className="my-auto mr-3 text-lg text-blue-400" />
                     </button>
                   ) : (
                     <button onClick={() => clickBookmarkButton()}>
-                      <FaRegBookmark className="my-auto mr-3 text-lg" />
+                      <FaRegBookmark className="my-auto mr-3 text-lg text-blue-400" />
                     </button>
                   )}
                 </div>

@@ -97,31 +97,13 @@ export default function EventCard({ event }) {
               <div className="pt-1 text-lg">
                 {isCurrentUserBookmarked === true ? (
                   <button onClick={() => clickUnBookmarkButton()}>
-                    <FaBookmark />
+                    <FaBookmark className="text-blue-400" />
                   </button>
                 ) : (
                   <button onClick={() => clickBookmarkButton()}>
-                    <FaRegBookmark />
+                    <FaRegBookmark className="text-blue-400" />
                   </button>
                 )}
-
-                {/* {currentUser ? (
-                  <>
-                    {isCurrentUserBookmarked === true ? (
-                      <button onClick={() => clickUnBookmarkButton()}>
-                        <FaBookmark />
-                      </button>
-                    ) : (
-                      <button onClick={() => clickBookmarkButton()}>
-                        <FaRegBookmark />
-                      </button>
-                    )}
-                  </>
-                ) : (
-                  <button onClick={() => clickBookmarkButton()}>
-                    <FaRegBookmark />
-                  </button>
-                )} */}
               </div>
             </div>
             <Link href={`/events/${event.id}`} className="w-full">
