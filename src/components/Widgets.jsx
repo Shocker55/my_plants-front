@@ -6,7 +6,16 @@ import { useAuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import WidgetsAttendeeList from "./WidgetsAttendeeList";
 
-export default function Widgets({ data, type }) {
+export default function Widgets({
+  data,
+  type,
+  isCurrentUserAttend,
+  setIsCurrentUserAttend,
+  attendees,
+  setAttendees,
+  attendeesCount,
+  setAttendeesCount,
+}) {
   const { currentUser } = useAuthContext();
   const router = useRouter();
 
@@ -49,7 +58,7 @@ export default function Widgets({ data, type }) {
         </div>
       </div>
       {data && (type === "show" || type === "index") ? (
-        <div className="bg-second-color sticky top-16 mx-3 min-h-[300px] space-y-3 rounded-xl pt-2 text-gray-700">
+        <div className="bg-second-color h-custom sticky top-16 mx-3 space-y-3 rounded-xl pt-2 text-gray-700">
           <WidgetsRecordList userRecords={data} type={type} />
         </div>
       ) : null}
@@ -63,7 +72,7 @@ export default function Widgets({ data, type }) {
         </div>
       ) : null}
       {type === "eventCreate" ? (
-        <div className="pt-10 text-center">
+        <div className="pt-5 text-center">
           <button
             onClick={handleClickEventCreate}
             className="rounded-md bg-slate-500 px-4 py-2 text-white hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-opacity-50"
@@ -72,7 +81,17 @@ export default function Widgets({ data, type }) {
           </button>
         </div>
       ) : null}
-      {type === "eventAttend" ? <WidgetsAttendeeList event={data} /> : null}
+      {type === "eventAttend" ? (
+        <WidgetsAttendeeList
+          event={data}
+          isCurrentUserAttend={isCurrentUserAttend}
+          setIsCurrentUserAttend={setIsCurrentUserAttend}
+          attendees={attendees}
+          setAttendees={setAttendees}
+          attendeesCount={attendeesCount}
+          setAttendeesCount={setAttendeesCount}
+        />
+      ) : null}
     </div>
   );
 }

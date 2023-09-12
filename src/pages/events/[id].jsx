@@ -31,6 +31,9 @@ const Event = ({ event }) => {
   const router = useRouter();
   const [commentItems, setCommentItems] = useState(event.event_comments);
   const [isCurrentUserBookmarked, setIsCurrentUserBookmarked] = useState(false);
+  const [isCurrentUserAttend, setIsCurrentUserAttend] = useState(false);
+  const [attendees, setAttendees] = useState(event.event_attendees);
+  const [attendeesCount, setAttendeesCount] = useState(event.event_attendees.length);
 
   const updatedDate = new Date(event.updated_at);
   const startDate = new Date(event.start_date);
@@ -55,6 +58,15 @@ const Event = ({ event }) => {
 
     return `${hours}:${minutes}`;
   };
+
+  useEffect(() => {
+    const currentUserAttendEvents = event.event_attendees.filter((event) => {
+      return event.user.uid === currentUser?.uid;
+    });
+    if (currentUserAttendEvents.length) {
+      setIsCurrentUserAttend(true);
+    }
+  }, []);
 
   const clickDeleteButton = async () => {
     const config = {
@@ -184,7 +196,7 @@ const Event = ({ event }) => {
               <div className="flex items-end justify-end p-1">
                 <div className="mr-4 flex">
                   <FaRegCalendarCheck className="my-auto mr-1 text-lg" />
-                  参加予定: 10 名
+                  {attendeesCount ? <>参加予定: {attendeesCount}名</> : "0"}
                 </div>
                 <div className="pr-1 text-sm text-slate-500">
                   {updatedDate.toLocaleDateString()}
@@ -210,7 +222,16 @@ const Event = ({ event }) => {
           </div>
         </div>
       </div>
-      <Widgets type="eventAttend" data={event} />
+      <Widgets
+        type="eventAttend"
+        data={event}
+        isCurrentUserAttend={isCurrentUserAttend}
+        setIsCurrentUserAttend={setIsCurrentUserAttend}
+        attendees={attendees}
+        setAttendees={setAttendees}
+        attendeesCount={attendeesCount}
+        setAttendeesCount={setAttendeesCount}
+      />
     </div>
   );
 };

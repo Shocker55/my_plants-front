@@ -18,6 +18,10 @@
   height: calc(100% - 270px);
 }
 
+.h-custom2 {
+  height: calc(100% - 360px);
+}
+
 .hidden-scrollbar{
   overflow: scroll;
   -ms-overflow-style: none;    /* IE, Edge 対応 */
