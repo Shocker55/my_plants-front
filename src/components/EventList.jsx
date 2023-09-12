@@ -27,12 +27,14 @@ export default function EventList(events) {
     );
 
     const attendEvents = await res.data;
-    console.log(attendEvents);
     setCurrentEventsItems(attendEvents);
   };
 
   const handleClickPastEvents = async (e) => {
     setActive(e.target.id);
+    const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_API_DOMEIN}/events?q=past`);
+    const pastEvents = await res.data;
+    setCurrentEventsItems(pastEvents);
   };
 
   return (

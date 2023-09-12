@@ -45,7 +45,7 @@ const Event = ({ event }) => {
     const year = date.getFullYear();
     const month = date.getMonth() + 1; // 月は0から始まるため、+1する
     const day = date.getDate();
-    if (dateType === "date_only") {
+    if (dateType === "full_date") {
       return `${year}年${month.toString().padStart(2, "0")}月${day.toString().padStart(2, "0")}日`;
     } else {
       return `${year}年${month.toString().padStart(2, "0")}月`;
