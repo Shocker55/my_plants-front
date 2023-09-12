@@ -210,8 +210,7 @@ const Event = ({ event }) => {
           </div>
         </div>
       </div>
-      {/* <Widgets data={related_records} type="show" /> */}
-      <Widgets />
+      <Widgets type="eventAttend" data={event} />
     </div>
   );
 };

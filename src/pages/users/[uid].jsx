@@ -19,10 +19,15 @@ export async function getServerSideProps({ params }) {
   );
   const userRecords = await anotherRes.json();
 
-  return { props: { user, userRecords } };
+  const attendEventsRes = await fetch(
+    `${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${params.uid}/attend`
+  );
+  const userAttendEvents = await attendEventsRes.json();
+
+  return { props: { user, userRecords, userAttendEvents } };
 }
 
-const User = ({ userRecords, user }) => {
+const User = ({ userRecords, user, userAttendEvents }) => {
   const [recordsItems, setRecordsItems] = useState(userRecords);
 
   useEffect(() => {
@@ -34,7 +39,7 @@ const User = ({ userRecords, user }) => {
       <Sidebar />
       <Feed
         pageTitle="ユーザー"
-        list={MyRecordList({ recordsItems, setRecordsItems, user })}
+        list={MyRecordList({ recordsItems, setRecordsItems, user, userAttendEvents })}
         user={user}
       />
       <Widgets data={recordsItems} type="index" />

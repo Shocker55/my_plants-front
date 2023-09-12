@@ -4,6 +4,7 @@ import Link from "next/link";
 import WidgetEventCard from "./WidgetsEventCard";
 import { useAuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/router";
+import WidgetsAttendeeList from "./WidgetsAttendeeList";
 
 export default function Widgets({ data, type }) {
   const { currentUser } = useAuthContext();
@@ -11,7 +12,7 @@ export default function Widgets({ data, type }) {
 
   const handleClickEventCreate = () => {
     if (currentUser) {
-      router.push("/event/create");
+      router.push("/events/create");
     } else {
       router.push("/login");
     }
@@ -71,6 +72,7 @@ export default function Widgets({ data, type }) {
           </button>
         </div>
       ) : null}
+      {type === "eventAttend" ? <WidgetsAttendeeList event={data} /> : null}
     </div>
   );
 }
