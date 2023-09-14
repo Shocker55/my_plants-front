@@ -4,8 +4,8 @@ import { axiosInstance } from "@/utils/axios";
 import EventCard from "./EventCard";
 
 export default function MyRecordList({ recordsItems, setRecordsItems, user, userAttendEvents }) {
-  const [currentRecordsItems, setCurrentRecordsItems] = useState(recordsItems);
-  const [currentEventsItems, setCurrentEventsItems] = useState(userAttendEvents);
+  const [currentRecordsItems, setCurrentRecordsItems] = useState([...recordsItems]);
+  const [currentEventsItems, setCurrentEventsItems] = useState([...userAttendEvents]);
   const [active, setActive] = useState("1");
 
   useEffect(() => {

@@ -2,8 +2,8 @@ import { useState } from "react";
 import RecordCard from "./RecordCard";
 import { axiosInstance } from "@/utils/axios";
 
-export default function RecordList(records) {
-  const [recordsItems, setRecordsItems] = useState(records);
+export default function RecordList({ records }) {
+  const [recordsItems, setRecordsItems] = useState([...records]);
   const [active, setActive] = useState("1");
 
   const handleClickRecentUpdates = async (e) => {

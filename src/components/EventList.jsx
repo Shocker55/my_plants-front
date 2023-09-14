@@ -4,10 +4,10 @@ import { axiosInstance } from "@/utils/axios";
 import { useAuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 
-export default function EventList(events) {
+export default function EventList({ events }) {
   const { currentUser } = useAuthContext();
   const router = useRouter();
-  const [currentEventsItems, setCurrentEventsItems] = useState(events);
+  const [currentEventsItems, setCurrentEventsItems] = useState([...events]);
   const [active, setActive] = useState("1");
 
   const handleClickRecentEvents = async (e) => {

@@ -29,10 +29,10 @@ export async function getServerSideProps({ params }) {
 const Event = ({ event }) => {
   const { currentUser } = useAuthContext();
   const router = useRouter();
-  const [commentItems, setCommentItems] = useState(event.event_comments);
+  const [commentItems, setCommentItems] = useState([...event.event_comments]);
   const [isCurrentUserBookmarked, setIsCurrentUserBookmarked] = useState(false);
   const [isCurrentUserAttend, setIsCurrentUserAttend] = useState(false);
-  const [attendees, setAttendees] = useState(event.event_attendees);
+  const [attendees, setAttendees] = useState([...event.event_attendees]);
   const [attendeesCount, setAttendeesCount] = useState(event.event_attendees.length);
 
   const updatedDate = new Date(event.updated_at);

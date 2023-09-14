@@ -29,7 +29,7 @@ export default function WidgetsAttendeeList({
     try {
       await axiosInstance.post("/event_attendees", { event_id: event.id }, config);
       const res = await axiosInstance.get(`/events/${event.id}`);
-      setAttendees((prev) => res.data.event_attendees);
+      setAttendees(res.data.event_attendees);
       setAttendeesCount((prev) => prev + 1);
       setIsCurrentUserAttend(true);
     } catch (err) {
@@ -51,7 +51,7 @@ export default function WidgetsAttendeeList({
     try {
       await axiosInstance.delete(`/event_attendees/${event.id}`, config);
       const filterAttendees = attendees.filter((attendee) => attendee.user.uid !== currentUser.uid);
-      setAttendees((prev) => filterAttendees);
+      setAttendees(filterAttendees);
       setAttendeesCount((prev) => prev - 1);
       setIsCurrentUserAttend(false);
     } catch (err) {
