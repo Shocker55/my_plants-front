@@ -5,6 +5,7 @@ import WidgetEventCard from "./WidgetsEventCard";
 import { useAuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import WidgetsAttendeeList from "./WidgetsAttendeeList";
+import { useEffect, useState } from "react";
 
 export default function Widgets({
   data,
@@ -18,6 +19,32 @@ export default function Widgets({
 }) {
   const { currentUser } = useAuthContext();
   const router = useRouter();
+  const [lastRecordDate, setLastRecordDate] = useState("");
+  const [recordCount, setRecordCount] = useState(0);
+  const [attendEvent, setAttendEvent] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (currentUser) {
+      let config = {
+        headers: {
+          authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+        },
+      };
+      const fetchWidgetData = async () => {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/users/widget`, config);
+        const widgetData = await res.json();
+        const updatedDate = widgetData.last_record_date
+          ? new Date(widgetData.last_record_date)
+          : undefined;
+        setLastRecordDate(updatedDate);
+        setRecordCount(widgetData.record_count);
+        setAttendEvent(widgetData.upcoming_event);
+        setLoading(false);
+      };
+      fetchWidgetData();
+    }
+  }, [data, attendees, currentUser]);
 
   const handleClickEventCreate = () => {
     if (currentUser) {
@@ -42,20 +69,70 @@ export default function Widgets({
 
       <div className="bg-second-color mx-3 space-y-3 rounded-xl py-2 text-gray-700">
         <h3 className="px-4 font-bold">History of My Records</h3>
-        <div className="flex justify-between px-4">
-          <div>
-            <p className="pb-1">Last Record</p>
-            <p className="rounded bg-slate-200 text-center">2023/1/1</p>
+        {currentUser ? (
+          <>
+            <div className="flex justify-between px-4">
+              <div>
+                <div className="pb-1">Last Record</div>
+                <div className="flex h-[24px] w-[120px] items-center justify-center rounded bg-slate-200 text-center">
+                  {!loading ? (
+                    <>
+                      {lastRecordDate ? (
+                        <>{lastRecordDate.toLocaleDateString()}</>
+                      ) : (
+                        <div className="px-1 text-sm">投稿がありません</div>
+                      )}
+                    </>
+                  ) : null}
+                </div>
+              </div>
+              <div>
+                <div className="pb-1">Record Counts</div>
+                <div className="h-[24px] w-[110px] rounded bg-slate-200 text-center">
+                  {!loading ? <> {recordCount ? <>{recordCount}</> : <div>0</div>}</> : null}
+                </div>
+              </div>
+            </div>
+            <div className="pb-2">
+              <p className="px-4 pb-1">Upcoming event</p>
+              <p className="h-[20px] w-full truncate px-4 text-center text-sm">
+                {!loading ? (
+                  <>
+                    {" "}
+                    {attendEvent ? (
+                      <Link href={`/events/${attendEvent.id}`}>{attendEvent.title}</Link>
+                    ) : (
+                      <>参加予定のイベントはありません</>
+                    )}
+                  </>
+                ) : null}
+              </p>
+            </div>
+          </>
+        ) : (
+          <div className="h-[132px]">
+            <div className="px-4 text-[14px]">
+              ログインすることで、
+              <br />
+              最新の投稿の履歴や、直近に開催される <br />
+              参加予定のイベントが表示されます。
+              <br />
+            </div>
+            <div className="mt-2 px-4 text-sm text-gray-600">
+              <div className="mt-4 flex justify-between px-10">
+                <Link href="/signup" className="rounded-lg bg-slate-300 p-2 hover:bg-slate-400">
+                  新規登録
+                </Link>
+                <Link
+                  href="/login"
+                  className="rounded-lg bg-blue-500 p-2 text-white hover:bg-blue-600"
+                >
+                  ログイン
+                </Link>
+              </div>
+            </div>
           </div>
-          <div>
-            <p className="pb-1">Record Counts</p>
-            <p className="rounded bg-slate-200 text-center">10</p>
-          </div>
-        </div>
-        <div className="pb-2">
-          <p className="px-4 pb-1">Upcoming event date</p>
-          <p className="text-center text-sm">参加予定のイベントはありません</p>
-        </div>
+        )}
       </div>
       {data && (type === "show" || type === "index") ? (
         <div className="bg-second-color h-custom sticky top-16 mx-3 space-y-3 rounded-xl pt-2 text-gray-700">
