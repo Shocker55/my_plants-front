@@ -23,6 +23,7 @@ export default function Widgets({
   const [recordCount, setRecordCount] = useState(0);
   const [attendEvent, setAttendEvent] = useState({});
   const [loading, setLoading] = useState(true);
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     if (currentUser) {
@@ -54,17 +55,35 @@ export default function Widgets({
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (inputValue) {
+      router.push({ pathname: "/search", query: { q: `${inputValue}` } });
+      setInputValue("");
+    }
+  };
+
   return (
     <div className="hidden space-y-5 overflow-y-auto bg-slate-200 px-3 xl:inline xl:w-[350px]">
       <div className="sticky top-0 z-50 mx-3 py-1.5 ">
-        <div className="relative flex items-center rounded-full  p-3">
-          <FaMagnifyingGlass className="z-50 h-5 text-gray-500" />
+        <form
+          method="get"
+          onSubmit={handleSubmit}
+          className="relative flex items-center rounded-full  p-3"
+        >
+          <button onClick={handleSubmit} className="z-50 h-5 text-gray-500">
+            <FaMagnifyingGlass />
+          </button>
           <input
-            className="absolute inset-0 rounded-full border-gray-500 bg-gray-100 pl-11 text-gray-700 focus:bg-white focus:shadow-lg "
             type="text"
             placeholder="Search"
+            value={inputValue}
+            onChange={(e) => {
+              setInputValue(e.target.value);
+            }}
+            className="absolute inset-0 rounded-full border-gray-500 bg-gray-100 pl-11 text-gray-700 focus:bg-white focus:shadow-lg "
           />
-        </div>
+        </form>
       </div>
 
       <div className="bg-second-color mx-3 space-y-3 rounded-xl py-2 text-gray-700">
