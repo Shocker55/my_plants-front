@@ -1,7 +1,7 @@
 import React from "react";
 import UserCard from "./UserCard";
 
-export default function UserList(users) {
+export default function UserList({ users }) {
   return (
     <>
       <div className="mb-1 ml-4 flex max-w-[450px] space-x-10">

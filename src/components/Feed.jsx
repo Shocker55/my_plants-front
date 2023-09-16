@@ -3,7 +3,7 @@ import Dropdown from "./Dropdown";
 import { useAuthContext } from "@/context/AuthContext";
 import Link from "next/link";
 
-export default function Feed({ pageTitle, list, user }) {
+export default function Feed({ pageTitle, children, user }) {
   const { currentUser } = useAuthContext();
 
   return (
@@ -68,7 +68,7 @@ export default function Feed({ pageTitle, list, user }) {
       ) : null}
 
       {/* List */}
-      {list}
+      {children}
     </div>
   );
 }

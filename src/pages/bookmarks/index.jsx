@@ -19,7 +19,9 @@ const Bookmarks = () => {
   return (
     <div className="flex h-screen justify-center">
       <Sidebar />
-      <Feed pageTitle="ブックマーク" list={BookmarkList()} />
+      <Feed pageTitle="ブックマーク">
+        <BookmarkList />
+      </Feed>
       <Widgets />
     </div>
   );

@@ -33,7 +33,7 @@ export async function getServerSideProps({ params }) {
 const Record = ({ record, related_records }) => {
   const { currentUser } = useAuthContext();
   const router = useRouter();
-  const [commentItems, setCommentItems] = useState(record.record_comments);
+  const [commentItems, setCommentItems] = useState([...record.record_comments]);
   const [isCurrentUserBookmarked, setIsCurrentUserBookmarked] = useState(false);
 
   const clickDeleteButton = async () => {

@@ -19,11 +19,16 @@ export async function getServerSideProps({ params }) {
   );
   const userRecords = await anotherRes.json();
 
-  return { props: { user, userRecords } };
+  const attendEventsRes = await fetch(
+    `${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${params.uid}/attend`
+  );
+  const userAttendEvents = await attendEventsRes.json();
+
+  return { props: { user, userRecords, userAttendEvents } };
 }
 
-const User = ({ userRecords, user }) => {
-  const [recordsItems, setRecordsItems] = useState(userRecords);
+const User = ({ userRecords, user, userAttendEvents }) => {
+  const [recordsItems, setRecordsItems] = useState([...userRecords]);
 
   useEffect(() => {
     setRecordsItems(userRecords);
@@ -32,11 +37,14 @@ const User = ({ userRecords, user }) => {
   return (
     <div className="flex h-screen justify-center">
       <Sidebar />
-      <Feed
-        pageTitle="ユーザー"
-        list={MyRecordList({ recordsItems, setRecordsItems, user })}
-        user={user}
-      />
+      <Feed pageTitle="ユーザー" user={user}>
+        <MyRecordList
+          recordsItems={recordsItems}
+          setRecordsItems={setRecordsItems}
+          user={user}
+          userAttendEvents={userAttendEvents}
+        />
+      </Feed>
       <Widgets data={recordsItems} type="index" />
     </div>
   );

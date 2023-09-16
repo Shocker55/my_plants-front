@@ -14,7 +14,9 @@ const Events = ({ events }) => {
   return (
     <div className="flex h-screen justify-center">
       <Sidebar />
-      <Feed pageTitle="イベントリスト" list={EventList(events)} />
+      <Feed pageTitle="イベントリスト">
+        <EventList events={events} />
+      </Feed>
       <Widgets type="eventCreate" />
     </div>
   );

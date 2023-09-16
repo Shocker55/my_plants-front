@@ -53,7 +53,7 @@ export default function BookmarkList() {
       <div className="mb-1 ml-4 flex max-w-[450px] space-x-10">
         <div
           id="1"
-          className={active === "1" ? "cursor-pinter underline" : "cursor-pointer text-slate-500"}
+          className={active === "1" ? "cursor-pointer underline" : "cursor-pointer text-slate-500"}
           onClick={(e) => handleClickRecords(e)}
         >
           Records

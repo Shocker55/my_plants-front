@@ -15,7 +15,9 @@ const Users = ({ users }) => {
   return (
     <div className="flex h-screen justify-center">
       <Sidebar />
-      <Feed pageTitle="ユーザーリスト" list={UserList(users)} />
+      <Feed pageTitle="ユーザーリスト">
+        <UserList users={users} />
+      </Feed>
       <Widgets />
     </div>
   );
