@@ -62,7 +62,7 @@ export default function RecordCard({ record, userPage, recordsItems, setRecordsI
               alt=""
               width={150}
               height={150}
-              className="h-auto w-[150px] rounded"
+              className="h-[150px] w-[150px] rounded"
             />
           ) : (
             <Image
