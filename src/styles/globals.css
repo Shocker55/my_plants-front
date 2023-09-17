@@ -22,6 +22,10 @@
   height: calc(100% - 360px);
 }
 
+.w-custom {
+  width: calc(100% - 8px);
+}
+
 .hidden-scrollbar{
   overflow: scroll;
   -ms-overflow-style: none;    /* IE, Edge 対応 */
