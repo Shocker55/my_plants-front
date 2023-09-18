@@ -5,7 +5,7 @@ export default function UserCard({ user }) {
   return (
     <Link
       href={`/users/${user.uid}`}
-      className="record-card-color mx-1 my-3 flex w-[440px] rounded-lg border border-slate-300"
+      className="record-card-color w-custom mx-1 my-3 flex max-w-[440px] rounded-lg border border-slate-300"
     >
       <div className="flex items-center justify-center pr-2">
         {user.profile.avatar.url ? (

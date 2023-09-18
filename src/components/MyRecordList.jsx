@@ -60,7 +60,7 @@ export default function MyRecordList({ recordsItems, setRecordsItems, user, user
           参加予定のイベント
         </div>
       </div>
-      <div className="flex flex-wrap sm:w-[450px] lg:w-[900px]">
+      <div className="grid grid-cols-1 place-items-center gap-1 sm:min-w-[450px] lg:w-[900px] lg:grid-cols-2">
         {active === "1" || active === "2"
           ? currentRecordsItems?.map((record) => {
               return (

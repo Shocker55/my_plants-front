@@ -39,7 +39,7 @@ export default function RecordList({ records }) {
           人気の記事
         </div>
       </div>
-      <div className="flex flex-wrap sm:w-[450px] lg:w-[900px]">
+      <div className="grid grid-cols-1 place-items-center gap-1 sm:min-w-[450px] lg:w-[900px] lg:grid-cols-2">
         {recordsItems?.map((record) => {
           return (
             <RecordCard

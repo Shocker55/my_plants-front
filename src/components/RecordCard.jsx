@@ -7,7 +7,7 @@ export default function RecordCard({ record, userPage, recordsItems, setRecordsI
   const date = new Date(record.created_at);
 
   return (
-    <div className="record-card-color mx-1 my-3 flex w-[440px] justify-between rounded-lg border border-slate-300">
+    <div className="record-card-color mx-1 my-3 flex max-w-[440px] justify-between rounded-lg border border-slate-300">
       <div className="w-[290px]">
         <div className="flex pt-2">
           <Link href={`/records/${record.id}`} className="w-full">
@@ -45,7 +45,7 @@ export default function RecordCard({ record, userPage, recordsItems, setRecordsI
             />
           </div>
         ) : (
-          <div className="h-[50px] px-2">
+          <div className="h-[60px] px-2">
             <RecordCardButtons
               record={record}
               recordsItems={recordsItems}

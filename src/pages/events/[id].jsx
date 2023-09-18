@@ -132,14 +132,8 @@ const Event = ({ event }) => {
 
   return (
     <div className="flex h-screen justify-center">
-      <Sidebar />
-      <div className="hidden-scrollbar max-w-xl flex-grow overflow-y-scroll border-l border-r border-gray-200 bg-slate-200 sm:ml-[10px] lg:min-w-[900px] ">
-        {/* Header */}
-        <div className="sticky top-0 z-50 flex rounded border-b border-gray-200 bg-slate-50 px-3 py-5">
-          <h2 className="text-xl font-bold">イベント詳細</h2>
-        </div>
-
-        <div className="flex justify-center px-1 sm:w-[450px] lg:w-[900px]">
+      <Feed pageTitle="イベント詳細">
+        <div className="flex justify-center px-1 sm:min-w-[450px] lg:w-[900px]">
           <div className="flex w-[500px] flex-col">
             <div className="mb-3 mt-3 rounded-2xl bg-white p-3">
               <div className="flex justify-between">
@@ -203,7 +197,7 @@ const Event = ({ event }) => {
                 </div>
               </div>
             </div>
-            <div className="rounded-2xl bg-white p-3">
+            <div className="mb-20 rounded-2xl bg-white p-3">
               <h3 className="border-b border-slate-400 text-lg">コメント</h3>
               <div>
                 {commentItems.map((comment) => (
@@ -221,7 +215,7 @@ const Event = ({ event }) => {
             </div>
           </div>
         </div>
-      </div>
+      </Feed>
       <Widgets
         type="eventAttend"
         data={event}
