@@ -133,7 +133,7 @@ const Search = () => {
             イベント
           </div>
         </div>
-        <div className="flex flex-wrap sm:w-[450px] lg:w-[900px]">
+        <div className="grid grid-cols-1 place-items-center gap-1 sm:min-w-[450px] lg:w-[900px] lg:grid-cols-2">
           {loading ? (
             <div role="status" className="mx-auto mt-20">
               <svg

@@ -2,6 +2,7 @@ import { CommentCard } from "@/components/CommentCard";
 import CommentForm from "@/components/CommentForm";
 import Dropdown from "@/components/Dropdown";
 import Feed from "@/components/Feed";
+import Footer from "@/components/Footer";
 import Sidebar from "@/components/Sidebar";
 import Widgets from "@/components/Widgets";
 import { useAuthContext } from "@/context/AuthContext";
@@ -103,14 +104,8 @@ const Record = ({ record, related_records }) => {
 
   return (
     <div className="flex h-screen justify-center">
-      <Sidebar />
-      <div className="hidden-scrollbar max-w-xl flex-grow overflow-y-scroll border-l border-r border-gray-200 bg-slate-200 sm:ml-[10px] lg:min-w-[900px] ">
-        {/* Header */}
-        <div className="sticky top-0 z-50 flex rounded border-b border-gray-200 bg-slate-50 px-3 py-5">
-          <h2 className="text-xl font-bold">記事詳細</h2>
-        </div>
-
-        <div className="flex h-[180px] justify-center sm:w-[450px] lg:w-[900px]">
+      <Feed pageTitle="記録詳細">
+        <div className="flex h-[180px] justify-center sm:min-w-[450px] lg:w-[900px]">
           <div className="mx-1 h-[180px] w-[450px] lg:w-[844px] ">
             <div className="my-2 flex rounded-lg border bg-blue-200 py-3 lg:w-[844px]">
               <div>
@@ -140,7 +135,7 @@ const Record = ({ record, related_records }) => {
           </div>
         </div>
 
-        <div className="flex justify-center px-1 sm:w-[450px] lg:w-[900px]">
+        <div className="flex justify-center px-1 sm:min-w-[450px] lg:w-[900px]">
           <div className="flex w-[500px] flex-col">
             <div className="mb-3 rounded-2xl bg-white p-3">
               <div className="flex justify-between">
@@ -192,7 +187,7 @@ const Record = ({ record, related_records }) => {
                 </div>
               </div>
             </div>
-            <div className="rounded-2xl bg-white p-3">
+            <div className="mb-20 rounded-2xl bg-white p-3">
               <h3 className="border-b border-slate-400 text-lg">コメント</h3>
               <div>
                 {commentItems.map((comment) => (
@@ -210,7 +205,7 @@ const Record = ({ record, related_records }) => {
             </div>
           </div>
         </div>
-      </div>
+      </Feed>
       <Widgets data={related_records} type="show" />
     </div>
   );

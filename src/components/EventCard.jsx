@@ -86,10 +86,10 @@ export default function EventCard({ event }) {
   };
 
   return (
-    <div className="record-card-color mx-1 my-3 flex w-[440px] justify-between rounded-lg border border-slate-300">
-      <div className="w-full">
-        <div className="flex pt-2">
-          <div className="mr-3 w-full pl-3">
+    <div className="record-card-color w-custom mx-1 my-3 flex max-w-[440px] justify-between rounded-lg border border-slate-300">
+      <div className="w-full max-w-[440px]">
+        <div className="mx-3 flex max-w-[440px] pt-2">
+          <div className="w-full">
             <div className="flex justify-between">
               <Link href={`/events/${event.id}`} className="w-[390px]">
                 <h3 className="truncate font-bold">{event.title}</h3>
