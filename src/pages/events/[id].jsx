@@ -132,6 +132,7 @@ const Event = ({ event }) => {
 
   return (
     <div className="flex h-screen justify-center">
+      <Sidebar />
       <Feed pageTitle="イベント詳細">
         <div className="flex justify-center px-1 sm:min-w-[450px] lg:w-[900px]">
           <div className="flex w-[500px] flex-col">
