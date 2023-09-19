@@ -48,7 +48,7 @@ export default function Footer() {
         <FooterDropdown>
           {currentUser ? (
             <>
-              <Link href="/create-record" className="block px-4 py-2 text-sm text-gray-700">
+              <Link href="/records/create" className="block px-4 py-2 text-sm text-gray-700">
                 <div className="flex items-center">
                   <FaPencil className="mr-3" /> 記事を書く
                 </div>

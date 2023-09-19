@@ -19,7 +19,7 @@ const SignUp = () => {
         const token = await user.getIdToken(true);
         const config = { headers: { authorization: `Bearer ${token}` } };
         await axiosInstance.post("/auth", null, config);
-        router.push("/create-profile");
+        router.push("/profiles/create");
       });
     } catch (error) {
       setError(error.message);

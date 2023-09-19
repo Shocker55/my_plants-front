@@ -35,7 +35,7 @@ export default function Home({ records, events }) {
             if (res.data.profile) {
               setProfile(true);
             } else {
-              router.push("/create-profile");
+              router.push("/profiles/create");
             }
           })
           .catch((error) => {
