@@ -90,7 +90,7 @@ const Search = () => {
           onSubmit={handleSubmit}
           className="relative mb-4 mt-3 flex items-center rounded-full p-3"
         >
-          <button onClick={handleSubmit} className="z-50 h-5 text-gray-500 xl:ml-36">
+          <button onClick={handleSubmit} className="z-10 h-5 text-gray-500 xl:ml-36">
             <FaMagnifyingGlass />
           </button>
           <input
@@ -133,7 +133,7 @@ const Search = () => {
             イベント
           </div>
         </div>
-        <div className="grid grid-cols-1 place-items-center gap-1 sm:min-w-[450px] lg:w-[900px] lg:grid-cols-2">
+        <div className="mb-20 grid grid-cols-1 place-items-center gap-1 sm:min-w-[450px] lg:w-[900px] lg:grid-cols-2">
           {loading ? (
             <div role="status" className="mx-auto mt-20">
               <svg

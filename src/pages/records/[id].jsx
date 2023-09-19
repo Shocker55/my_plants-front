@@ -104,6 +104,7 @@ const Record = ({ record, related_records }) => {
 
   return (
     <div className="flex h-screen justify-center">
+      <Sidebar />
       <Feed pageTitle="記録詳細">
         <div className="flex h-[180px] justify-center sm:min-w-[450px] lg:w-[900px]">
           <div className="mx-1 h-[180px] w-[450px] lg:w-[844px] ">

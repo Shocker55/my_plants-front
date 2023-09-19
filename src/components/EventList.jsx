@@ -62,7 +62,7 @@ export default function EventList({ events }) {
           過去のイベント
         </div>
       </div>
-      <div className="grid grid-cols-1 place-items-center gap-1 sm:min-w-[450px] lg:w-[900px] lg:grid-cols-2">
+      <div className="mb-20 grid grid-cols-1 place-items-center gap-1 sm:min-w-[450px] lg:w-[900px] lg:grid-cols-2">
         {currentEventsItems?.map((event) => {
           return <EventCard key={event.id} event={event} />;
         })}
