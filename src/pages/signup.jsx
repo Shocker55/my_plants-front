@@ -14,22 +14,27 @@ const SignUp = () => {
       return setError("パスワードが一致していません");
     }
     try {
-      createUserWithEmailAndPassword(auth, email.value, password.value).then(async (result) => {
-        const user = result.user;
-        const token = await user.getIdToken(true);
-        const config = { headers: { authorization: `Bearer ${token}` } };
-        await axiosInstance.post("/auth", null, config);
-        router.push("/profiles/create");
-      });
+      const result = await createUserWithEmailAndPassword(auth, email.value, password.value);
+      const user = result.user;
+      const token = await user.getIdToken(true);
+      const config = { headers: { authorization: `Bearer ${token}` } };
+
+      await axiosInstance.post("/auth", null, config);
+
+      router.push("/profiles/create");
     } catch (error) {
-      setError(error.message);
+      if (error.code === "auth/invalid-email") {
+        setError("メールアドレスが正しくありません");
+      } else {
+        setError(error.message);
+      }
     }
   };
 
   return (
     <div className="flex h-[800px] w-full items-center justify-center">
       <div>
-        <div className="text-red-300">{error}</div>
+        {error ? <div className="text-red-300">{error}</div> : null}
         <h1>ユーザー登録</h1>
         <form onSubmit={handleSubmit}>
           <div>
