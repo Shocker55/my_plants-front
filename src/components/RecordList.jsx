@@ -8,16 +8,24 @@ export default function RecordList({ records }) {
 
   const handleClickRecentUpdates = async (e) => {
     setActive(e.target.id);
-    const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records`);
-    const recentRecords = await res.data;
-    setRecordsItems(recentRecords);
+    try {
+      const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records`);
+      const recentRecords = await res.data;
+      setRecordsItems(recentRecords);
+    } catch (err) {
+      alert("記録の取得に失敗しました");
+    }
   };
 
   const handleClickPopularRecords = async (e) => {
     setActive(e.target.id);
-    const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records?q=popular`);
-    const popularRecords = await res.data;
-    setRecordsItems(popularRecords);
+    try {
+      const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records?q=popular`);
+      const popularRecords = await res.data;
+      setRecordsItems(popularRecords);
+    } catch (err) {
+      alert("人気の記録の取得に失敗しました")
+    }
   };
 
   return (
@@ -36,7 +44,7 @@ export default function RecordList({ records }) {
           className={active === "2" ? "cursor-pointer underline" : "cursor-pointer text-slate-500"}
           onClick={(e) => handleClickPopularRecords(e)}
         >
-          人気の記事
+          人気の記録
         </div>
       </div>
       <div className="mb-20 grid grid-cols-1 place-items-center gap-1 sm:min-w-[450px] lg:w-[900px] lg:grid-cols-2">

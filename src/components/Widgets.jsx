@@ -6,6 +6,7 @@ import { useAuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import WidgetsAttendeeList from "./WidgetsAttendeeList";
 import { useEffect, useState } from "react";
+import { axiosInstance } from "@/utils/axios";
 
 export default function Widgets({
   data,
@@ -33,15 +34,22 @@ export default function Widgets({
         },
       };
       const fetchWidgetData = async () => {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/users/widget`, config);
-        const widgetData = await res.json();
-        const updatedDate = widgetData.last_record_date
-          ? new Date(widgetData.last_record_date)
-          : undefined;
-        setLastRecordDate(updatedDate);
-        setRecordCount(widgetData.record_count);
-        setAttendEvent(widgetData.upcoming_event);
-        setLoading(false);
+        try {
+          const res = await axiosInstance.get(
+            `${process.env.NEXT_PUBLIC_API_DOMEIN}/users/widget`,
+            config
+          );
+          const widgetData = await res.data;
+          const updatedDate = widgetData.last_record_date
+            ? new Date(widgetData.last_record_date)
+            : undefined;
+          setLastRecordDate(updatedDate);
+          setRecordCount(widgetData.record_count);
+          setAttendEvent(widgetData.upcoming_event);
+          setLoading(false);
+        } catch (err) {
+          alert("データの取得に失敗しました");
+        }
       };
       fetchWidgetData();
     }

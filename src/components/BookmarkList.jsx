@@ -9,43 +9,58 @@ export default function BookmarkList() {
   const [currentBookmarksRecords, setCurrentBookmarkRecords] = useState([]);
   const [currentBookmarksEvents, setCurrentBookmarkEvents] = useState([]);
   const [active, setActive] = useState("1");
+  let config = null;
 
-  const config = {
-    headers: {
-      authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
-    },
-  };
+  if (currentUser) {
+    config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+  }
 
   useEffect(() => {
     const fetchBookmarkRecords = async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_DOMEIN}/users/record_bookmarks`,
-        config
-      );
-      const currentBookmarkRecords = await res.json();
-      setCurrentBookmarkRecords(currentBookmarkRecords);
+      try {
+        const res = await axiosInstance.get(
+          `${process.env.NEXT_PUBLIC_API_DOMEIN}/users/record_bookmarks`,
+          config
+        );
+        const currentBookmarkRecords = await res.data;
+        setCurrentBookmarkRecords(currentBookmarkRecords);
+      } catch (err) {
+        alert("記録の取得に失敗しました");
+      }
     };
     fetchBookmarkRecords();
   }, []);
 
   const handleClickRecords = async (e) => {
     setActive(e.target.id);
-    const res = await axiosInstance.get(
-      `${process.env.NEXT_PUBLIC_API_DOMEIN}/users/record_bookmarks`,
-      config
-    );
-    const currentBookmarkRecords = await res.data;
-    setCurrentBookmarkRecords(currentBookmarkRecords);
+    try {
+      const res = await axiosInstance.get(
+        `${process.env.NEXT_PUBLIC_API_DOMEIN}/users/record_bookmarks`,
+        config
+      );
+      const currentBookmarkRecords = await res.data;
+      setCurrentBookmarkRecords(currentBookmarkRecords);
+    } catch (err) {
+      alert("記録の取得に失敗しました");
+    }
   };
 
   const handleClickEvents = async (e) => {
     setActive(e.target.id);
-    const res = await axiosInstance.get(
-      `${process.env.NEXT_PUBLIC_API_DOMEIN}/users/event_bookmarks`,
-      config
-    );
-    const currentBookmarkEvents = await res.data;
-    setCurrentBookmarkEvents(currentBookmarkEvents);
+    try {
+      const res = await axiosInstance.get(
+        `${process.env.NEXT_PUBLIC_API_DOMEIN}/users/event_bookmarks`,
+        config
+      );
+      const currentBookmarkEvents = await res.data;
+      setCurrentBookmarkEvents(currentBookmarkEvents);
+    } catch (err) {
+      alert("イベントの取得に失敗しました");
+    }
   };
 
   return (
