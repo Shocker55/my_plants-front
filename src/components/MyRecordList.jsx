@@ -19,19 +19,26 @@ export default function MyRecordList({ recordsItems, setRecordsItems, user, user
 
   const handleClickLikes = async (e) => {
     setActive(e.target.id);
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${user.uid}/likes`);
-    const currentLikeRecords = await res.json();
-    setCurrentRecordsItems(currentLikeRecords);
+    try {
+      const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${user.uid}/likes`);
+      const currentLikeRecords = await res.data();
+      setCurrentRecordsItems(currentLikeRecords);
+    } catch (err) {
+      alert("いいねした記録の取得に失敗しました")
+    }
   };
 
   const handleClickAttendEvents = async (e) => {
     setActive(e.target.id);
-    const res = await axiosInstance.get(
-      `${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${user.uid}/attend`
-    );
-
-    const attendEvents = await res.data;
-    setCurrentEventsItems(attendEvents);
+    try {
+      const res = await axiosInstance.get(
+        `${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${user.uid}/attend`
+      );
+      const attendEvents = await res.data;
+      setCurrentEventsItems(attendEvents);
+    } catch (err) {
+      alert("参加予定のイベントの取得に失敗しました")
+    }
   };
 
   return (

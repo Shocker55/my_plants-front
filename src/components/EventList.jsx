@@ -12,9 +12,13 @@ export default function EventList({ events }) {
 
   const handleClickRecentEvents = async (e) => {
     setActive(e.target.id);
-    const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_API_DOMEIN}/events`);
-    const recentEvents = await res.data;
-    setCurrentEventsItems(recentEvents);
+    try {
+      const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_API_DOMEIN}/events`);
+      const recentEvents = await res.data;
+      setCurrentEventsItems(recentEvents);
+    } catch (err) {
+      alert("最近のイベントの取得に失敗しました");
+    }
   };
 
   const handleClickAttendEvents = async (e) => {
@@ -22,19 +26,26 @@ export default function EventList({ events }) {
       return router.push("/login");
     }
     setActive(e.target.id);
-    const res = await axiosInstance.get(
-      `${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${currentUser.uid}/attend`
-    );
-
-    const attendEvents = await res.data;
-    setCurrentEventsItems(attendEvents);
+    try {
+      const res = await axiosInstance.get(
+        `${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${currentUser.uid}/attend`
+      );
+      const attendEvents = await res.data;
+      setCurrentEventsItems(attendEvents);
+    } catch (err) {
+      alert("参加予定のイベントの取得に失敗しました");
+    }
   };
 
   const handleClickPastEvents = async (e) => {
     setActive(e.target.id);
-    const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_API_DOMEIN}/events?q=past`);
-    const pastEvents = await res.data;
-    setCurrentEventsItems(pastEvents);
+    try {
+      const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_API_DOMEIN}/events?q=past`);
+      const pastEvents = await res.data;
+      setCurrentEventsItems(pastEvents);
+    } catch (err) {
+      alert("過去のイベントの取得に失敗しました");
+    }
   };
 
   return (

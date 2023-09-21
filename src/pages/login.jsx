@@ -8,35 +8,39 @@ import { useState } from "react";
 const Login = () => {
   const router = useRouter();
   const [error, setError] = useState("");
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = e.target.elements;
 
     try {
-      signInWithEmailAndPassword(auth, email.value, password.value).then(async (result) => {
-        const user = result.user;
-        const token = await user.getIdToken(true);
-        const config = { headers: { authorization: `Bearer ${token}` } };
-        await axiosInstance.post("/auth", null, config);
+      const result = await signInWithEmailAndPassword(auth, email.value, password.value);
+      const user = result.user;
+      const token = await user.getIdToken(true);
+      const config = { headers: { authorization: `Bearer ${token}` } };
+      await axiosInstance.post("/auth", null, config);
 
-        router.push("/");
-      });
+      router.push("/");
     } catch (error) {
-      setError(error.message);
+      if (error.code === "auth/user-not-found" || error.code === "auth/invalid-email") {
+        setError("ログインに失敗しました");
+      } else if (error.code === "auth/wrong-password") {
+        setError("パスワードが違います");
+      } else {
+        setError(error.message);
+      }
     }
   };
 
   const loginWithGoogle = async () => {
     try {
-      await signInWithPopup(auth, provider).then(async (result) => {
-        const user = result.user;
-        const token = await user.getIdToken(true);
-        const config = { headers: { authorization: `Bearer ${token}` } };
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const token = await user.getIdToken(true);
+      const config = { headers: { authorization: `Bearer ${token}` } };
 
-        await axiosInstance.post("/auth", null, config);
+      await axiosInstance.post("/auth", null, config);
 
-        router.push("/");
-      });
+      router.push("/");
     } catch (error) {
       setError(error.message);
     }
@@ -45,7 +49,7 @@ const Login = () => {
   return (
     <div className="flex h-[800px] w-full items-center justify-center">
       <div>
-        <div>{error}</div>
+        {error ? <div className="text-red-300">{error}</div> : null}
         <h1>ログイン</h1>
         <form onSubmit={handleSubmit}>
           <div>

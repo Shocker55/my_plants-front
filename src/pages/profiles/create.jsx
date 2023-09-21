@@ -16,21 +16,19 @@ const CreateProfile = () => {
   const inputEl = useRef(null);
 
   useEffect(() => {
-    if (currentUser) {
-      const fetchProfile = () => {
-        axiosInstance
-          .get(`/users/${currentUser.uid}`)
-          .then((res) => {
-            if (res.data.profile) {
-              router.push("/");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      };
-      fetchProfile();
-    }
+    const fetchProfile = async () => {
+      if (currentUser) {
+        try {
+          const res = await axiosInstance.get(`/users/${currentUser.uid}`);
+          if (res.data.profile) {
+            router.push("/");
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
+    fetchProfile();
   }, []);
 
   const handleFileChange = (e) => {

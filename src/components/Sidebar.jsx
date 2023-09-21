@@ -50,7 +50,7 @@ export default function Sidebar() {
           <Link href={`/users/${currentUser.uid}`}>
             <SidebarMenuItem text="マイページ" Icon={FaSeedling} />
           </Link>
-          <Link href="/create-record">
+          <Link href="/records/create">
             <button className="mt-5 rounded-3xl bg-slate-400 px-4 py-2 font-black text-white hover:bg-slate-500 hover:text-white">
               記事を書く
             </button>

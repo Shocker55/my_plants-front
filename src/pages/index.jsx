@@ -27,26 +27,22 @@ export default function Home({ records, events }) {
   const [profile, setProfile] = useState(false);
 
   useEffect(() => {
-    if (currentUser) {
-      const fetchProfile = async () => {
-        await axiosInstance
-          .get(`/users/${currentUser.uid}`)
-          .then((res) => {
-            if (res.data.profile) {
-              setProfile(true);
-            } else {
-              router.push("/create-profile");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      };
+    const fetchProfile = async () => {
+      try {
+        const res = await axiosInstance.get(`/users/${currentUser.uid}`);
+        if (res.data.profile) {
+          setProfile(true);
+        } else {
+          router.push("/profiles/create");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (currentUser && !profile) {
       fetchProfile();
     }
-    return () => {
-      setProfile(false);
-    };
   }, [currentUser]);
 
   return (

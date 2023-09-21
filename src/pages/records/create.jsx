@@ -27,10 +27,15 @@ const CreateRecord = () => {
 
   useEffect(() => {
     const fetchBaseRecord = async () => {
-      const result = await axiosInstance
-        .get("/records", { params: { uid: `${currentUser.uid}`, base: "true" } })
-        .then((res) => res.data);
-      setBaseRecords(result);
+      try {
+        const res = await axiosInstance.get("/records", {
+          params: { uid: `${currentUser.uid}`, base: "true" },
+        });
+        const baseRecordsData = await res.data;
+        setBaseRecords(baseRecordsData);
+      } catch (error) {
+        console.log(error);
+      }
     };
     if (currentUser) {
       fetchBaseRecord();
