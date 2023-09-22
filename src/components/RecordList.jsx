@@ -60,7 +60,7 @@ export default function RecordList({ records }) {
   const handleClickRecentUpdates = async (e) => {
     setActive(e.target.id);
     setPage(1);
-    setNextPage(true);
+    setNextPage(false);
     try {
       const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records?page=1`);
       const recentRecords = await res.data;
@@ -73,7 +73,7 @@ export default function RecordList({ records }) {
   const handleClickPopularRecords = async (e) => {
     setActive(e.target.id);
     setPage(1);
-    setNextPage(true);
+    setNextPage(false);
     try {
       const res = await axiosInstance.get(
         `${process.env.NEXT_PUBLIC_API_DOMEIN}/records?q=popular&page=1`
