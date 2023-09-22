@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import RecordCard from "./RecordCard";
+import WidgetEventCard from "./WidgetsEventCard";
 import { axiosInstance } from "@/utils/axios";
 
-export default function RecordList({ records }) {
-  const [recordsItems, setRecordsItems] = useState([...records]);
-  const [active, setActive] = useState("records?");
+export default function WidgetsEventList({ events }) {
+  const [eventItems, setEventItems] = useState([...events]);
   const [page, setPage] = useState(1);
   const [nextPage, setNextPage] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -12,7 +11,7 @@ export default function RecordList({ records }) {
   const fetchData = async (pageNumber) => {
     try {
       const res = await axiosInstance.get(
-        `${process.env.NEXT_PUBLIC_API_DOMEIN}/${active}page=${pageNumber}`
+        `${process.env.NEXT_PUBLIC_API_DOMEIN}/events?page=${pageNumber}`
       );
       const data = await res.data;
       return data;
@@ -34,7 +33,7 @@ export default function RecordList({ records }) {
       }
     };
     fetch();
-  }, [active]);
+  }, []);
 
   const handleClickMore = () => {
     setLoading(true);
@@ -42,7 +41,7 @@ export default function RecordList({ records }) {
       try {
         const records = await fetchData(page + 1);
         const nextPage = await fetchData(page + 2);
-        setRecordsItems((prev) => prev.concat(records));
+        setEventItems((prev) => prev.concat(records));
         setPage((prev) => prev + 1);
         if (nextPage.length !== 0) {
           setNextPage(true);
@@ -57,73 +56,13 @@ export default function RecordList({ records }) {
     setLoading(false);
   };
 
-  const handleClickRecentUpdates = async (e) => {
-    setActive(e.target.id);
-    setPage(1);
-    setNextPage(true);
-    try {
-      const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records?page=1`);
-      const recentRecords = await res.data;
-      setRecordsItems(recentRecords);
-    } catch (err) {
-      alert("記録の取得に失敗しました");
-    }
-  };
-
-  const handleClickPopularRecords = async (e) => {
-    setActive(e.target.id);
-    setPage(1);
-    setNextPage(true);
-    try {
-      const res = await axiosInstance.get(
-        `${process.env.NEXT_PUBLIC_API_DOMEIN}/records?q=popular&page=1`
-      );
-      const popularRecords = await res.data;
-      setRecordsItems(popularRecords);
-    } catch (err) {
-      alert("人気の記録の取得に失敗しました");
-    }
-  };
-
   return (
     <>
-      <div className="mb-3 ml-1 font-bold">Records</div>
-      <div className="mb-1 ml-4 flex max-w-[450px] space-x-10">
-        <div
-          id="records?"
-          className={
-            active === "records?" ? "cursor-pointer underline" : "cursor-pointer text-slate-500"
-          }
-          onClick={(e) => handleClickRecentUpdates(e)}
-        >
-          最近の更新
-        </div>
-        <div
-          id="records?q=popular&"
-          className={
-            active === "records?q=popular&"
-              ? "cursor-pointer underline"
-              : "cursor-pointer text-slate-500"
-          }
-          onClick={(e) => handleClickPopularRecords(e)}
-        >
-          人気の記録
-        </div>
-      </div>
-      <div className="mb-10 grid grid-cols-1 place-items-center gap-1 sm:min-w-[450px] lg:w-[900px] lg:grid-cols-2">
-        {recordsItems?.map((record) => {
-          return (
-            <RecordCard
-              key={record.id}
-              record={record}
-              recordsItems={recordsItems}
-              setRecordsItems={setRecordsItems}
-            />
-          );
-        })}
-      </div>
+      {eventItems?.map((event) => {
+        return <WidgetEventCard key={event.id} event={event} className="w-full" />;
+      })}
       {nextPage ? (
-        <div className="mb-20 justify-center text-blue-500">
+        <div className="mb-20 justify-center pb-3 text-blue-500">
           {loading ? (
             <div role="status" className="mt-10 grid justify-items-center">
               <svg

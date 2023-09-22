@@ -12,10 +12,10 @@ import { useEffect, useState } from "react";
 const inter = Inter({ subsets: ["latin"] });
 
 export async function getServerSideProps() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records?page=1`);
   const records = await res.json();
 
-  const anotherRes = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/events`);
+  const anotherRes = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/events?page=1`);
   const events = await anotherRes.json();
 
   return { props: { records, events } };

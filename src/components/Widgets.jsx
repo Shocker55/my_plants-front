@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import WidgetsAttendeeList from "./WidgetsAttendeeList";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "@/utils/axios";
+import WidgetsEventList from "./WidgetsEventList";
 
 export default function Widgets({
   data,
@@ -162,7 +163,7 @@ export default function Widgets({
         )}
       </div>
       {data && (type === "show" || type === "index") ? (
-        <div className="bg-second-color h-custom sticky top-16 mx-3 space-y-3 rounded-xl pt-2 text-gray-700">
+        <div className="hidden-scrollbar bg-second-color h-custom sticky top-16 mx-3 space-y-3 overflow-y-scroll rounded-xl pt-2 text-gray-700">
           <WidgetsRecordList userRecords={data} type={type} />
         </div>
       ) : null}
@@ -170,9 +171,7 @@ export default function Widgets({
       {data && type === "events" ? (
         <div className="hidden-scrollbar bg-second-color h-custom sticky top-16 mx-3 space-y-3 overflow-y-scroll rounded-xl pt-2 text-gray-700">
           <h4 className="px-4 text-xl font-bold">Events</h4>
-          {data?.map((event) => {
-            return <WidgetEventCard key={event.id} event={event} className="w-full" />;
-          })}
+          <WidgetsEventList events={data} />
         </div>
       ) : null}
       {type === "eventCreate" ? (
