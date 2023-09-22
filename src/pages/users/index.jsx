@@ -4,8 +4,7 @@ import UserList from "@/components/UserList";
 import Widgets from "@/components/Widgets";
 
 export async function getServerSideProps() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/users`);
-  // const res = await fetch("http://localhost:3010/blogs");
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/users?page=1`);
   const users = await res.json();
 
   return { props: { users } };

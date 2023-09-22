@@ -3,6 +3,7 @@ import Dropdown from "./Dropdown";
 import { useAuthContext } from "@/context/AuthContext";
 import Link from "next/link";
 import Footer from "./Footer";
+import Slider from "./Slider";
 
 export default function Feed({ pageTitle, children, user }) {
   const { currentUser } = useAuthContext();
@@ -15,14 +16,7 @@ export default function Feed({ pageTitle, children, user }) {
       </div>
 
       {/* Slider */}
-      {pageTitle === "Home" ? (
-        <div className="mx-5 my-2 flex h-[200px] space-x-4 overflow-x-scroll rounded-lg border bg-blue-200 sm:min-w-[418px] lg:w-[844px]">
-          <div className="h-full min-w-[300px] rounded-lg bg-blue-100">image</div>
-          <div className="h-full min-w-[300px] rounded-lg bg-blue-100">image</div>
-          <div className="h-full min-w-[300px] rounded-lg bg-blue-100">image</div>
-          <div className="h-full min-w-[300px] rounded-lg bg-blue-100">image</div>
-        </div>
-      ) : null}
+      {pageTitle === "Home" ? <Slider /> : null}
 
       {pageTitle === "ユーザー" ? (
         <div className="flex h-[180px] justify-center sm:min-w-[450px] lg:w-[900px]">

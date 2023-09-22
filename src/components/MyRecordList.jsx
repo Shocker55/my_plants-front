@@ -20,11 +20,13 @@ export default function MyRecordList({ recordsItems, setRecordsItems, user, user
   const handleClickLikes = async (e) => {
     setActive(e.target.id);
     try {
-      const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${user.uid}/likes`);
-      const currentLikeRecords = await res.data();
+      const res = await axiosInstance.get(
+        `${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${user.uid}/likes`
+      );
+      const currentLikeRecords = await res.data;
       setCurrentRecordsItems(currentLikeRecords);
     } catch (err) {
-      alert("いいねした記録の取得に失敗しました")
+      alert("いいねした記録の取得に失敗しました");
     }
   };
 
@@ -37,7 +39,7 @@ export default function MyRecordList({ recordsItems, setRecordsItems, user, user
       const attendEvents = await res.data;
       setCurrentEventsItems(attendEvents);
     } catch (err) {
-      alert("参加予定のイベントの取得に失敗しました")
+      alert("参加予定のイベントの取得に失敗しました");
     }
   };
 
