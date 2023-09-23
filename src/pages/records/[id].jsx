@@ -11,7 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
+import { FaBookmark, FaHeart, FaRegBookmark, FaRegHeart } from "react-icons/fa6";
 
 export async function getServerSideProps({ params }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records/${params.id}`);
@@ -36,6 +36,31 @@ const Record = ({ record, related_records }) => {
   const router = useRouter();
   const [commentItems, setCommentItems] = useState([...record.record_comments]);
   const [isCurrentUserBookmarked, setIsCurrentUserBookmarked] = useState(false);
+  const [isCurrentUserLiked, setIsCurrentUserLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(record.record_likes.length);
+
+  const updatedDate = new Date(record.updated_at);
+
+  useEffect(() => {
+    const currentUserLikedRecords = record.record_likes.filter((record) => {
+      return record.user.uid === currentUser?.uid;
+    });
+    if (currentUserLikedRecords.length) {
+      setIsCurrentUserLiked(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!currentUser) {
+      return;
+    }
+    const currentUserBookmarkedRecords = record.record_bookmarks.filter((record) => {
+      return record.user.uid === currentUser.uid;
+    });
+    if (currentUserBookmarkedRecords?.length) {
+      setIsCurrentUserBookmarked(true);
+    }
+  }, []);
 
   const clickDeleteButton = async () => {
     const config = {
@@ -52,17 +77,45 @@ const Record = ({ record, related_records }) => {
     }
   };
 
-  useEffect(() => {
+  const clickLikeButton = async () => {
     if (!currentUser) {
-      return;
+      return router.push("/login");
     }
-    const currentUserBookmarkedRecords = record.record_bookmarks.filter((record) => {
-      return record.user.uid === currentUser.uid;
-    });
-    if (currentUserBookmarkedRecords?.length) {
-      setIsCurrentUserBookmarked(true);
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+
+    try {
+      await axiosInstance.post("/record_likes", { record_id: record.id }, config);
+      setLikeCount((prev) => prev + 1);
+      setIsCurrentUserLiked(true);
+    } catch (err) {
+      alert("いいねに失敗しました");
     }
-  }, []);
+  };
+
+  const clickUnLikeButton = async () => {
+    if (!currentUser) {
+      return router.push("/login");
+    }
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+
+    try {
+      await axiosInstance.delete(`/record_likes/${record.id}`, config);
+      setLikeCount((prev) => prev - 1);
+      setIsCurrentUserLiked(false);
+    } catch (err) {
+      alert("いいねの取り消しに失敗しました");
+    }
+  };
 
   const clickBookmarkButton = async () => {
     if (!currentUser) {
@@ -110,23 +163,25 @@ const Record = ({ record, related_records }) => {
           <div className="mx-1 h-[180px] w-[450px] lg:w-[844px] ">
             <div className="my-2 flex rounded-lg border bg-blue-200 py-3 lg:w-[844px]">
               <div>
-                {record.user.profile.avatar.url ? (
-                  <Image
-                    src={record.user.profile.avatar.url}
-                    alt=""
-                    width={130}
-                    height={130}
-                    className="min-h-[120px] min-w-[120px] rounded-full p-2"
-                  />
-                ) : (
-                  <Image
-                    src="/images/photo_icon.png"
-                    alt=""
-                    width={150}
-                    height={150}
-                    className="h-[120px] w-[120px] rounded"
-                  />
-                )}
+                <Link href={`/users/${record.user.uid}`}>
+                  {record.user.profile.avatar.url ? (
+                    <Image
+                      src={record.user.profile.avatar.url}
+                      alt=""
+                      width={130}
+                      height={130}
+                      className="min-h-[120px] min-w-[120px] rounded-full p-2"
+                    />
+                  ) : (
+                    <Image
+                      src="/images/photo_icon.png"
+                      alt=""
+                      width={150}
+                      height={150}
+                      className="h-[120px] w-[120px] rounded"
+                    />
+                  )}
+                </Link>
               </div>
               <div className="pl-3">
                 <div className="font-bold">{record.user.profile.name}</div>
@@ -185,6 +240,47 @@ const Record = ({ record, related_records }) => {
               <div className="pb-3 pt-1">
                 <div className="min-h-[80px]">
                   <div className="whitespace-pre-wrap p-1">{record.body}</div>
+                </div>
+              </div>
+              <div className="flex items-end justify-end p-1">
+                <div className="mr-4 flex">
+                  {currentUser ? (
+                    <>
+                      {isCurrentUserLiked === true ? (
+                        <button
+                          onClick={() => {
+                            clickUnLikeButton();
+                          }}
+                        >
+                          <FaHeart className="mr-1 text-pink-300" />
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => {
+                            clickLikeButton();
+                          }}
+                        >
+                          <FaRegHeart className="mr-1 text-slate-500" />
+                        </button>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => {
+                          clickLikeButton();
+                        }}
+                      >
+                        <FaRegHeart className="mr-1 text-slate-500" />
+                      </button>
+                    </>
+                  )}
+                  <p className="pr-2 text-slate-500">{likeCount}</p>
+                  {/* <FaRegCalendarCheck className="my-auto mr-1 text-lg" />
+                  {attendeesCount ? <>参加予定: {attendeesCount}名</> : "0"} */}
+                </div>
+                <div className="pr-1 text-sm text-slate-500">
+                  {updatedDate.toLocaleDateString()}
                 </div>
               </div>
             </div>

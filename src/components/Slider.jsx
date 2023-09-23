@@ -27,7 +27,7 @@ export default function Slider() {
   }, []);
 
   return (
-    <div className="mx-5 my-2 rounded-lg border bg-blue-200 sm:min-w-[418px] lg:w-[844px]">
+    <div className="mx-5 my-2 h-[250px] rounded-lg bg-gradient-to-r from-slate-100 via-slate-200 to-slate-100 outline outline-2 outline-slate-300 sm:min-w-[418px] lg:w-[844px]">
       <Swiper
         effect={"coverflow"}
         grabCursor={true}
