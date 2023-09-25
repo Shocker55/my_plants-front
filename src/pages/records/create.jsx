@@ -11,6 +11,7 @@ const CreateRecord = () => {
   const { currentUser } = useAuthContext();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [tags, setTags] = useState("");
   const [image, setImage] = useState();
   const [preview, setPreview] = useState("");
   const [base, setBase] = useState(true);
@@ -18,6 +19,7 @@ const CreateRecord = () => {
   const [selectedBaseRecord, setSelectedBaseRecord] = useState("");
   const [baseId, setBaseId] = useState(0);
   const inputEl = useRef(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!currentUser) {
@@ -79,6 +81,7 @@ const CreateRecord = () => {
     formData.append("title", title);
     if (body) formData.append("body", body);
     if (image) formData.append("image", image);
+    formData.append("tags", tags);
     formData.append("base", base);
     formData.append("baseId", baseId);
 
@@ -100,8 +103,8 @@ const CreateRecord = () => {
     try {
       await axiosInstance.post("/records", data, config);
       router.push(`/users/${currentUser.uid}`);
-    } catch (err) {
-      alert("投稿に失敗しました");
+    } catch (error) {
+      setError(error.response.data.message);
     }
   };
 
@@ -118,6 +121,18 @@ const CreateRecord = () => {
           記録一覧画面
         </Link>
       </div>
+
+      {error ? (
+        <div className="mb-2 border border-red-300">
+          {Object.values(error).map((_error, index) => {
+            return (
+              <div key={index}>
+                <h2>{_error}</h2>
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
 
       <form onSubmit={handleSubmit}>
         <label>
@@ -152,6 +167,15 @@ const CreateRecord = () => {
               className="h-[300px] w-[500px] border"
             />
           </div>
+        </label>
+        <label>
+          <h2>タグを入力してください (一つのタグは最大10文字)</h2>
+          <input
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            placeholder=",で区切って入力してください"
+            className="w-[500px] border"
+          />
         </label>
         <div>
           {preview ? (

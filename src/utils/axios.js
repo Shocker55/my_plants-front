@@ -9,7 +9,7 @@ axiosInstance.interceptors.response.use(
     return res;
   },
   async (err) => {
-    if (err.response.status === 500 && auth.currentUser) {
+    if (err.response.status === 401 && auth.currentUser) {
       const newToken = (await auth.currentUser.getIdTokenResult()).token;
       window.localStorage.setItem("access_token", newToken);
       const res = await axios
@@ -23,6 +23,8 @@ axiosInstance.interceptors.response.use(
           window.location.href = "/";
         });
       return res;
+    } else {
+      throw err;
     }
   }
 );
