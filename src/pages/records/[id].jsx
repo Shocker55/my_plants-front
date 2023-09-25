@@ -228,6 +228,18 @@ const Record = ({ record, related_records }) => {
                   </Dropdown>
                 ) : null}
               </div>
+              <div className="mb-2 flex h-[20px] space-x-2">
+                {record.tags &&
+                  record.tags.map((tag) => (
+                    <Link
+                      href={`/search?q=${tag.name}`}
+                      key={tag.id}
+                      className="rounded-lg bg-slate-200 px-1 text-sm"
+                    >
+                      {tag.name}
+                    </Link>
+                  ))}
+              </div>
               {record.image.url ? (
                 <Image
                   src={record.image.url}

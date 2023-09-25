@@ -12,7 +12,7 @@ const Search = () => {
   const router = useRouter();
   const [searchedItems, setSearchedItems] = useState([]);
   const [inputValue, setInputValue] = useState("");
-  const [searchType, setSearchType] = useState("title");
+  const [searchType, setSearchType] = useState("tag");
   const [itemType, setItemType] = useState("records");
   const [loading, setLoading] = useState(false);
 
@@ -20,11 +20,11 @@ const Search = () => {
     if (router.query.q) {
       setLoading(true);
       setInputValue(router.query.q);
-      setSearchType("title");
+      setSearchType("tag");
       setItemType("records");
       const fetchData = async () => {
         const res = await axiosInstance.get(
-          `${process.env.NEXT_PUBLIC_API_DOMEIN}/records/search?title=${router.query.q}`
+          `${process.env.NEXT_PUBLIC_API_DOMEIN}/records/search?tag=${router.query.q}`
         );
         const items = await res.data;
         setSearchedItems(items);
@@ -69,6 +69,18 @@ const Search = () => {
     setLoading(false);
   };
 
+  const handleClickTag = async (e) => {
+    setLoading(true);
+    setSearchType(e.target.id);
+    const res = await axiosInstance.get(
+      `${process.env.NEXT_PUBLIC_API_DOMEIN}/records/search?tag=${inputValue}`
+    );
+    const items = await res.data;
+    setSearchedItems(items);
+    setItemType("records");
+    setLoading(false);
+  };
+
   const handleClickEvent = async (e) => {
     setLoading(true);
     setSearchType(e.target.id);
@@ -105,6 +117,15 @@ const Search = () => {
         </form>
         <div className="mb-3 ml-1 font-bold">Records</div>
         <div className="mb-1 ml-4 flex max-w-[450px] space-x-10">
+          <div
+            id="tag"
+            className={
+              searchType == "tag" ? "cursor-pointer underline" : "cursor-pointer text-slate-500"
+            }
+            onClick={(e) => handleClickTag(e)}
+          >
+            タグ
+          </div>
           <div
             id="title"
             className={
@@ -159,7 +180,7 @@ const Search = () => {
               {searchedItems && searchedItems?.length !== 0 ? (
                 <>
                   {" "}
-                  {searchType === "title" || searchType === "body"
+                  {searchType === "tag" || searchType === "title" || searchType === "body"
                     ? searchedItems?.map((record) => {
                         return <RecordCard key={record.id} record={record} />;
                       })
