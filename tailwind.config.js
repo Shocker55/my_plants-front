@@ -10,6 +10,9 @@ module.exports = {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "google-btn-normal": "url('/images/btn_google_signin_light_normal_web.png')",
+        "google-btn-hover": "url('/images/btn_google_signin_light_focus_web.png')",
+        "google-btn-active": "url('/images/btn_google_signin_light_pressed_web.png')",
       },
     },
   },
