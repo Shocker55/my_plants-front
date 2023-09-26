@@ -70,12 +70,13 @@ const Login = () => {
           <div>
             <button className="rounded border bg-blue-300 px-3 hover:bg-blue-400">ログイン</button>
           </div>
-          <div>
-            ユーザー登録は
+          <div className="flex justify-center space-x-4 py-3">
             <Link href="/signup" className="text-blue-400">
-              こちら
+              新規登録
             </Link>
-            から
+            <Link href="/reset-password" className="text-blue-400">
+              パスワードを忘れた場合
+            </Link>
           </div>
         </form>
         <div>
