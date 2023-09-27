@@ -13,6 +13,7 @@ import { useAuthContext } from "@/context/AuthContext";
 import { auth } from "@/lib/initFirebase";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/router";
+import SidebarDropdown from "./SidebarDropdown";
 
 export default function Sidebar() {
   const router = useRouter();
@@ -50,6 +51,20 @@ export default function Sidebar() {
           <Link href={`/users/${currentUser.uid}`}>
             <SidebarMenuItem text="マイページ" Icon={FaSeedling} />
           </Link>
+          <SidebarDropdown>
+            <Link
+              href="/term-of-use"
+              className="flex cursor-pointer items-center justify-center space-x-3 rounded p-1 py-3 transition duration-150 ease-out hover:bg-slate-200 xl:justify-start"
+            >
+              <div>利用規約</div>
+            </Link>
+            <Link
+              href="/privacy-policy"
+              className="flex cursor-pointer items-center justify-center space-x-3 rounded p-1 py-3 transition duration-150 ease-out hover:bg-slate-200 xl:justify-start"
+            >
+              <div>プライバシーポリシー</div>
+            </Link>
+          </SidebarDropdown>
           <Link href="/records/create">
             <button className="mt-5 rounded-3xl bg-slate-400 px-4 py-2 font-black text-white hover:bg-slate-500 hover:text-white">
               記事を書く
@@ -66,6 +81,20 @@ export default function Sidebar() {
         </>
       ) : (
         <>
+          <SidebarDropdown>
+            <Link
+              href="/term-of-use"
+              className="flex cursor-pointer items-center justify-center space-x-3 rounded p-1 py-3 transition duration-150 ease-out hover:bg-slate-200 xl:justify-start"
+            >
+              <div>利用規約</div>
+            </Link>
+            <Link
+              href="/privacy-policy"
+              className="flex cursor-pointer items-center justify-center space-x-3 rounded p-1 py-3 transition duration-150 ease-out hover:bg-slate-200 xl:justify-start"
+            >
+              <div>プライバシーポリシー</div>
+            </Link>
+          </SidebarDropdown>
           <div className="absolute bottom-32">
             <Link
               href="/signup"
