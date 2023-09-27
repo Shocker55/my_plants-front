@@ -63,6 +63,16 @@ export default function Footer() {
                   <FaRegBookmark className="mr-3" /> ブックマーク
                 </div>
               </Link>
+              <Link href="/term-of-use" className="block px-4 py-2 text-sm text-gray-700">
+                <div className="flex items-center">
+                  <p className="ml-7">利用規約</p>
+                </div>
+              </Link>
+              <Link href="/privacy-policy" className="block px-4 py-2 text-sm text-gray-700">
+                <div className="flex items-center">
+                  <p className="ml-7">プライバシーポリシー</p>
+                </div>
+              </Link>
               <button onClick={handleLogout} className="block px-4 py-2 text-sm text-gray-700">
                 <div className="flex items-center">
                   <p className="ml-7 text-red-200">ログアウト</p>
@@ -71,6 +81,16 @@ export default function Footer() {
             </>
           ) : (
             <>
+              <Link href="/term-of-use" className="block px-4 py-2 text-sm text-gray-700">
+                <div className="flex items-center">
+                  <p className="ml-7">利用規約</p>
+                </div>
+              </Link>
+              <Link href="/privacy-policy" className="block px-4 py-2 text-sm text-gray-700">
+                <div className="flex items-center">
+                  <p className="ml-7">プライバシーポリシー</p>
+                </div>
+              </Link>
               <Link href="/login" className="block px-4 py-2 text-sm text-gray-700">
                 <div className="flex items-center">
                   <FaRegUser className="mr-3" /> ログイン
