@@ -27,14 +27,10 @@ export default function EventForm({
   type,
 }) {
   return (
-    <form onSubmit={handleSubmit} className="space-y-2">
+    <form onSubmit={handleSubmit}>
       <label>
-        <h2>イベント名</h2>
-        <input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-[500px] border"
-        />
+        <h2 className="mb-2">イベント名</h2>
+        <input value={title} onChange={(e) => setTitle(e.target.value)} className="w-full border" />
       </label>
       <p>日程:</p>
       <div>
@@ -59,7 +55,7 @@ export default function EventForm({
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="ml-2 w-[150px] border"
+                className="ml-2 mr-2 w-[150px] border"
               />
             </label>
             <label className="flex">
@@ -110,7 +106,7 @@ export default function EventForm({
         ))}
       </div>
       {selectedTimeOption === "時間がわかる場合" ? (
-        <div className="flex">
+        <div className="flex justify-between">
           <label className="flex">
             <h2>開始時間:</h2>
             <input
@@ -133,18 +129,14 @@ export default function EventForm({
       ) : null}
       <label>
         <h2>場所:</h2>
-        <input
-          value={place}
-          onChange={(e) => setPlace(e.target.value)}
-          className="w-[500px] border"
-        />
+        <input value={place} onChange={(e) => setPlace(e.target.value)} className="w-full border" />
       </label>
       <label>
         <h2>公式URL:</h2>
         <input
           value={officialUrl}
           onChange={(e) => setOfficialUrl(e.target.value)}
-          className="w-[500px] border"
+          className="w-full border"
         />
       </label>
       <label>
@@ -153,11 +145,11 @@ export default function EventForm({
           <textarea
             value={body}
             onChange={(e) => setBody(e.target.value)}
-            className="h-[300px] w-[500px] border"
+            className="h-[300px] w-full border"
           />
         </div>
       </label>
-      <div className="my-5 flex">
+      <div className="my-5 flex justify-end">
         <div>
           {type === "create" ? (
             <button type="submit" value="Submit" className="rounded-lg border bg-blue-300 px-2">
