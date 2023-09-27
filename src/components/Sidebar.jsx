@@ -55,21 +55,30 @@ export default function Sidebar() {
               記事を書く
             </button>
           </Link>
-          <div>
-            <button onClick={handleLogout} className="border bg-red-300">
+          <div className="absolute bottom-20">
+            <button
+              onClick={handleLogout}
+              className="rounded-3xl bg-red-300 px-4 py-2 text-white hover:bg-red-400"
+            >
               ログアウト
             </button>
           </div>
         </>
       ) : (
         <>
-          <div>
-            <Link href="/signup" className="mr-3 border bg-slate-300">
+          <div className="absolute bottom-32">
+            <Link
+              href="/signup"
+              className="rounded-3xl bg-slate-400 px-4 py-2 font-black text-white hover:bg-slate-500 hover:text-white"
+            >
               ユーザー登録
             </Link>
           </div>
-          <div>
-            <Link href="/login" className="border bg-blue-300">
+          <div className="absolute bottom-20">
+            <Link
+              href="/login"
+              className="mt-8 rounded-3xl bg-blue-400 px-4 py-2 font-black text-white hover:bg-blue-500 hover:text-white"
+            >
               ログイン
             </Link>
           </div>

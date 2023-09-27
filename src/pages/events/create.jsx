@@ -1,4 +1,7 @@
 import EventForm from "@/components/EventForm";
+import Feed from "@/components/Feed";
+import Sidebar from "@/components/Sidebar";
+import Widgets from "@/components/Widgets";
 import { useAuthContext } from "@/context/AuthContext";
 import { axiosInstance } from "@/utils/axios";
 import Link from "next/link";
@@ -79,47 +82,55 @@ const CreateEvent = () => {
   };
 
   return (
-    <div className="mx-auto w-[1000px]">
-      <h1>イベント作成画面</h1>
-      {error ? (
-        <div className="mb-2 border border-red-300">
-          {/* エラーデータが配列ではなくオブジェクト型なの書き方が普段と異なる */}
-          {Object.values(error).map((_error, index) => {
-            return (
-              <div key={index}>
-                <h2>{_error}</h2>
+    <div className="flex h-screen justify-center">
+      <Sidebar />
+      <Feed pageTitle="イベント作成">
+        <div className="h-custom3 flex justify-center py-6 sm:min-w-[500px] lg:w-[900px]">
+          <div className="record-card-color hidden-scrollbar w-[500px] overflow-y-scroll rounded-xl px-5 py-8 text-slate-800">
+            {error ? (
+              <div className="mb-2">
+                {/* エラーデータが配列ではなくオブジェクト型なの書き方が普段と異なる */}
+                {Object.values(error).map((_error, index) => {
+                  return (
+                    <div key={index} className="flex">
+                      <div className="text-slate-400">・</div>
+                      <h2 className="text-red-300">{_error}</h2>
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
-        </div>
-      ) : null}
+            ) : null}
 
-      <EventForm
-        handleSubmit={handleSubmit}
-        title={title}
-        setTitle={setTitle}
-        options={options}
-        selectedOption={selectedOption}
-        handleOptionChange={handleOptionChange}
-        startDate={startDate}
-        setStartDate={setStartDate}
-        endDate={endDate}
-        setEndDate={setEndDate}
-        timeOptions={timeOptions}
-        selectedTimeOption={selectedTimeOption}
-        handleTimeOptionChange={handleTimeOptionChange}
-        startTime={startTime}
-        setStartTime={setStartTime}
-        endTime={endTime}
-        setEndTime={setEndTime}
-        place={place}
-        setPlace={setPlace}
-        officialUrl={officialUrl}
-        setOfficialUrl={setOfficialUrl}
-        body={body}
-        setBody={setBody}
-        type="create"
-      />
+            <EventForm
+              handleSubmit={handleSubmit}
+              title={title}
+              setTitle={setTitle}
+              options={options}
+              selectedOption={selectedOption}
+              handleOptionChange={handleOptionChange}
+              startDate={startDate}
+              setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+              timeOptions={timeOptions}
+              selectedTimeOption={selectedTimeOption}
+              handleTimeOptionChange={handleTimeOptionChange}
+              startTime={startTime}
+              setStartTime={setStartTime}
+              endTime={endTime}
+              setEndTime={setEndTime}
+              place={place}
+              setPlace={setPlace}
+              officialUrl={officialUrl}
+              setOfficialUrl={setOfficialUrl}
+              body={body}
+              setBody={setBody}
+              type="create"
+            />
+          </div>
+        </div>
+      </Feed>
+      <Widgets />
     </div>
   );
 };
