@@ -1,3 +1,6 @@
+import Feed from "@/components/Feed";
+import Sidebar from "@/components/Sidebar";
+import Widgets from "@/components/Widgets";
 import { useAuthContext } from "@/context/AuthContext";
 import { axiosInstance } from "@/utils/axios";
 import Image from "next/image";
@@ -20,6 +23,8 @@ const CreateRecord = () => {
   const [baseId, setBaseId] = useState(0);
   const inputEl = useRef(null);
   const [error, setError] = useState(null);
+  const [recordsItems, setRecordsItems] = useState([]);
+  const [active, setActive] = useState(true);
 
   useEffect(() => {
     if (!currentUser) {
@@ -41,6 +46,21 @@ const CreateRecord = () => {
     };
     if (currentUser) {
       fetchBaseRecord();
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchUserRecords = async () => {
+      try {
+        const res = await axiosInstance.get(`/records?q=own&uid=${currentUser.uid}`);
+        const recordsData = await res.data;
+        setRecordsItems(recordsData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (currentUser) {
+      fetchUserRecords();
     }
   }, []);
 
@@ -100,131 +120,145 @@ const CreateRecord = () => {
       },
     };
 
-    try {
-      await axiosInstance.post("/records", data, config);
-      router.push(`/users/${currentUser.uid}`);
-    } catch (error) {
-      setError(error.response.data.message);
+    if (active === true) {
+      try {
+        setActive(false);
+        await axiosInstance.post("/records", data, config);
+        router.push(`/users/${currentUser.uid}`);
+      } catch (error) {
+        setError(error.response.data.message);
+        setActive(true);
+      }
     }
   };
 
   return (
-    <div className="mx-auto w-[1000px]">
-      <h1>記録一覧画面</h1>
-      <div>
-        <Link href="/" className="font-medium text-blue-600 hover:underline">
-          TOP
-        </Link>
-      </div>
-      <div>
-        <Link href="/records" className="font-medium text-blue-600 hover:underline">
-          記録一覧画面
-        </Link>
-      </div>
-
-      {error ? (
-        <div className="mb-2 border border-red-300">
-          {Object.values(error).map((_error, index) => {
-            return (
-              <div key={index}>
-                <h2>{_error}</h2>
-              </div>
-            );
-          })}
-        </div>
-      ) : null}
-
-      <form onSubmit={handleSubmit}>
-        <label>
-          <h2>タイトルを入力してください</h2>
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-[500px] border"
-          />
-        </label>
-        <label>
-          <h2>関連する記録</h2>
-          <div>
-            <select value={selectedBaseRecord} onChange={(e) => handleSelectedRecord(e)}>
-              <option value="">なし</option>
-              {baseRecords.map((baseRecord) => {
-                return (
-                  <option key={baseRecord.id} value={baseRecord.id}>
-                    タイトル: {baseRecord.title}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-        </label>
-        <label>
-          <h2>本文を入力してください</h2>
-          <div>
-            <textarea
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              className="h-[300px] w-[500px] border"
-            />
-          </div>
-        </label>
-        <label>
-          <h2>タグを入力してください (一つのタグは最大10文字)</h2>
-          <input
-            value={tags}
-            onChange={(e) => setTags(e.target.value)}
-            placeholder=",で区切って入力してください"
-            className="w-[500px] border"
-          />
-        </label>
-        <div>
-          {preview ? (
-            <div>
-              <button
-                type="button"
-                onClick={() => {
-                  setImage(null);
-                  setPreview(null);
-                }}
-              >
-                <div>
-                  <AiOutlineClose className="rounded-xl bg-slate-200 p-[1.5px]" />
+    <div className="flex h-screen justify-center">
+      <Sidebar />
+      <Feed pageTitle="記録の作成">
+        <div className="h-custom3 flex justify-center py-6 sm:min-w-[500px] lg:w-[900px]">
+          <div className="record-card-color hidden-scrollbar w-[500px] overflow-y-scroll rounded-xl px-5 py-8 text-slate-800">
+            <form onSubmit={handleSubmit}>
+              {error ? (
+                <div className="mb-2">
+                  {Object.values(error).map((_error, index) => {
+                    return (
+                      <div key={index} className="flex">
+                        <div className="text-slate-400">・</div>
+                        <h2 className="text-red-300">{_error}</h2>
+                      </div>
+                    );
+                  })}
                 </div>
-              </button>
-              <Image width={500} height={380} className="rounded-xl" src={preview} alt="" />
-            </div>
-          ) : null}
-        </div>
-        <div className="my-5 flex">
-          <div>
-            <button
-              type="button"
-              onClick={() => inputEl.current.click()}
-              className="ml-3 mr-10 rounded-md border bg-slate-200"
-            >
-              画像を選択
-            </button>
-            <input
-              ref={inputEl}
-              type="file"
-              accept="image/jpg,image/jpeg, image/png, image/gif"
-              // 画像のプレビューを削除後、再度同じ選択するとonChangeイベントが発火しないためonClickイベントを追加
-              onClick={(e) => {
-                e.target.value = "";
-              }}
-              onChange={(e) => {
-                handleFileChange(e);
-              }}
-              hidden
-            />
+              ) : null}
+              <label>
+                <h2 className="pb-1">タイトルを入力してください</h2>
+                <input
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="mb-3 w-full border"
+                />
+              </label>
+              <label>
+                <h2 className="pb-1">関連する記録</h2>
+                <div>
+                  <select
+                    value={selectedBaseRecord}
+                    onChange={(e) => handleSelectedRecord(e)}
+                    className="mb-3 min-w-[180px] max-w-full"
+                  >
+                    <option value="">なし</option>
+                    {baseRecords.map((baseRecord) => {
+                      return (
+                        <option key={baseRecord.id} value={baseRecord.id}>
+                          タイトル: {baseRecord.title}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+              </label>
+              <label>
+                <h2 className="pb-2">本文を入力してください</h2>
+                <div>
+                  <textarea
+                    value={body}
+                    onChange={(e) => setBody(e.target.value)}
+                    className="mb-3 h-[300px] w-full border"
+                  />
+                </div>
+              </label>
+              <label>
+                <h2 className="pb-2">タグを入力してください (一つのタグは最大10文字)</h2>
+                <input
+                  value={tags}
+                  onChange={(e) => setTags(e.target.value)}
+                  placeholder=",で区切って入力してください"
+                  className="mb-3 w-full border"
+                />
+              </label>
+              <div>
+                {preview ? (
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setImage(null);
+                        setPreview(null);
+                      }}
+                    >
+                      <div>
+                        <AiOutlineClose className="rounded-xl bg-slate-200 p-[1.5px]" />
+                      </div>
+                    </button>
+                    <Image
+                      width={450}
+                      height={380}
+                      className="rounded-xl px-3"
+                      src={preview}
+                      alt=""
+                    />
+                  </div>
+                ) : null}
+              </div>
+              <div className="my-8 flex justify-center">
+                <div className="">
+                  <button
+                    type="button"
+                    onClick={() => inputEl.current.click()}
+                    className="ml-3 mr-10 rounded-lg border bg-blue-400 px-2 py-1 text-white hover:bg-blue-500 active:bg-blue-700"
+                  >
+                    画像を選択
+                  </button>
+                  <input
+                    ref={inputEl}
+                    type="file"
+                    accept="image/jpg,image/jpeg, image/png, image/gif"
+                    // 画像のプレビューを削除後、再度同じ選択するとonChangeイベントが発火しないためonClickイベントを追加
+                    onClick={(e) => {
+                      e.target.value = "";
+                    }}
+                    onChange={(e) => {
+                      handleFileChange(e);
+                    }}
+                    hidden
+                  />
+                </div>
+                <div>
+                  <button
+                    type="submit"
+                    value="Submit"
+                    className="rounded-lg border bg-slate-400 px-2 py-1 text-white hover:bg-slate-500"
+                  >
+                    作成する
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
-          <div>
-            <button type="submit" value="Submit" className="rounded-lg border bg-blue-300 px-2">
-              記事を作成する
-            </button>
-          </div>
         </div>
-      </form>
+      </Feed>
+      <Widgets data={recordsItems} type="index" />
     </div>
   );
 };
