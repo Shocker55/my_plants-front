@@ -164,7 +164,7 @@ const Record = ({ record, related_records }) => {
             <div className="my-2 flex rounded-lg border bg-blue-200 py-3 lg:w-[844px]">
               <div>
                 <Link href={`/users/${record.user.uid}`}>
-                  {record.user.profile.avatar.url ? (
+                  {record.user.profile?.avatar.url ? (
                     <Image
                       src={record.user.profile.avatar.url}
                       alt=""
@@ -184,8 +184,8 @@ const Record = ({ record, related_records }) => {
                 </Link>
               </div>
               <div className="pl-3">
-                <div className="font-bold">{record.user.profile.name}</div>
-                <div>{record.user.profile.bio}</div>
+                <div className="font-bold">{record.user.profile?.name}</div>
+                <div>{record.user.profile?.bio}</div>
               </div>
             </div>
           </div>

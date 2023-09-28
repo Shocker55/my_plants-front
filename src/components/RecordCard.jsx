@@ -36,9 +36,9 @@ export default function RecordCard({ record, userPage, recordsItems, setRecordsI
           <div className="flex items-center justify-between px-2 pb-1">
             <Link href={`/users/${record.user.uid}`}>
               <div className="flex items-center">
-                {record.user.profile.avatar.url ? (
+                {record.user.profile?.avatar.url ? (
                   <Image
-                    src={record.user.profile.avatar.url}
+                    src={record.user.profile?.avatar.url}
                     width={60}
                     height={60}
                     alt=""
@@ -48,7 +48,7 @@ export default function RecordCard({ record, userPage, recordsItems, setRecordsI
                   <FaCircleUser className="mr-2 h-[60px] w-[60px] p-1 text-5xl text-gray-400" />
                 )}
                 <div className="text-sm font-semibold text-gray-500">
-                  {record.user.profile.name}
+                  {record.user.profile?.name}
                 </div>
               </div>
             </Link>
