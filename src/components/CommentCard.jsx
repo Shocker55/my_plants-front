@@ -45,7 +45,7 @@ export const CommentCard = ({ comment, commentItems, setCommentItems, type }) =>
                 width={50}
                 height={50}
                 alt=""
-                className="mr-2 h-auto rounded-full"
+                className="mr-2 h-[50px] w-[50px] rounded-full"
               />
             ) : (
               <FaCircleUser className="h-[60px] w-[60px] text-5xl text-gray-400" />
