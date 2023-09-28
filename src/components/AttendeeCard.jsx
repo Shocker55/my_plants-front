@@ -14,7 +14,7 @@ export default function AttendeeCard({ user }) {
             alt=""
             width={80}
             height={80}
-            className="h-auto rounded-full p-2"
+            className="h-[80px] w-[80px] rounded-full p-2"
           />
         ) : (
           <Image
