@@ -39,7 +39,7 @@ export const CommentCard = ({ comment, commentItems, setCommentItems, type }) =>
       <div className="flex justify-between">
         <div className="flex">
           <Link href={`/users/${comment.user.uid}`}>
-            {comment.user.profile.avatar.url ? (
+            {comment.user.profile?.avatar.url ? (
               <Image
                 src={comment.user.profile.avatar.url}
                 width={50}
@@ -51,7 +51,7 @@ export const CommentCard = ({ comment, commentItems, setCommentItems, type }) =>
               <FaCircleUser className="h-[60px] w-[60px] text-5xl text-gray-400" />
             )}
           </Link>
-          <div className="my-auto">{comment.user.profile.name}</div>
+          <div className="my-auto">{comment.user.profile?.name}</div>
         </div>
         <div className="flex">
           {currentUser && comment.user.uid === currentUser.uid ? (

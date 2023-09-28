@@ -23,7 +23,7 @@ export default function Feed({ pageTitle, children, user }) {
           <div className="mx-1 h-[180px] w-[450px] lg:w-[844px] ">
             <div className="my-2 flex rounded-lg border bg-blue-200 py-3 lg:w-[844px]">
               <div>
-                {user.profile.avatar.url ? (
+                {user.profile?.avatar.url ? (
                   <Image
                     src={user.profile.avatar.url}
                     alt=""
@@ -43,7 +43,7 @@ export default function Feed({ pageTitle, children, user }) {
               </div>
               <div className="w-[90%] px-3">
                 <div className="flex justify-between">
-                  <div className="font-bold">{user.profile.name}</div>
+                  <div className="font-bold">{user.profile?.name}</div>
                   {currentUser && user.uid === currentUser.uid ? (
                     <Dropdown>
                       <Link
@@ -55,7 +55,7 @@ export default function Feed({ pageTitle, children, user }) {
                     </Dropdown>
                   ) : null}
                 </div>
-                <div>{user.profile.bio}</div>
+                <div>{user.profile?.bio}</div>
               </div>
             </div>
           </div>
