@@ -108,7 +108,7 @@ const CreateProfile = () => {
                       width={96}
                       height={96}
                       alt=""
-                      className="mr-3 rounded-full font-mono"
+                      className="mr-3 h-[96px] w-[96px] rounded-full font-mono"
                     />
                   </div>
                 ) : (

@@ -14,7 +14,7 @@ export default function UserCard({ user }) {
             alt=""
             width={120}
             height={120}
-            className="min-h-[120px] min-w-[120px] rounded-full p-2"
+            className="h-[120px] w-[120px] rounded-full p-2"
           />
         ) : (
           <Image

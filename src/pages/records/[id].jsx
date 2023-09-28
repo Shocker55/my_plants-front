@@ -170,7 +170,7 @@ const Record = ({ record, related_records }) => {
                       alt=""
                       width={130}
                       height={130}
-                      className="min-h-[120px] min-w-[120px] rounded-full p-2"
+                      className="h-[120px] w-[120px] rounded-full p-2"
                     />
                   ) : (
                     <Image
