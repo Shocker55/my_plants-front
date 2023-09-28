@@ -134,7 +134,7 @@ const EditProfile = ({ user }) => {
                           width={96}
                           height={96}
                           alt=""
-                          className="mr-3 rounded-full font-mono"
+                          className="mr-3 rounded-full font-mono w-[96px] h-[96px]"
                         />
                       </div>
                     ) : (
