@@ -43,7 +43,7 @@ export default function Home({ records, events }) {
     if (currentUser && !profile) {
       fetchProfile();
     }
-  }, [currentUser]);
+  }, []);
 
   return (
     <div className="flex h-screen justify-center">
