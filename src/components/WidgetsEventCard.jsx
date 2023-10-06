@@ -116,7 +116,7 @@ export default function WidgetEventCard({ event }) {
               )}
               <div className="flex">
                 <div className="inline-block min-w-[52px]">場所 :</div>
-                <div className="inline-block">{event.place}</div>
+                <div className="inline-block truncate">{event.place}</div>
               </div>
               <p className="mb-2 line-clamp-3 h-20 overflow-hidden py-2">{event.body}</p>
               <p className="p-2 text-right text-sm text-slate-500">
