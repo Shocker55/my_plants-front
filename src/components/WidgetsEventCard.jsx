@@ -88,9 +88,9 @@ export default function WidgetEventCard({ event }) {
     <div className="record-card-color mx-1 my-3 flex justify-between rounded-lg border border-slate-300">
       <div className="w-full">
         <div className="flex pt-2">
-          <div className="mr-3 w-full pl-3">
+          <div className="w-full px-3">
             <div className="flex justify-between">
-              <Link href={`/events/${event.id}`} className="w-[240px]">
+              <Link href={`/events/${event.id}`} className="max-w-[240px] truncate">
                 <h3 className="truncate font-bold">{event.title}</h3>
               </Link>
               <div className="pt-1 text-lg">
