@@ -130,6 +130,7 @@ const Event = ({ event }) => {
     }
   };
 
+  console.log(event);
   return (
     <div className="flex h-screen justify-center">
       <Sidebar />
@@ -172,15 +173,25 @@ const Event = ({ event }) => {
                 ) : null}
               </div>
               <div className="pt-1">開始日時: {formatDate(startDate, event.date_type)}</div>
-              <div className="pb-3 pt-1">終了日時: {formatDate(endDate, event.date_type)}</div>
+              <div className="pb-2 pt-1">終了日時: {formatDate(endDate, event.date_type)}</div>
               {event.start_time ? (
-                <div className="pb-3 pt-1">
+                <div className="pb-2 pt-1">
                   時間: {formatTime(startTime)} ~ {formatTime(endTime)}
                 </div>
               ) : null}
+              <div>
+                場所:
+                <p className="p-1">{event.place}</p>
+              </div>
               {event.official_url ? (
                 <div>
-                  公式URL: <div>{event.official_url}</div>
+                  公式URL:
+                  <a
+                    href={event.official_url}
+                    className="block p-1 text-blue-400 hover:cursor-pointer hover:underline"
+                  >
+                    {event.official_url}
+                  </a>
                 </div>
               ) : null}
               <div className="pb-3 pt-1">

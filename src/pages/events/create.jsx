@@ -23,6 +23,8 @@ const CreateEvent = () => {
   const [error, setError] = useState(null);
   const [selectedOption, setSelectedOption] = useState("日付");
   const [selectedTimeOption, setSelectedTimeOption] = useState("時間がわかる場合");
+  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState(true);
 
   const options = { full_date: "日付", month_only: "月のみ" };
   const timeOptions = { time: "時間がわかる場合", unknown: "不明の場合" };
@@ -30,7 +32,25 @@ const CreateEvent = () => {
   useEffect(() => {
     if (!currentUser) {
       router.push("/login");
+    } else {
+      setLoading(false);
     }
+  }, []);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await axiosInstance.get(`/users/${currentUser.uid}`);
+        if (res.data.profile) {
+          setProfile(false);
+        } else {
+          router.push("/profiles/create");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchProfile();
   }, []);
 
   // FormData形式でデータを作成
@@ -86,48 +106,52 @@ const CreateEvent = () => {
       <Sidebar />
       <Feed pageTitle="イベント作成">
         <div className="h-custom3 flex justify-center py-6 sm:min-w-[500px] lg:w-[900px]">
-          <div className="record-card-color hidden-scrollbar w-[500px] overflow-y-scroll rounded-xl px-5 py-8 text-slate-800">
-            {error ? (
-              <div className="mb-2">
-                {/* エラーデータが配列ではなくオブジェクト型なの書き方が普段と異なる */}
-                {Object.values(error).map((_error, index) => {
-                  return (
-                    <div key={index} className="flex">
-                      <div className="text-slate-400">・</div>
-                      <h2 className="text-red-300">{_error}</h2>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : null}
+          {loading && profile ? (
+            <>Loading...</>
+          ) : (
+            <div className="record-card-color hidden-scrollbar w-[500px] overflow-y-scroll rounded-xl px-5 py-8 text-slate-800">
+              {error ? (
+                <div className="mb-2">
+                  {/* エラーデータが配列ではなくオブジェクト型なの書き方が普段と異なる */}
+                  {Object.values(error).map((_error, index) => {
+                    return (
+                      <div key={index} className="flex">
+                        <div className="text-slate-400">・</div>
+                        <h2 className="text-red-300">{_error}</h2>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : null}
 
-            <EventForm
-              handleSubmit={handleSubmit}
-              title={title}
-              setTitle={setTitle}
-              options={options}
-              selectedOption={selectedOption}
-              handleOptionChange={handleOptionChange}
-              startDate={startDate}
-              setStartDate={setStartDate}
-              endDate={endDate}
-              setEndDate={setEndDate}
-              timeOptions={timeOptions}
-              selectedTimeOption={selectedTimeOption}
-              handleTimeOptionChange={handleTimeOptionChange}
-              startTime={startTime}
-              setStartTime={setStartTime}
-              endTime={endTime}
-              setEndTime={setEndTime}
-              place={place}
-              setPlace={setPlace}
-              officialUrl={officialUrl}
-              setOfficialUrl={setOfficialUrl}
-              body={body}
-              setBody={setBody}
-              type="create"
-            />
-          </div>
+              <EventForm
+                handleSubmit={handleSubmit}
+                title={title}
+                setTitle={setTitle}
+                options={options}
+                selectedOption={selectedOption}
+                handleOptionChange={handleOptionChange}
+                startDate={startDate}
+                setStartDate={setStartDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
+                timeOptions={timeOptions}
+                selectedTimeOption={selectedTimeOption}
+                handleTimeOptionChange={handleTimeOptionChange}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+                place={place}
+                setPlace={setPlace}
+                officialUrl={officialUrl}
+                setOfficialUrl={setOfficialUrl}
+                body={body}
+                setBody={setBody}
+                type="create"
+              />
+            </div>
+          )}
         </div>
       </Feed>
       <Widgets />
