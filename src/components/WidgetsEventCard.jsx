@@ -88,9 +88,9 @@ export default function WidgetEventCard({ event }) {
     <div className="record-card-color mx-1 my-3 flex justify-between rounded-lg border border-slate-300">
       <div className="w-full">
         <div className="flex pt-2">
-          <div className="mr-3 w-full pl-3">
+          <div className="w-full px-3">
             <div className="flex justify-between">
-              <Link href={`/events/${event.id}`} className="w-[240px]">
+              <Link href={`/events/${event.id}`} className="max-w-[240px] truncate">
                 <h3 className="truncate font-bold">{event.title}</h3>
               </Link>
               <div className="pt-1 text-lg">
@@ -116,7 +116,7 @@ export default function WidgetEventCard({ event }) {
               )}
               <div className="flex">
                 <div className="inline-block min-w-[52px]">場所 :</div>
-                <div className="inline-block">{event.place}</div>
+                <div className="inline-block truncate">{event.place}</div>
               </div>
               <p className="mb-2 line-clamp-3 h-20 overflow-hidden py-2">{event.body}</p>
               <p className="p-2 text-right text-sm text-slate-500">
