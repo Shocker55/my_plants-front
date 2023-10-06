@@ -46,12 +46,18 @@ export default function Home({ records, events }) {
   }, []);
 
   return (
-    <div className="flex h-screen justify-center">
-      <Sidebar />
-      <Feed pageTitle="Home">
-        <RecordList records={records} />
-      </Feed>
-      <Widgets data={events} type="events" />
-    </div>
+    <>
+      {(currentUser && profile) || !currentUser ? (
+        <div className="flex h-screen justify-center">
+          <Sidebar />
+          <Feed pageTitle="Home">
+            <RecordList records={records} />
+          </Feed>
+          <Widgets data={events} type="events" />
+        </div>
+      ) : (
+        <>Loading...</>
+      )}
+    </>
   );
 }

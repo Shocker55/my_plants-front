@@ -3,7 +3,7 @@ import { axiosInstance } from "@/utils/axios";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { AiOutlineUser, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineUser, AiOutlineClose, AiOutlinePlus } from "react-icons/ai";
 
 export const getServerSideProps = async ({ params }) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${params.uid}`);
@@ -102,7 +102,7 @@ const EditProfile = ({ user }) => {
 
     try {
       await axiosInstance.put(`/profiles/${user.id}`, data, config);
-      router.push("/");
+      router.push(`/users/${currentUser.uid}`);
     } catch (error) {
       setError(error.response.data.message);
     }
@@ -113,9 +113,9 @@ const EditProfile = ({ user }) => {
       {loading ? (
         <>Loading ...</>
       ) : (
-        <div className="flex h-[800px] w-full items-center justify-center">
-          <div className="w-[500px]">
-            <h1 className="mb-2 text-2xl">プロフィール作成</h1>
+        <div className="flex h-screen w-full items-center justify-center px-3">
+          <div className="w-[500px] items-center">
+            <h1 className="mb-2 text-2xl">プロフィール編集</h1>
             {error ? (
               <div className="mb-2 border border-red-300">
                 {/* エラーデータが配列ではなくオブジェクト型なの書き方が普段と異なる */}
@@ -130,10 +130,10 @@ const EditProfile = ({ user }) => {
             ) : null}
             <form onSubmit={handleSubmit}>
               <div className="flex">
-                <div>
+                <div className="flex content-center">
                   <button type="button" onClick={() => inputEl.current.click()}>
                     {avatarPreview ? (
-                      <div>
+                      <div className="relative">
                         <Image
                           src={avatarPreview}
                           width={96}
@@ -141,25 +141,25 @@ const EditProfile = ({ user }) => {
                           alt=""
                           className="mr-3 h-[96px] w-[96px] rounded-full font-mono"
                         />
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setAvatar(null);
+                            setAvatarPreview(null);
+                          }}
+                          className="z-5 absolute right-5 top-0"
+                        >
+                          <AiOutlineClose className="rounded-xl bg-slate-300 p-1 text-xl" />
+                        </button>
                       </div>
                     ) : (
-                      <AiOutlineUser className="mr-3 rounded-full border bg-slate-200 p-2 font-mono text-8xl" />
+                      <div className="relative mr-3 flex h-[96px] w-[96px] items-center justify-center rounded-full border bg-slate-200 p-1 font-mono text-6xl">
+                        <AiOutlinePlus className="z-5 absolute right-2 top-0 rounded-full bg-slate-300 p-1 text-xl" />
+                        <AiOutlineUser className="z-0" />
+                      </div>
                     )}
                   </button>
-                  {avatarPreview ? (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setAvatar(null);
-                        setAvatarPreview(null);
-                      }}
-                      className="block"
-                    >
-                      <div>
-                        <AiOutlineClose className="rounded-xl bg-slate-200 p-[1.5px]" />
-                      </div>
-                    </button>
-                  ) : null}
                   <input
                     ref={inputEl}
                     type="file"
@@ -174,9 +174,9 @@ const EditProfile = ({ user }) => {
                     hidden
                   />
                 </div>
-                <div>
-                  <div>
-                    <label htmlFor="name" className="block">
+                <div className="ml-3 w-full max-w-[240px]">
+                  <div className="mb-2">
+                    <label htmlFor="name" className="block pb-2">
                       ユーザー名
                     </label>
                     <input
@@ -185,11 +185,11 @@ const EditProfile = ({ user }) => {
                       value={name}
                       placeholder="ユーザー名を入力"
                       onChange={(e) => setName(e.target.value)}
-                      className="border"
+                      className="w-full border"
                     />
                   </div>
-                  <div>
-                    <label htmlFor="bio" className="block">
+                  <div className="mb-2">
+                    <label htmlFor="bio" className="block pb-2">
                       ひとこと
                     </label>
                     <textarea
@@ -199,13 +199,13 @@ const EditProfile = ({ user }) => {
                       value={bio}
                       placeholder="Bio"
                       onChange={(e) => setBio(e.target.value)}
-                      className="border"
+                      className="h-20 w-full border"
                     />
                   </div>
                 </div>
               </div>
-              <div>
-                <button className="rounded border bg-gray-300 px-3 hover:bg-gray-400">作成</button>
+              <div className="flex max-w-[350px] justify-end">
+                <button className="rounded border bg-gray-300 px-3 hover:bg-gray-400">編集</button>
               </div>
             </form>
           </div>
