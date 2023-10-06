@@ -5,10 +5,15 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineUser, AiOutlineClose } from "react-icons/ai";
 
-export const getServerSideProps = async (context) => {
-  const uid = context.params.uid;
-  const res = await axiosInstance.get(`/users/${uid}`);
-  const user = await res.data;
+export const getServerSideProps = async ({ params }) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/users/${params.uid}`);
+  const user = await res.json();
+
+  if (user.status) {
+    return {
+      notFound: true,
+    };
+  }
 
   return { props: { user } };
 };
@@ -36,19 +41,19 @@ const EditProfile = ({ user }) => {
 
   useEffect(() => {
     if (currentUser && user.profile.avatar.url) {
-      const fetchProfile = () => {
-        axiosInstance.get(`/users/${currentUser.uid}`).catch((error) => {
+      const fetchProfile = async () => {
+        try {
+          const res = await fetch(user.profile.avatar.url);
+          const blob = await res.blob();
+          const file = new File(
+            [blob],
+            `${user.profile.avatar.url.match(".+/(.+?)([?#;].*)?$")[1]}`
+          );
+          setAvatar(file);
+          setAvatarPreview(window.URL.createObjectURL(file));
+        } catch (error) {
           console.log(error);
-        });
-        fetch(user.profile.avatar.url)
-          .then((res) => res.blob())
-          .then(
-            (blob) => new File([blob], `${user.profile.avatar.url.match(".+/(.+?)([?#;].*)?$")[1]}`)
-          )
-          .then((file) => {
-            setAvatar(file);
-            setAvatarPreview(window.URL.createObjectURL(file));
-          });
+        }
       };
       fetchProfile();
     }
@@ -134,7 +139,7 @@ const EditProfile = ({ user }) => {
                           width={96}
                           height={96}
                           alt=""
-                          className="mr-3 rounded-full font-mono w-[96px] h-[96px]"
+                          className="mr-3 h-[96px] w-[96px] rounded-full font-mono"
                         />
                       </div>
                     ) : (

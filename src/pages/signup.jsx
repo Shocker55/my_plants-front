@@ -1,6 +1,6 @@
-import { auth } from "@/lib/initFirebase";
+import { auth, provider } from "@/lib/initFirebase";
 import { axiosInstance } from "@/utils/axios";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -29,6 +29,21 @@ const SignUp = () => {
       } else {
         setError(error.message);
       }
+    }
+  };
+
+  const loginWithGoogle = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const token = await user.getIdToken(true);
+      const config = { headers: { authorization: `Bearer ${token}` } };
+
+      await axiosInstance.post("/auth", null, config);
+
+      router.push("/");
+    } catch (error) {
+      setError(error.message);
     }
   };
 
@@ -76,12 +91,25 @@ const SignUp = () => {
                 />
               </div>
 
-              <div className="flex justify-center">
+              <div className="flex justify-center py-3">
                 <button className="mb-3 mt-6 min-w-[150px] rounded border bg-gray-400 px-3 py-1 text-white hover:bg-gray-500">
                   登録
                 </button>
               </div>
             </form>
+            <div>
+              <div className="mb-2 flex items-center justify-center">
+                <div className="w-2/5 border border-b"></div>
+                <div className="border border-slate-300 px-3 text-slate-500">or</div>
+                <div className="w-2/5 border border-b"></div>
+              </div>
+              <div className="flex justify-center">
+                <button
+                  onClick={loginWithGoogle}
+                  className="h-[47px] w-[191px] bg-google-btn-normal hover:bg-google-btn-hover active:bg-google-btn-active"
+                ></button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
