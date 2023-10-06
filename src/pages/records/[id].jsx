@@ -209,13 +209,13 @@ const Record = ({ record, related_records }) => {
                 </div>
                 {currentUser && record.user.uid === currentUser.uid ? (
                   <Dropdown>
-                    {/* <Link
+                    <Link
                       href={`/records/${record.id}/edit`}
                       className="block px-4 py-2 text-sm text-gray-700"
                       role="menuitem"
                     >
                       編集
-                    </Link> */}
+                    </Link>
                     <button
                       onClick={() => {
                         clickDeleteButton();

@@ -49,7 +49,7 @@ export default function Widgets({
           setAttendEvent(widgetData.upcoming_event);
           setLoading(false);
         } catch (err) {
-          alert("データの取得に失敗しました");
+          console.log(err);
         }
       };
       fetchWidgetData();
