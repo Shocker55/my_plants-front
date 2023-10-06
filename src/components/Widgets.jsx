@@ -99,7 +99,7 @@ export default function Widgets({
         <h3 className="px-4 font-bold">History of My Records</h3>
         {currentUser ? (
           <>
-            <div className="flex justify-between px-4">
+            <div className="flex w-full justify-center px-4 min-[1410px]:justify-between">
               <div>
                 <div className="pb-1">Last Record</div>
                 <div className="flex h-[24px] w-[120px] items-center justify-center rounded bg-slate-200 text-center">
@@ -114,7 +114,7 @@ export default function Widgets({
                   ) : null}
                 </div>
               </div>
-              <div>
+              <div className="hidden min-[1410px]:block">
                 <div className="pb-1">Record Counts</div>
                 <div className="h-[24px] w-[110px] rounded bg-slate-200 text-center">
                   {!loading ? <> {recordCount ? <>{recordCount}</> : <div>0</div>}</> : null}
