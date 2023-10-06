@@ -138,7 +138,7 @@ export default function Widgets({
             </div>
           </>
         ) : (
-          <div className="h-[132px]">
+          <div className="h-[122px]">
             <div className="px-4 text-[14px]">
               ログインすることで、
               <br />
@@ -146,7 +146,7 @@ export default function Widgets({
               参加予定のイベントが表示されます。
               <br />
             </div>
-            <div className="mt-2 px-4 text-sm text-gray-600">
+            <div className="mt-2 hidden px-4 text-sm text-gray-600 min-[1430px]:block">
               <div className="mt-4 flex justify-between px-10">
                 <Link href="/signup" className="rounded-lg bg-slate-300 p-2 hover:bg-slate-400">
                   新規登録
