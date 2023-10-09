@@ -2,8 +2,6 @@ import { useEffect } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 
 export default function Map({ latitude, longitude }) {
-  console.log(latitude);
-
   useEffect(() => {
     const defaultLatLng = {
       lat: parseFloat(latitude),

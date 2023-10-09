@@ -80,7 +80,7 @@ export default function EventForm({
               <h2>開始日:</h2>
               <input
                 type="month"
-                value={startDate}
+                value={startDate.slice(0, 7)}
                 onChange={(e) => setStartDate(e.target.value)}
                 className="ml-2 w-[130px] border"
               />
@@ -89,7 +89,7 @@ export default function EventForm({
               <h2>終了日:</h2>
               <input
                 type="month"
-                value={endDate}
+                value={endDate.slice(0, 7)}
                 onChange={(e) => setEndDate(e.target.value)}
                 className="ml-2 w-[130px] border"
               />
@@ -152,7 +152,6 @@ export default function EventForm({
       </label>
       <label>
         <h2>場所:</h2>
-        {/* <input value={place} onChange={(e) => setPlace(e.target.value)} className="w-full border" /> */}
         <CreateMap
           place={place}
           setPlace={setPlace}
