@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.16.2",
     "@tailwindcss/line-clamp": "^0.4.4",
     "axios": "^1.4.0",
     "eslint": "8.45.0",

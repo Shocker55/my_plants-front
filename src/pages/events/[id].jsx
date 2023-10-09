@@ -12,6 +12,7 @@ import Link from "next/link";
 import { FaBookmark, FaRegBookmark, FaRegCalendarCheck } from "react-icons/fa6";
 import { CommentCard } from "@/components/CommentCard";
 import CommentForm from "@/components/CommentForm";
+import Map from "@/components/Map";
 
 export async function getServerSideProps({ params }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/events/${params.id}`);
@@ -130,7 +131,6 @@ const Event = ({ event }) => {
     }
   };
 
-  console.log(event);
   return (
     <div className="flex h-screen justify-center">
       <Sidebar />
@@ -198,6 +198,9 @@ const Event = ({ event }) => {
                 <div className="min-h-[80px]">
                   <div className="whitespace-pre-wrap p-1">{event.body}</div>
                 </div>
+              </div>
+              <div className="flex flex-col items-center justify-center">
+                <Map latitude={event.latitude} longitude={event.longitude} />
               </div>
               <div className="flex items-end justify-end p-1">
                 <div className="mr-4 flex">
