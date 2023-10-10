@@ -174,9 +174,9 @@ const Search = () => {
             }}
             className="absolute inset-0 mx-auto rounded-full border-gray-500 bg-gray-100 pl-11 text-gray-700 focus:bg-white focus:shadow-lg sm:w-[418px] lg:w-[600px]"
           />
-          {isFocus && searchType === "tag" ? (
+          {isFocus && searchType === "tag" && suggestions.length > 0 ? (
             <>
-              {inputValue && suggestions ? (
+              {inputValue ? (
                 <>
                   <div className="absolute right-0 top-12 z-50 w-full" ref={inputRef}>
                     <div className="flex w-full justify-center px-8">
