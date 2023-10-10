@@ -5,7 +5,7 @@ import Sidebar from "@/components/Sidebar";
 import Widgets from "@/components/Widgets";
 import { axiosInstance } from "@/utils/axios";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 
 const Search = () => {
@@ -15,6 +15,11 @@ const Search = () => {
   const [searchType, setSearchType] = useState("tag");
   const [itemType, setItemType] = useState("records");
   const [loading, setLoading] = useState(false);
+  const [isFocus, setIsFocus] = useState(false);
+  const [options, setOptions] = useState([]);
+  // フィルターにかけた配列をいれるためのステート
+  const [suggestions, setSuggestions] = useState([]);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     if (router.query.q) {
@@ -34,8 +39,22 @@ const Search = () => {
     }
   }, [router.query.q]);
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (inputRef.current && !inputRef.current.contains(event.target)) {
+        setIsFocus(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsFocus(false);
     setLoading(true);
     const res = await axiosInstance.get(
       `${process.env.NEXT_PUBLIC_API_DOMEIN}/${itemType}/search?${searchType}=${inputValue}`
@@ -70,6 +89,7 @@ const Search = () => {
   };
 
   const handleClickTag = async (e) => {
+    setIsFocus(false);
     setLoading(true);
     setSearchType(e.target.id);
     const res = await axiosInstance.get(
@@ -93,6 +113,45 @@ const Search = () => {
     setLoading(false);
   };
 
+  useEffect(() => {
+    const fetchTags = async () => {
+      const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_API_DOMEIN}/tags`);
+      const tags = await res.data;
+
+      setOptions(tags);
+    };
+    fetchTags();
+  }, []);
+
+  const handleChange = async (text) => {
+    // 空の配列を用意
+    let matches = [];
+    // 入力する値が0文字より大きければ処理を行う
+    if (text.length > 0) {
+      matches = options.filter((opt) => {
+        // new RegExp = パターンでテキストを検索するために使用
+        const regex = new RegExp(`${text}`, "gi");
+        return opt.name.match(regex);
+      });
+    }
+    // フィルターをかけた配列をsuggestionsのステートに入れる
+    setSuggestions(matches);
+    setInputValue(text);
+  };
+
+  const handleClickSuggestion = async (e) => {
+    e.stopPropagation();
+    // textにフィルターをかけた入力候補の値を入れる
+    setInputValue(e.target.textContent);
+    setIsFocus(false);
+    setLoading(true);
+    const res = await axiosInstance.get(
+      `${process.env.NEXT_PUBLIC_API_DOMEIN}/${itemType}/search?${searchType}=${e.target.textContent}`
+    );
+    const items = await res.data;
+    setSearchedItems(items);
+    setLoading(false);
+  };
   return (
     <div className="flex h-screen justify-center">
       <Sidebar />
@@ -109,11 +168,60 @@ const Search = () => {
             type="text"
             placeholder="Search"
             value={inputValue}
+            onFocus={() => setIsFocus(true)}
             onChange={(e) => {
-              setInputValue(e.target.value);
+              handleChange(e.target.value);
             }}
             className="absolute inset-0 mx-auto rounded-full border-gray-500 bg-gray-100 pl-11 text-gray-700 focus:bg-white focus:shadow-lg sm:w-[418px] lg:w-[600px]"
           />
+          {isFocus && searchType === "tag" ? (
+            <>
+              {inputValue && suggestions ? (
+                <>
+                  <div className="absolute right-0 top-12 z-50 w-full" ref={inputRef}>
+                    <div className="flex w-full justify-center px-8">
+                      <div className="flex w-full flex-col rounded-md bg-white px-5 py-1 sm:w-[418px] lg:w-[600px]">
+                        {suggestions.map((suggestion, i) => (
+                          <div
+                            key={i}
+                            onClick={(e) => {
+                              handleClickSuggestion(e);
+                            }}
+                            className="text-md border-b px-2 py-1 hover:cursor-pointer hover:bg-slate-300"
+                          >
+                            {suggestion.name}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="absolute right-0 top-12 z-50 w-full" ref={inputRef}>
+                    <div className="flex w-full justify-center px-8">
+                      <div className="flex w-full flex-col rounded-md bg-white px-5 py-1 sm:w-[418px] lg:w-[600px]">
+                        <p>人気のタグ</p>
+                        {options.slice(0, 5).map((option, i) => (
+                          <div
+                            key={i}
+                            onClick={(e) => {
+                              handleClickSuggestion(e);
+                            }}
+                            className="text-md border-b px-2 py-1 hover:cursor-pointer hover:bg-slate-300"
+                          >
+                            {option.name}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </>
+          ) : (
+            <></>
+          )}
         </form>
         <div className="mb-3 ml-1 font-bold">Records</div>
         <div className="mb-1 ml-4 flex max-w-[450px] space-x-10">
