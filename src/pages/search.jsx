@@ -176,7 +176,7 @@ const Search = () => {
           />
           {isFocus && searchType === "tag" ? (
             <>
-              {inputValue && suggestions.length > 0 ? (
+              {suggestions.length > 0 ? (
                 <>
                   <div className="absolute right-0 top-12 z-50 w-full" ref={inputRef}>
                     <div className="flex w-full justify-center px-8">
@@ -198,24 +198,30 @@ const Search = () => {
                 </>
               ) : (
                 <>
-                  <div className="absolute right-0 top-12 z-50 w-full" ref={inputRef}>
-                    <div className="flex w-full justify-center px-8">
-                      <div className="flex w-full flex-col rounded-md bg-white px-5 py-1 sm:w-[418px] lg:w-[600px]">
-                        <p>人気のタグ</p>
-                        {options.slice(0, 5).map((option, i) => (
-                          <div
-                            key={i}
-                            onClick={(e) => {
-                              handleClickSuggestion(e);
-                            }}
-                            className="text-md border-b px-2 py-1 hover:cursor-pointer hover:bg-slate-300"
-                          >
-                            {option.name}
+                  {inputValue ? (
+                    <></>
+                  ) : (
+                    <>
+                      <div className="absolute right-0 top-12 z-50 w-full" ref={inputRef}>
+                        <div className="flex w-full justify-center px-8">
+                          <div className="flex w-full flex-col rounded-md bg-white px-5 py-1 sm:w-[418px] lg:w-[600px]">
+                            <p>人気のタグ</p>
+                            {options.slice(0, 5).map((option, i) => (
+                              <div
+                                key={i}
+                                onClick={(e) => {
+                                  handleClickSuaggestion(e);
+                                }}
+                                className="text-md border-b px-2 py-1 hover:cursor-pointer hover:bg-slate-300"
+                              >
+                                {option.name}
+                              </div>
+                            ))}
                           </div>
-                        ))}
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                    </>
+                  )}
                 </>
               )}
             </>
