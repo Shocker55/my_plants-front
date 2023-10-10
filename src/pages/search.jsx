@@ -176,7 +176,7 @@ const Search = () => {
           />
           {isFocus && searchType === "tag" ? (
             <>
-              {inputValue && suggestions ? (
+              {inputValue && suggestions.length > 0 ? (
                 <>
                   <div className="absolute right-0 top-12 z-50 w-full" ref={inputRef}>
                     <div className="flex w-full justify-center px-8">
