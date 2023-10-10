@@ -1,7 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 
 export default function Map({ latitude, longitude }) {
+  const mapContainerRef = useRef(null);
+  const [map, setMap] = useState(null);
+  const [marker, setMarker] = useState(null);
+
   useEffect(() => {
     const defaultLatLng = {
       lat: parseFloat(latitude),
@@ -16,23 +20,36 @@ export default function Map({ latitude, longitude }) {
       libraries: ["places"],
     });
 
-    loader.load().then((google) => {
-      const map = new google.maps.Map(document.getElementById("map"), {
-        center: defaultLatLng,
-        zoom: 17,
+    loader
+      .load()
+      .then((google) => {
+        const newMap = new google.maps.Map(mapContainerRef.current, {
+          center: defaultLatLng,
+          zoom: 17,
+        });
+
+        const newMarker = new google.maps.Marker({
+          map: newMap,
+          position: defaultLatLng,
+        });
+
+        setMap(newMap);
+        setMarker(newMarker);
+      })
+      .catch((error) => {
+        console.error("Error loading Google Maps:", error);
       });
 
-      // マーカーを追加
-      new google.maps.Marker({
-        map: map,
-        position: defaultLatLng,
-      });
-    });
-  }, []);
+    // コンポーネントがアンマウントされるときにマップとマーカーを破棄
+    return () => {
+      if (marker) {
+        marker.setMap(null);
+      }
+      if (map) {
+        map.setMap(null);
+      }
+    };
+  }, [latitude, longitude]);
 
-  return (
-    <div id="map" className="h-[300px] w-[300px]">
-      <div>Load Dynamic Map</div>
-    </div>
-  );
+  return <div ref={mapContainerRef} className="h-[300px] w-[300px]" />;
 }

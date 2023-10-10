@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 
 export default function CreateMap({
@@ -9,7 +9,10 @@ export default function CreateMap({
   longitude,
   setLongitude,
 }) {
+  const mapContainerRef = useRef(null);
+  const inputRef = useRef(null);
   const [map, setMap] = useState(null);
+  const [marker, setMarker] = useState(null);
   const [geocoder, setGeocoder] = useState(null);
 
   const defaultLatLng = {
@@ -17,37 +20,54 @@ export default function CreateMap({
     lng: longitude ? longitude : 139.7744733,
   };
 
-  const loader = new Loader({
-    apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY,
-    version: "weekly",
-    region: "JP",
-    language: "ja",
-    libraries: ["places"],
-  });
-
   useEffect(() => {
-    loader.load().then((google) => {
-      const map = new google.maps.Map(document.getElementById("map"), {
-        center: defaultLatLng,
-        zoom: 17,
-      });
-
-      setMap(map);
-      setGeocoder(new google.maps.Geocoder());
-
-      // マーカーを追加
-      new google.maps.Marker({
-        map: map,
-        position: defaultLatLng,
-      });
+    const loader = new Loader({
+      apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY,
+      version: "weekly",
+      region: "JP",
+      language: "ja",
+      libraries: ["places"],
     });
+
+    loader
+      .load()
+      .then((google) => {
+        const newMap = new google.maps.Map(mapContainerRef.current, {
+          center: defaultLatLng,
+          zoom: 17,
+        });
+
+        // マーカーを追加
+        const newMarker = new google.maps.Marker({
+          map: newMap,
+          position: defaultLatLng,
+        });
+
+        setMap(newMap);
+        setMarker(newMarker);
+        setGeocoder(new google.maps.Geocoder());
+      })
+      .catch((error) => {
+        console.error("Error loading Google Maps:", error);
+      });
+
+    // コンポーネントがアンマウントされるときにマップとマーカーを破棄
+    return () => {
+      if (marker) {
+        marker?.setMap(null);
+      }
+      if (map) {
+        map?.setMap(null);
+      }
+    };
   }, []);
 
   const handleChange = () => {
     // 住所の自動補完を有効にする
-    const input = document.getElementById("pac-input");
+    const input = inputRef.current;
     const autocomplete = new google.maps.places.Autocomplete(input, {
       componentRestrictions: { country: "jp" },
+      fields: ["place_id", "geometry"],
     });
     autocomplete.bindTo("bounds", map);
 
@@ -59,19 +79,12 @@ export default function CreateMap({
         console.error("Place not found");
         return;
       }
+      marker.setPosition(place.geometry.location);
 
       // マップの中心を選択した場所に設定
       map.setCenter(place.geometry.location);
 
-      // マーカーを設定
-      new google.maps.Marker({
-        map: map,
-        position: place.geometry.location,
-      });
-
-      setPlace(
-        `${place.formatted_address?.replace(/^〒\d{3}-\d{4}\s/, "")}` + " " + `${place.name}`
-      );
+      setPlace(input.value);
       setLatitude(place.geometry.location.lat());
       setLongitude(place.geometry.location.lng());
     });
@@ -85,13 +98,12 @@ export default function CreateMap({
           id="pac-input"
           defaultValue={place}
           onChange={handleChange}
+          ref={inputRef}
           className="h-[26px] w-full border"
         />
       </div>
       <div className="flex justify-center">
-        <div id="map" className="h-[300px] w-[300px]">
-          <div>Load Dynamic Map</div>
-        </div>
+        <div ref={mapContainerRef} className="h-[300px] w-[300px]" />
       </div>
     </>
   );
