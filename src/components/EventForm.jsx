@@ -1,4 +1,5 @@
 import React from "react";
+import CreateMap from "./CreateMap";
 
 export default function EventForm({
   handleSubmit,
@@ -20,6 +21,10 @@ export default function EventForm({
   setEndTime,
   place,
   setPlace,
+  latitude,
+  setLatitude,
+  longitude,
+  setLongitude,
   officialUrl,
   setOfficialUrl,
   body,
@@ -75,7 +80,7 @@ export default function EventForm({
               <h2>開始日:</h2>
               <input
                 type="month"
-                value={startDate}
+                value={startDate.slice(0, 7)}
                 onChange={(e) => setStartDate(e.target.value)}
                 className="ml-2 w-[130px] border"
               />
@@ -84,7 +89,7 @@ export default function EventForm({
               <h2>終了日:</h2>
               <input
                 type="month"
-                value={endDate}
+                value={endDate.slice(0, 7)}
                 onChange={(e) => setEndDate(e.target.value)}
                 className="ml-2 w-[130px] border"
               />
@@ -128,15 +133,11 @@ export default function EventForm({
         </div>
       ) : null}
       <label>
-        <h2>場所:</h2>
-        <input value={place} onChange={(e) => setPlace(e.target.value)} className="w-full border" />
-      </label>
-      <label>
         <h2>公式URL:</h2>
         <input
           value={officialUrl}
           onChange={(e) => setOfficialUrl(e.target.value)}
-          className="w-full border"
+          className="mb-1 w-full border"
         />
       </label>
       <label>
@@ -148,6 +149,17 @@ export default function EventForm({
             className="h-[300px] w-full border"
           />
         </div>
+      </label>
+      <label>
+        <h2>場所:</h2>
+        <CreateMap
+          place={place}
+          setPlace={setPlace}
+          latitude={latitude}
+          setLatitude={setLatitude}
+          longitude={longitude}
+          setLongitude={setLongitude}
+        />
       </label>
       <div className="my-5 flex justify-end">
         <div>

@@ -19,6 +19,8 @@ const CreateEvent = () => {
   const [endTime, setEndTime] = useState("");
   const [dateType, setDateType] = useState("full_date");
   const [place, setPlace] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
   const [officialUrl, setOfficialUrl] = useState("");
   const [error, setError] = useState(null);
   const [selectedOption, setSelectedOption] = useState("日付");
@@ -65,6 +67,8 @@ const CreateEvent = () => {
     formData.append("start_time", startTime);
     formData.append("end_time", endTime);
     formData.append("place", place);
+    formData.append("latitude", latitude);
+    formData.append("longitude", longitude);
     formData.append("official_url", officialUrl);
 
     return formData;
@@ -144,6 +148,10 @@ const CreateEvent = () => {
                 setEndTime={setEndTime}
                 place={place}
                 setPlace={setPlace}
+                latitude={latitude}
+                setLatitude={setLatitude}
+                longitude={longitude}
+                setLongitude={setLongitude}
                 officialUrl={officialUrl}
                 setOfficialUrl={setOfficialUrl}
                 body={body}

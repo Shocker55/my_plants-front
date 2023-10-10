@@ -42,7 +42,7 @@ export default function RecordCard({ record, userPage, recordsItems, setRecordsI
                     width={60}
                     height={60}
                     alt=""
-                    className="mr-2 h-auto max-h-[60px] rounded-full"
+                    className="mr-2 w-[60px] h-[60px] rounded-full"
                   />
                 ) : (
                   <FaCircleUser className="mr-2 h-[60px] w-[60px] p-1 text-5xl text-gray-400" />

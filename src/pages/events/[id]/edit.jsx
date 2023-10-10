@@ -31,6 +31,8 @@ const EditEvent = ({ event }) => {
   const [endTime, setEndTime] = useState("");
   const [dateType, setDateType] = useState(event.date_type);
   const [place, setPlace] = useState(event.place);
+  const [latitude, setLatitude] = useState(parseFloat(event.latitude));
+  const [longitude, setLongitude] = useState(parseFloat(event.longitude));
   const [officialUrl, setOfficialUrl] = useState(event.official_url);
   const [error, setError] = useState(null);
   const [selectedOption, setSelectedOption] = useState("日付");
@@ -80,6 +82,8 @@ const EditEvent = ({ event }) => {
     formData.append("start_time", startTime);
     formData.append("end_time", endTime);
     formData.append("place", place);
+    formData.append("latitude", latitude);
+    formData.append("longitude", longitude);
     formData.append("official_url", officialUrl);
 
     return formData;
@@ -159,6 +163,10 @@ const EditEvent = ({ event }) => {
                   setEndTime={setEndTime}
                   place={place}
                   setPlace={setPlace}
+                  latitude={latitude}
+                  setLatitude={setLatitude}
+                  longitude={longitude}
+                  setLongitude={setLongitude}
                   officialUrl={officialUrl}
                   setOfficialUrl={setOfficialUrl}
                   body={body}
