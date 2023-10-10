@@ -210,7 +210,7 @@ const Search = () => {
                               <div
                                 key={i}
                                 onClick={(e) => {
-                                  handleClickSuaggestion(e);
+                                  handleClickSuggestion(e);
                                 }}
                                 className="text-md border-b px-2 py-1 hover:cursor-pointer hover:bg-slate-300"
                               >
