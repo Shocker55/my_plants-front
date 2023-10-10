@@ -14,6 +14,7 @@ const CreateProfile = () => {
   const [bio, setBio] = useState("");
   const [error, setError] = useState(null);
   const inputEl = useRef(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -63,6 +64,7 @@ const CreateProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const data = createFormData();
     // console.log(...data.entries());
@@ -78,6 +80,8 @@ const CreateProfile = () => {
       router.push(`/users/${currentUser.uid}`);
     } catch (error) {
       setError(error.response.data.message);
+    } finally {
+      setIsSubmitting(false); // ボタンを再度有効にする
     }
   };
 
@@ -172,7 +176,14 @@ const CreateProfile = () => {
             </div>
           </div>
           <div className="flex max-w-[350px] justify-end">
-            <button className="rounded border bg-gray-300 px-3 hover:bg-gray-400">作成</button>
+            <button
+              className={`rounded border px-3 hover:bg-gray-400 ${
+                isSubmitting ? "cursor-not-allowed bg-gray-400" : "bg-gray-300"
+              }`}
+              disabled={isSubmitting}
+            >
+              作成
+            </button>
           </div>
         </form>
       </div>
