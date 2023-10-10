@@ -8,8 +8,10 @@ import { useState } from "react";
 const SignUp = () => {
   const router = useRouter();
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     const { email, password, password_confirmation } = e.target.elements;
     if (password.value !== password_confirmation.value) {
       return setError("パスワードが一致していません");
@@ -29,6 +31,8 @@ const SignUp = () => {
       } else {
         setError(error.message);
       }
+    } finally {
+      setIsSubmitting(false); // ボタンを再度有効にする
     }
   };
 
@@ -92,7 +96,12 @@ const SignUp = () => {
               </div>
 
               <div className="flex justify-center py-3">
-                <button className="mb-3 mt-6 min-w-[150px] rounded border bg-gray-400 px-3 py-1 text-white hover:bg-gray-500">
+                <button
+                  className={`mb-3 mt-6 min-w-[150px] rounded border px-3 py-1 text-white hover:bg-gray-500 ${
+                    isSubmitting ? "cursor-not-allowed bg-gray-500" : "bg-gray-400"
+                  }`}
+                  disabled={isSubmitting}
+                >
                   登録
                 </button>
               </div>

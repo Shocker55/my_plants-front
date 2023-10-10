@@ -28,6 +28,7 @@ const EditProfile = ({ user }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const inputEl = useRef(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (!currentUser) {
@@ -91,6 +92,7 @@ const EditProfile = ({ user }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const data = createFormData();
     const config = {
@@ -105,6 +107,8 @@ const EditProfile = ({ user }) => {
       router.push(`/users/${currentUser.uid}`);
     } catch (error) {
       setError(error.response.data.message);
+    } finally {
+      setIsSubmitting(false); // ボタンを再度有効にする
     }
   };
 
@@ -205,7 +209,15 @@ const EditProfile = ({ user }) => {
                 </div>
               </div>
               <div className="flex max-w-[350px] justify-end">
-                <button className="rounded border bg-gray-300 px-3 hover:bg-gray-400">編集</button>
+                <button
+                  className={`rounded border px-3 hover:bg-gray-400 active:bg-gray-400  ${
+                    isSubmitting ? "cursor-not-allowed bg-gray-400" : "bg-gray-300"
+                  }`}
+                  disabled={isSubmitting}
+                  // onClick={setIsSubmitting(true)}
+                >
+                  編集
+                </button>
               </div>
             </form>
           </div>
