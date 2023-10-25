@@ -161,9 +161,9 @@ const Record = ({ record, related_records }) => {
       <Meta
         title={`${record.title}`}
         description={`${record.body}`}
-        ogImage={`${NEXT_PUBLIC_DOMEIN}/api/og?title=${record.title}`}
-        ogUrl={`${NEXT_PUBLIC_DOMEIN}/records/${record.id}`}
-        canonicalUrl={`${NEXT_PUBLIC_DOMEIN}/records/${record.id}`}
+        ogImage={`${process.env.NEXT_PUBLIC_DOMEIN}/api/og?title=${record.title}`}
+        ogUrl={`${process.env.NEXT_PUBLIC_DOMEIN}/records/${record.id}`}
+        canonicalUrl={`${process.env.NEXT_PUBLIC_DOMEIN}/records/${record.id}`}
         isHomePage={false}
       />
       <div className="flex h-screen justify-center">
