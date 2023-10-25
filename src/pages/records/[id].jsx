@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaBookmark, FaHeart, FaRegBookmark, FaRegHeart } from "react-icons/fa6";
+import Meta from "@/components/Meta";
 
 export async function getServerSideProps({ params }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records/${params.id}`);
@@ -156,117 +157,137 @@ const Record = ({ record, related_records }) => {
   };
 
   return (
-    <div className="flex h-screen justify-center">
-      <Sidebar />
-      <Feed pageTitle="記録詳細">
-        <div className="flex h-[180px] justify-center sm:min-w-[450px] lg:w-[900px]">
-          <div className="mx-1 h-[180px] w-[450px] lg:w-[844px] ">
-            <div className="my-2 flex rounded-lg border bg-blue-200 py-3 lg:w-[844px]">
-              <div>
-                <Link href={`/users/${record.user.uid}`}>
-                  {record.user.profile?.avatar.url ? (
-                    <Image
-                      src={record.user.profile.avatar.url}
-                      alt=""
-                      width={130}
-                      height={130}
-                      className="h-[120px] w-[120px] rounded-full p-2"
-                    />
-                  ) : (
-                    <Image
-                      src="/images/photo_icon.png"
-                      alt=""
-                      width={150}
-                      height={150}
-                      className="h-[120px] w-[120px] rounded"
-                    />
-                  )}
-                </Link>
-              </div>
-              <div className="pl-3">
-                <div className="font-bold">{record.user.profile?.name}</div>
-                <div>{record.user.profile?.bio}</div>
+    <>
+      <Meta
+        title={`${record.title}`}
+        description={`${record.body}`}
+        ogImage={`${process.env.NEXT_PUBLIC_DOMEIN}/api/og?title=${record.title}`}
+        ogUrl={`${process.env.NEXT_PUBLIC_DOMEIN}/records/${record.id}`}
+        canonicalUrl={`${process.env.NEXT_PUBLIC_DOMEIN}/records/${record.id}`}
+        isHomePage={false}
+      />
+      <div className="flex h-screen justify-center">
+        <Sidebar />
+        <Feed pageTitle="記録詳細">
+          <div className="flex h-[180px] justify-center sm:min-w-[450px] lg:w-[900px]">
+            <div className="mx-1 h-[180px] w-[450px] lg:w-[844px] ">
+              <div className="my-2 flex rounded-lg border bg-blue-200 py-3 lg:w-[844px]">
+                <div>
+                  <Link href={`/users/${record.user.uid}`}>
+                    {record.user.profile?.avatar.url ? (
+                      <Image
+                        src={record.user.profile.avatar.url}
+                        alt=""
+                        width={130}
+                        height={130}
+                        className="h-[120px] w-[120px] rounded-full p-2"
+                      />
+                    ) : (
+                      <Image
+                        src="/images/photo_icon.png"
+                        alt=""
+                        width={150}
+                        height={150}
+                        className="h-[120px] w-[120px] rounded"
+                      />
+                    )}
+                  </Link>
+                </div>
+                <div className="pl-3">
+                  <div className="font-bold">{record.user.profile?.name}</div>
+                  <div>{record.user.profile?.bio}</div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="flex justify-center px-1 sm:min-w-[450px] lg:w-[900px]">
-          <div className="flex w-[500px] flex-col">
-            <div className="mb-3 rounded-2xl bg-white p-3">
-              <div className="flex justify-between">
-                <div className="flex w-full justify-between">
-                  <h2 className="pb-2 text-lg font-semibold">{record.title}</h2>
-                  {isCurrentUserBookmarked === true ? (
-                    <button onClick={() => clickUnBookmarkButton()}>
-                      <FaBookmark className="my-auto mr-3 text-lg text-blue-400" />
-                    </button>
-                  ) : (
-                    <button onClick={() => clickBookmarkButton()}>
-                      <FaRegBookmark className="my-auto mr-3 text-lg text-blue-400" />
-                    </button>
-                  )}
+          <div className="flex justify-center px-1 sm:min-w-[450px] lg:w-[900px]">
+            <div className="flex w-[500px] flex-col">
+              <div className="mb-3 rounded-2xl bg-white p-3">
+                <div className="flex justify-between">
+                  <div className="flex w-full justify-between">
+                    <h2 className="pb-2 text-lg font-semibold">{record.title}</h2>
+                    {isCurrentUserBookmarked === true ? (
+                      <button onClick={() => clickUnBookmarkButton()}>
+                        <FaBookmark className="my-auto mr-3 text-lg text-blue-400" />
+                      </button>
+                    ) : (
+                      <button onClick={() => clickBookmarkButton()}>
+                        <FaRegBookmark className="my-auto mr-3 text-lg text-blue-400" />
+                      </button>
+                    )}
+                  </div>
+                  {currentUser && record.user.uid === currentUser.uid ? (
+                    <Dropdown>
+                      <Link
+                        href={`/records/${record.id}/edit`}
+                        className="block px-4 py-2 text-sm text-gray-700"
+                        role="menuitem"
+                      >
+                        編集
+                      </Link>
+                      <button
+                        onClick={() => {
+                          clickDeleteButton();
+                        }}
+                        className="block w-full px-4 py-2 text-left text-sm text-red-700"
+                        role="menuitem"
+                      >
+                        削除
+                      </button>
+                    </Dropdown>
+                  ) : null}
                 </div>
-                {currentUser && record.user.uid === currentUser.uid ? (
-                  <Dropdown>
-                    <Link
-                      href={`/records/${record.id}/edit`}
-                      className="block px-4 py-2 text-sm text-gray-700"
-                      role="menuitem"
-                    >
-                      編集
-                    </Link>
-                    <button
-                      onClick={() => {
-                        clickDeleteButton();
-                      }}
-                      className="block w-full px-4 py-2 text-left text-sm text-red-700"
-                      role="menuitem"
-                    >
-                      削除
-                    </button>
-                  </Dropdown>
+                <div className="mb-2 flex h-[20px] space-x-2">
+                  {record.tags &&
+                    record.tags.map((tag) => (
+                      <Link
+                        href={`/search?q=${tag.name}`}
+                        key={tag.id}
+                        className="rounded-lg bg-slate-200 px-1 text-sm"
+                      >
+                        {tag.name}
+                      </Link>
+                    ))}
+                </div>
+                {record.image.url ? (
+                  <Image
+                    src={record.image.url}
+                    alt=""
+                    width={450}
+                    height={380}
+                    className="mx-auto rounded-xl px-3"
+                  />
                 ) : null}
-              </div>
-              <div className="mb-2 flex h-[20px] space-x-2">
-                {record.tags &&
-                  record.tags.map((tag) => (
-                    <Link
-                      href={`/search?q=${tag.name}`}
-                      key={tag.id}
-                      className="rounded-lg bg-slate-200 px-1 text-sm"
-                    >
-                      {tag.name}
-                    </Link>
-                  ))}
-              </div>
-              {record.image.url ? (
-                <Image
-                  src={record.image.url}
-                  alt=""
-                  width={450}
-                  height={380}
-                  className="mx-auto rounded-xl px-3"
-                />
-              ) : null}
-              <div className="pb-3 pt-1">
-                <div className="min-h-[80px]">
-                  <div className="whitespace-pre-wrap p-1">{record.body}</div>
+                <div className="pb-3 pt-1">
+                  <div className="min-h-[80px]">
+                    <div className="whitespace-pre-wrap p-1">{record.body}</div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-end justify-end p-1">
-                <div className="mr-4 flex">
-                  {currentUser ? (
-                    <>
-                      {isCurrentUserLiked === true ? (
-                        <button
-                          onClick={() => {
-                            clickUnLikeButton();
-                          }}
-                        >
-                          <FaHeart className="mr-1 text-pink-300" />
-                        </button>
-                      ) : (
+                <div className="flex items-end justify-end p-1">
+                  <div className="mr-4 flex">
+                    {currentUser ? (
+                      <>
+                        {isCurrentUserLiked === true ? (
+                          <button
+                            onClick={() => {
+                              clickUnLikeButton();
+                            }}
+                          >
+                            <FaHeart className="mr-1 text-pink-300" />
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              clickLikeButton();
+                            }}
+                          >
+                            <FaRegHeart className="mr-1 text-slate-500" />
+                          </button>
+                        )}
+                      </>
+                    ) : (
+                      <>
                         <button
                           onClick={() => {
                             clickLikeButton();
@@ -274,49 +295,39 @@ const Record = ({ record, related_records }) => {
                         >
                           <FaRegHeart className="mr-1 text-slate-500" />
                         </button>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => {
-                          clickLikeButton();
-                        }}
-                      >
-                        <FaRegHeart className="mr-1 text-slate-500" />
-                      </button>
-                    </>
-                  )}
-                  <p className="pr-2 text-slate-500">{likeCount}</p>
-                  {/* <FaRegCalendarCheck className="my-auto mr-1 text-lg" />
+                      </>
+                    )}
+                    <p className="pr-2 text-slate-500">{likeCount}</p>
+                    {/* <FaRegCalendarCheck className="my-auto mr-1 text-lg" />
                   {attendeesCount ? <>参加予定: {attendeesCount}名</> : "0"} */}
-                </div>
-                <div className="pr-1 text-sm text-slate-500">
-                  {updatedDate.toLocaleDateString()}
-                </div>
-              </div>
-            </div>
-            <div className="mb-20 rounded-2xl bg-white p-3">
-              <h3 className="border-b border-slate-400 text-lg">コメント</h3>
-              <div>
-                {commentItems.map((comment) => (
-                  <div key={comment.id}>
-                    <CommentCard
-                      comment={comment}
-                      commentItems={commentItems}
-                      setCommentItems={setCommentItems}
-                      type="record"
-                    />
                   </div>
-                ))}
+                  <div className="pr-1 text-sm text-slate-500">
+                    {updatedDate.toLocaleDateString()}
+                  </div>
+                </div>
               </div>
-              <CommentForm data={record} setCommentItems={setCommentItems} type="record" />
+              <div className="mb-20 rounded-2xl bg-white p-3">
+                <h3 className="border-b border-slate-400 text-lg">コメント</h3>
+                <div>
+                  {commentItems.map((comment) => (
+                    <div key={comment.id}>
+                      <CommentCard
+                        comment={comment}
+                        commentItems={commentItems}
+                        setCommentItems={setCommentItems}
+                        type="record"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <CommentForm data={record} setCommentItems={setCommentItems} type="record" />
+              </div>
             </div>
           </div>
-        </div>
-      </Feed>
-      <Widgets data={related_records} type="show" />
-    </div>
+        </Feed>
+        <Widgets data={related_records} type="show" />
+      </div>
+    </>
   );
 };
 
