@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaBookmark, FaHeart, FaRegBookmark, FaRegHeart } from "react-icons/fa6";
-import Meta from "@/components/meta";
+import Meta from "@/components/Meta";
 
 export async function getServerSideProps({ params }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records/${params.id}`);

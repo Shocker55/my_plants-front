@@ -2,7 +2,7 @@ import Feed from "@/components/Feed";
 import RecordList from "@/components/RecordList";
 import Sidebar from "@/components/Sidebar";
 import Widgets from "@/components/Widgets";
-import Meta from "@/components/meta";
+import Meta from "@/components/Meta";
 import { useAuthContext } from "@/context/AuthContext";
 import { axiosInstance } from "@/utils/axios";
 import { Inter } from "next/font/google";
