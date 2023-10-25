@@ -16,7 +16,12 @@ export default function Feed({ pageTitle, children, user }) {
       </div>
 
       {/* Slider */}
-      {pageTitle === "Home" ? <Slider /> : null}
+      {pageTitle === "ホーム" ? (
+        <>
+          <div className="pl-1 pt-2 font-bold">過去に投稿された画像</div>
+          <Slider />
+        </>
+      ) : null}
 
       {pageTitle === "ユーザー" ? (
         <div className="flex h-[180px] justify-center sm:min-w-[450px] lg:w-[900px]">

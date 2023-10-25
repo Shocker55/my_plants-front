@@ -65,20 +65,20 @@ export default function BookmarkList() {
 
   return (
     <div>
-      <div className="mb-1 ml-4 flex max-w-[450px] space-x-10">
+      <div className="mb-1 ml-4 flex max-w-[450px] space-x-10 pt-2">
         <div
           id="1"
           className={active === "1" ? "cursor-pointer underline" : "cursor-pointer text-slate-500"}
           onClick={(e) => handleClickRecords(e)}
         >
-          Records
+          観察記録
         </div>
         <div
           id="2"
           className={active == "2" ? "cursor-pointer underline" : "cursor-pointer text-slate-500"}
           onClick={(e) => handleClickEvents(e)}
         >
-          Events
+          イベント
         </div>
       </div>
       <div className="mb-20 grid grid-cols-1 place-items-center gap-1 sm:min-w-[450px] lg:w-[900px] lg:grid-cols-2">

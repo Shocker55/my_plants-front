@@ -87,7 +87,7 @@ export default function RecordList({ records }) {
 
   return (
     <>
-      <div className="mb-3 ml-1 font-bold">Records</div>
+      <div className="mb-3 ml-1 font-bold">観察記録</div>
       <div className="mb-1 ml-4 flex max-w-[450px] space-x-10">
         <div
           id="records?"

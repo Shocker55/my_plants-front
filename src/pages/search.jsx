@@ -36,6 +36,20 @@ const Search = () => {
         setLoading(false);
       };
       fetchData();
+    } else {
+      setIsFocus(false);
+      setLoading(true);
+      setSearchType("tag");
+      const fetchInitialRecords = async () => {
+        const res = await axiosInstance.get(
+          `${process.env.NEXT_PUBLIC_API_DOMEIN}/records/search?tag=${inputValue}`
+        );
+        const items = await res.data;
+        setSearchedItems(items);
+        setItemType("records");
+        setLoading(false);
+      };
+      fetchInitialRecords();
     }
   }, [router.query.q]);
 
@@ -155,7 +169,7 @@ const Search = () => {
   return (
     <div className="flex h-screen justify-center">
       <Sidebar />
-      <Feed pageTitle="Search">
+      <Feed pageTitle="検索">
         <form
           method="get"
           onSubmit={handleSubmit}
@@ -229,7 +243,7 @@ const Search = () => {
             <></>
           )}
         </form>
-        <div className="mb-3 ml-1 font-bold">Records</div>
+        <div className="mb-3 ml-1 font-bold">記録一覧</div>
         <div className="mb-1 ml-4 flex max-w-[450px] space-x-10">
           <div
             id="tag"

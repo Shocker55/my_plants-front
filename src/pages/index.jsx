@@ -48,7 +48,7 @@ export default function Home({ records, events }) {
   return (
     <div className="flex h-screen justify-center">
       <Sidebar />
-      <Feed pageTitle="Home">
+      <Feed pageTitle="ホーム">
         <RecordList records={records} />
       </Feed>
       <Widgets data={events} type="events" />
