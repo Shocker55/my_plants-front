@@ -131,6 +131,50 @@ const Event = ({ event }) => {
     }
   };
 
+  const clickAttendButton = async () => {
+    if (!currentUser) {
+      return router.push("/login");
+    }
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+
+    try {
+      await axiosInstance.post("/event_attendees", { event_id: event.id }, config);
+      const res = await axiosInstance.get(`/events/${event.id}`);
+      setAttendees(res.data.event_attendees);
+      setAttendeesCount((prev) => prev + 1);
+      setIsCurrentUserAttend(true);
+    } catch (err) {
+      alert("参加登録に失敗しました");
+    }
+  };
+
+  const clickCancelAttendButton = async () => {
+    if (!currentUser) {
+      return router.push("/login");
+    }
+
+    const config = {
+      headers: {
+        authorization: `Bearer ${currentUser.stsTokenManager.accessToken}`,
+      },
+    };
+
+    try {
+      await axiosInstance.delete(`/event_attendees/${event.id}`, config);
+      const filterAttendees = attendees.filter((attendee) => attendee.user.uid !== currentUser.uid);
+      setAttendees(filterAttendees);
+      setAttendeesCount((prev) => prev - 1);
+      setIsCurrentUserAttend(false);
+    } catch (err) {
+      alert("参加登録の取り消しに失敗しました");
+    }
+  };
+
   return (
     <div className="flex h-screen justify-center">
       <Sidebar />
@@ -199,13 +243,32 @@ const Event = ({ event }) => {
                   <div className="whitespace-pre-wrap p-1">{event.body}</div>
                 </div>
               </div>
-              <div className="flex flex-col items-center justify-center">
+              <div className="flex flex-col items-center justify-center pb-2">
                 <Map latitude={event.latitude} longitude={event.longitude} />
               </div>
               <div className="flex items-end justify-end p-1">
                 <div className="mr-4 flex">
-                  <FaRegCalendarCheck className="my-auto mr-1 text-lg" />
-                  {attendeesCount ? <>参加予定: {attendeesCount}名</> : "0"}
+                  {isCurrentUserAttend ? (
+                    <>
+                      <FaRegCalendarCheck
+                        className="my-auto mr-1 text-lg"
+                        onClick={() => {
+                          clickCancelAttendButton();
+                        }}
+                      />
+                      <div>参加予定: {attendeesCount}名</div>
+                    </>
+                  ) : (
+                    <>
+                      <FaRegCalendarCheck
+                        className="my-auto mr-1 text-lg"
+                        onClick={() => {
+                          clickAttendButton();
+                        }}
+                      />
+                      {attendeesCount ? <>参加予定: {attendeesCount}名</> : <>0</>}
+                    </>
+                  )}
                 </div>
                 <div className="pr-1 text-sm text-slate-500">
                   {updatedDate.toLocaleDateString()}

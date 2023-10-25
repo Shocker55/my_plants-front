@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FaEllipsis } from "react-icons/fa6";
+import { FaBars } from "react-icons/fa6";
 
 export default function FooterDropdown(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,12 +32,12 @@ export default function FooterDropdown(props) {
           aria-expanded={isOpen}
           aria-haspopup="true"
         >
-          <FaEllipsis />
+          <FaBars />
         </button>
       </div>
       {isOpen && (
         <div
-          className="absolute right-0 bottom-10 z-10 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          className="absolute bottom-10 right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="menu-button"

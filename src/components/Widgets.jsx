@@ -96,12 +96,12 @@ export default function Widgets({
       </div>
 
       <div className="bg-second-color mx-3 space-y-3 rounded-xl py-2 text-gray-700">
-        <h3 className="px-4 font-bold">History of My Records</h3>
+        <h3 className="px-4 font-bold">活動履歴</h3>
         {currentUser ? (
           <>
             <div className="flex w-full justify-center px-4 min-[1410px]:justify-between">
               <div>
-                <div className="pb-1">Last Record</div>
+                <div className="pb-1 text-[15px]">最終投稿日</div>
                 <div className="flex h-[24px] w-[120px] items-center justify-center rounded bg-slate-200 text-center">
                   {!loading ? (
                     <>
@@ -115,15 +115,15 @@ export default function Widgets({
                 </div>
               </div>
               <div className="hidden min-[1410px]:block">
-                <div className="pb-1">Record Counts</div>
+                <div className="pb-1 text-[15px]">投稿数</div>
                 <div className="h-[24px] w-[110px] rounded bg-slate-200 text-center">
                   {!loading ? <> {recordCount ? <>{recordCount}</> : <div>0</div>}</> : null}
                 </div>
               </div>
             </div>
             <div className="pb-2">
-              <p className="px-4 pb-1">Upcoming event</p>
-              <p className="h-[20px] w-full truncate px-4 text-center text-sm">
+              <p className="px-4 pb-1 text-[15px]">近日中の参加予定イベント</p>
+              <p className="h-[20px] w-full truncate px-4 pt-1 text-center text-sm">
                 {!loading ? (
                   <>
                     {" "}
@@ -170,7 +170,7 @@ export default function Widgets({
 
       {data && type === "events" ? (
         <div className="hidden-scrollbar bg-second-color h-custom sticky top-16 mx-3 space-y-3 overflow-y-scroll rounded-xl pt-2 text-gray-700">
-          <h4 className="px-4 text-xl font-bold">Events</h4>
+          <h4 className="px-4 text-xl font-bold">イベント</h4>
           <WidgetsEventList events={data} />
         </div>
       ) : null}

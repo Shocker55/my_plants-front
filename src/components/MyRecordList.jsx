@@ -45,7 +45,7 @@ export default function MyRecordList({ recordsItems, setRecordsItems, user, user
 
   return (
     <>
-      <div className="mb-3 ml-1 font-bold">Records</div>
+      <div className="mb-3 ml-1 font-bold">記録一覧</div>
       <div className="mb-1 ml-4 flex max-w-[450px] space-x-10">
         <div
           id="1"

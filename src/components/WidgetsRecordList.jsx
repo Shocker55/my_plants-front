@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function WidgetsRecordList({ userRecords, type }) {
   return (
     <div className="min-h-[500px]">
-      <h4 className="px-4 text-xl font-bold">Records</h4>
+      <h4 className="px-4 text-xl font-bold">観察記録</h4>
       {type === "index" ? (
         <>
           {userRecords

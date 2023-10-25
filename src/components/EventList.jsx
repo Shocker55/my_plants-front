@@ -113,7 +113,7 @@ export default function EventList({ events }) {
 
   return (
     <>
-      <div className="mb-1 ml-4 flex max-w-[450px] space-x-10">
+      <div className="mb-1 ml-4 flex max-w-[450px] space-x-10 pt-1">
         <div
           id="1"
           className={active === "1" ? "cursor-pointer underline" : "cursor-pointer text-slate-500"}

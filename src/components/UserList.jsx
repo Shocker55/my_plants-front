@@ -59,7 +59,7 @@ export default function UserList({ users }) {
 
   return (
     <>
-      <div className="mb-1 ml-4 flex max-w-[450px] space-x-10">
+      <div className="mb-1 ml-4 flex max-w-[450px] space-x-10 pt-2">
         <div className="underline">All</div>
         {/* <div className="text-slate-500">Following</div>
         <div className="text-slate-500">Followed</div> */}
