@@ -59,10 +59,10 @@ export default function Home({ records, events }) {
   return (
     <>
       <Head>
-        <title>{pageTitle}</title>
+        <title>{meta.title}</title>
         <meta name="description" content={meta.description} />
         <meta property="og:type" content="article" />
-        <meta property="og:title" content={meta.pageTitle} />
+        <meta property="og:title" content={meta.title} />
         <meta property="og:description" content={meta.description} />
         <meta property="og:url" content={meta.ogUrl} />
         <meta property="og:image" content={meta.ogImage} />
