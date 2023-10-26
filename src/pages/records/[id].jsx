@@ -161,6 +161,7 @@ const Record = ({ record, related_records }) => {
       <Meta
         title={`${record.title}`}
         description={`${record.body}`}
+        ogImage={`${process.env.NEXT_PUBLIC_DOMEIN}/api/og?title=${record.title}`}
         ogUrl={`${process.env.NEXT_PUBLIC_DOMEIN}/records/${record.id}`}
         canonicalUrl={`${process.env.NEXT_PUBLIC_DOMEIN}/records/${record.id}`}
         isHomePage={false}
