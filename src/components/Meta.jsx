@@ -16,19 +16,19 @@ const Meta = ({
   return (
     <Head>
       <title>{pageTitle}</title>
-      <meta name="description" content={description} />
-      <meta property="og:type" content="article" />
-      <meta property="og:title" content={pageTitle} />
-      <meta property="og:description" content={description} />
-      <meta property="og:url" content={ogUrl} />
-      <meta property="og:image" content={ogImage} />
-      <meta property="og:site_name" content={siteName} />
-      <meta property="og:locale" content={lang} />
+      <meta name="description" content={description} key="description" />
+      <meta property="og:type" content="article" key="og:type" />
+      <meta property="og:title" content={pageTitle} key="og:title" />
+      <meta property="og:description" content={description} key="og:description" />
+      <meta property="og:url" content={ogUrl} key="og:url" />
+      <meta property="og:image" content={ogImage} key="og:image" />
+      <meta property="og:site_name" content={siteName} key="og:site_name" />
+      <meta property="og:locale" content={lang} key="og:locale" />
 
-      <meta property="twitter:card" content={twitterCard} />
-      <meta property="twitter:image" content={ogImage} />
+      <meta property="twitter:card" content={twitterCard} key="twitter:card" />
+      <meta property="twitter:image" content={ogImage} key="twitter:image" />
 
-      <link rel="canonical" href={canonicalUrl} />
+      <link rel="canonical" href={canonicalUrl} key="canonicalURL" />
     </Head>
   );
 };
