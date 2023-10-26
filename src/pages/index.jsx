@@ -69,8 +69,8 @@ export default function Home({ records, events }) {
         <meta property="og:site_name" content={meta.siteName} />
         <meta property="og:locale" content={meta.lang} />
 
-        <meta name="twitter:card" content={meta.twitterCard} />
-        <meta name="twitter:image" content={meta.ogImage} />
+        <meta property="twitter:card" content={meta.twitterCard} />
+        <meta property="twitter:image" content={meta.ogImage} />
 
         <link rel="canonical" href={meta.canonicalUrl} />
       </Head>

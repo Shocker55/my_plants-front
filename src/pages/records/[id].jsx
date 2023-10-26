@@ -169,7 +169,7 @@ const Record = ({ record, related_records }) => {
   return (
     <>
       <Head>
-        <title>{meta.pageTitle}</title>
+        <title>{meta.title}</title>
         <meta name="description" content={meta.description} />
         <meta property="og:type" content="article" />
         <meta property="og:title" content={meta.title} />
@@ -179,8 +179,8 @@ const Record = ({ record, related_records }) => {
         <meta property="og:site_name" content={meta.siteName} />
         <meta property="og:locale" content={meta.lang} />
 
-        <meta name="twitter:card" content={meta.twitterCard} />
-        <meta name="twitter:image" content={meta.ogImage} />
+        <meta property="twitter:card" content={meta.twitterCard} />
+        <meta property="twitter:image" content={meta.ogImage} />
 
         <link rel="canonical" href={meta.canonicalUrl} />
       </Head>
