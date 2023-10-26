@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaBookmark, FaHeart, FaRegBookmark, FaRegHeart } from "react-icons/fa6";
-import Head from "next/head";
+import Meta from "@/components/Meta";
 
 export async function getServerSideProps({ params }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMEIN}/records/${params.id}`);
@@ -39,16 +39,6 @@ const Record = ({ record, related_records }) => {
   const [isCurrentUserBookmarked, setIsCurrentUserBookmarked] = useState(false);
   const [isCurrentUserLiked, setIsCurrentUserLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(record.record_likes.length);
-  const meta = {
-    title: `${record.title}`,
-    description: `${record.body}`,
-    ogImage: `${process.env.NEXT_PUBLIC_DOMEIN}/api/og?title=${record.title}`,
-    ogUrl: `${process.env.NEXT_PUBLIC_DOMEIN}/records/${record.id}`,
-    siteName: "MyPlants",
-    twitterCard: "summary",
-    canonicalUrl: `${process.env.NEXT_PUBLIC_DOMEIN}/records/${record.id}`,
-    lang: "ja_JP",
-  };
 
   const updatedDate = new Date(record.updated_at);
 
@@ -168,22 +158,14 @@ const Record = ({ record, related_records }) => {
 
   return (
     <>
-      <Head>
-        <title>{meta.title}</title>
-        <meta name="description" content={meta.description} />
-        <meta property="og:type" content="article" />
-        <meta property="og:title" content={meta.title} />
-        <meta property="og:description" content={meta.description} />
-        <meta property="og:url" content={meta.ogUrl} />
-        <meta property="og:image" content={meta.ogImage} />
-        <meta property="og:site_name" content={meta.siteName} />
-        <meta property="og:locale" content={meta.lang} />
-
-        <meta property="twitter:card" content={meta.twitterCard} />
-        <meta property="twitter:image" content={meta.ogImage} />
-
-        <link rel="canonical" href={meta.canonicalUrl} />
-      </Head>
+      <Meta
+        title={`${record.title}`}
+        description={`${record.body}`}
+        ogImage={`${process.env.NEXT_PUBLIC_DOMEIN}/api/og?title=${record.title}`}
+        ogUrl={`${process.env.NEXT_PUBLIC_DOMEIN}/records/${record.id}`}
+        canonicalUrl={`${process.env.NEXT_PUBLIC_DOMEIN}/records/${record.id}`}
+        isHomePage={false}
+      />
       <div className="flex h-screen justify-center">
         <Sidebar />
         <Feed pageTitle="記録詳細">
