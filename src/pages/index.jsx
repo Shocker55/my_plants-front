@@ -2,7 +2,6 @@ import Feed from "@/components/Feed";
 import RecordList from "@/components/RecordList";
 import Sidebar from "@/components/Sidebar";
 import Widgets from "@/components/Widgets";
-import Meta from "@/components/Meta";
 import { useAuthContext } from "@/context/AuthContext";
 import { axiosInstance } from "@/utils/axios";
 import { Inter } from "next/font/google";
@@ -46,15 +45,12 @@ export default function Home({ records, events }) {
   }, []);
 
   return (
-    <>
-      <Meta />
-      <div className="flex h-screen justify-center">
-        <Sidebar />
-        <Feed pageTitle="ホーム">
-          <RecordList records={records} />
-        </Feed>
-        <Widgets data={events} type="events" />
-      </div>
-    </>
+    <div className="flex h-screen justify-center">
+      <Sidebar />
+      <Feed pageTitle="ホーム">
+        <RecordList records={records} />
+      </Feed>
+      <Widgets data={events} type="events" />
+    </div>
   );
 }
