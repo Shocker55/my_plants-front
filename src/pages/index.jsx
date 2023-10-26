@@ -72,7 +72,7 @@ export default function Home({ records, events }) {
         <meta name="twitter:card" content={meta.twitterCard} />
         <meta name="twitter:image" content={meta.ogImage} />
 
-        <link rel="canonical" href={canonicalUrl} />
+        <link rel="canonical" href={meta.canonicalUrl} />
       </Head>
       <div className="flex h-screen justify-center">
         <Sidebar />
