@@ -35,53 +35,34 @@ export default async function handler(req) {
             flexWrap: "nowrap",
           }}
         >
-          {title ? (
-            <div
-              style={{
-                width: "100%",
-                fontSize: 60,
-                fontStyle: "normal",
-                fontWeight: "bold",
-                color: "#000",
-                padding: "0 120px",
-                lineHeight: 1.3,
-                marginBottom: "30px",
-                wordWrap: "break-word",
-              }}
-            >
-              {title}
-            </div>
-          ) : (
-            <div
-              style={{
-                width: "100%",
-                fontSize: 80,
-                fontStyle: "normal",
-                fontWeight: "bold",
-                color: "#000",
-                marginBottom: "30px",
-                wordWrap: "break-word",
-                justifyContent: "center",
-              }}
-            >
-              My Plants
-            </div>
-          )}
-          {title ? (
-            <div
-              style={{
-                width: "100%",
-                fontSize: 40,
-                fontStyle: "normal",
-                fontWeight: "bold",
-                color: "#000",
-                padding: "0 120px",
-                lineHeight: 1.3,
-              }}
-            >
-              🌿 My Plants
-            </div>
-          ) : null}
+          <div
+            style={{
+              width: "100%",
+              fontSize: 60,
+              fontStyle: "normal",
+              fontWeight: "bold",
+              color: "#000",
+              padding: "0 120px",
+              lineHeight: 1.3,
+              marginBottom: "30px",
+              wordWrap: "break-word",
+            }}
+          >
+            {title}
+          </div>
+          <div
+            style={{
+              width: "100%",
+              fontSize: 40,
+              fontStyle: "normal",
+              fontWeight: "bold",
+              color: "#000",
+              padding: "0 120px",
+              lineHeight: 1.3,
+            }}
+          >
+            🌿 My Plants
+          </div>
         </div>
       ),
       {
