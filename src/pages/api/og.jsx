@@ -22,7 +22,7 @@ export default async function handler(req) {
       (
         <div
           style={{
-            backgroundImage: `url(https://${process.env.NEXT_PUBLIC_S3_BUCCKET}/ogp/ogp-background.png)`,
+            // backgroundImage: `url(https://${process.env.NEXT_PUBLIC_S3_BUCCKET}/ogp/ogp-background.png)`,
             backgroundColor: "#fff",
             backgroundSize: "100% 100%",
             height: "100%",
