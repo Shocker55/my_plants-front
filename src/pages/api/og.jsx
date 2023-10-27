@@ -3,17 +3,17 @@ import { ImageResponse } from "@vercel/og";
 export const config = {
   runtime: "edge",
 };
-// const fontURL = new URL(
-//   `https://${process.env.NEXT_PUBLIC_S3_BUCCKET}/assets/subset_font.ttf`,
-//   import.meta.url
-// );
+const fontURL = new URL(
+  `https://my-plants-images.s3.ap-northeast-1.amazonaws.com/assets/subset_font.ttf`,
+  import.meta.url
+);
 
-// const font = fetch(fontURL).then((res) => res.arrayBuffer());
+const font = fetch(fontURL).then((res) => res.arrayBuffer());
 
 export default async function handler(req) {
   try {
     const { searchParams } = new URL(req.url);
-    // const fontData = await font;
+    const fontData = await font;
 
     const hasTitle = searchParams.has("title");
     const title = hasTitle ? searchParams.get("title")?.slice(0, 100) : "MyPlants";
@@ -22,7 +22,7 @@ export default async function handler(req) {
       (
         <div
           style={{
-            // backgroundImage: `url(https://${process.env.NEXT_PUBLIC_S3_BUCCKET}/ogp/ogp-background.png)`,
+            backgroundImage: `url(https://${process.env.NEXT_PUBLIC_S3_BUCCKET}/ogp/ogp-background.png)`,
             backgroundColor: "#fff",
             backgroundSize: "100% 100%",
             height: "100%",
@@ -68,13 +68,13 @@ export default async function handler(req) {
       {
         width: 1200,
         height: 630,
-        // fonts: [
-        //   {
-        //     name: "NotoSansJP",
-        //     data: fontData,
-        //     style: "normal",
-        //   },
-        // ],
+        fonts: [
+          {
+            name: "NotoSansJP",
+            data: fontData,
+            style: "normal",
+          },
+        ],
       }
     );
   } catch (e) {
