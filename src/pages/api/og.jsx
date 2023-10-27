@@ -80,7 +80,7 @@ export default async function handler(req) {
                 fontSize: 80,
                 fontStyle: "normal",
                 fontWeight: "bold",
-                color: "#000",
+                color: "green",
                 marginBottom: "30px",
                 wordWrap: "break-word",
                 justifyContent: "center",
@@ -96,7 +96,7 @@ export default async function handler(req) {
                 fontSize: 40,
                 fontStyle: "normal",
                 fontWeight: "bold",
-                color: "#000",
+                color: "green",
                 padding: "0 120px",
                 lineHeight: 1.3,
               }}
