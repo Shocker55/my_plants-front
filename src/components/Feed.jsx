@@ -18,7 +18,7 @@ export default function Feed({ pageTitle, children, user }) {
       {/* Slider */}
       {pageTitle === "ホーム" ? (
         <>
-          <div className="pl-1 pt-2 font-bold">過去に投稿された画像</div>
+          <div className="pl-1 pt-3 font-bold">最近登録したユーザーの投稿</div>
           <Slider />
         </>
       ) : null}
