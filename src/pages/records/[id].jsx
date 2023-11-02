@@ -11,7 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { FaBookmark, FaHeart, FaRegBookmark, FaRegHeart } from "react-icons/fa6";
+import { FaBookmark, FaHeart, FaRegBookmark, FaRegHeart, FaXTwitter } from "react-icons/fa6";
 import Meta from "@/components/Meta";
 
 export async function getServerSideProps({ params }) {
@@ -266,6 +266,13 @@ const Record = ({ record, related_records }) => {
                 </div>
                 <div className="flex items-end justify-end p-1">
                   <div className="mr-4 flex">
+                    <a
+                      href={`https://twitter.com/share?text=${record.title}%0a&url=${process.env.NEXT_PUBLIC_DOMEIN}/records/${record.id}
+`}
+                      className="mt-1 pr-3"
+                    >
+                      <FaXTwitter />
+                    </a>
                     {currentUser ? (
                       <>
                         {isCurrentUserLiked === true ? (
@@ -298,8 +305,6 @@ const Record = ({ record, related_records }) => {
                       </>
                     )}
                     <p className="pr-2 text-slate-500">{likeCount}</p>
-                    {/* <FaRegCalendarCheck className="my-auto mr-1 text-lg" />
-                  {attendeesCount ? <>参加予定: {attendeesCount}名</> : "0"} */}
                   </div>
                   <div className="pr-1 text-sm text-slate-500">
                     {updatedDate.toLocaleDateString()}
